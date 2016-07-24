@@ -65,7 +65,7 @@ var AppMap = {
         button.innerHTML = '<span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>';
         var this_ = this;
         var handle = function(e) {
-            var v = this_.getMap().getView()
+            var v = this_.getMap().getView();
             v.setCenter([-8230000, 535000]);
             v.setZoom(8);
         };
@@ -187,7 +187,7 @@ var AppMap = {
 	    });	    
     }
 
-}
+};
 
 gmaps = {
     gmap: '',
@@ -345,7 +345,7 @@ gmaps = {
         this.gmap = gmap;
         return map;
     }
-}
+};
 Lyr = {
     StrVw_Source: '',
     StrVw_Vector: '',
@@ -368,7 +368,7 @@ Lyr = {
     Base_MapQuest: new ol.layer.Tile({
    	  preload: Infinity,
       style: 'Road',
-      source: new ol.source.MapQuest({layer: 'osm'})
+      source: new ol.source.OSM()
     }),
     Base_ESRI_Calles: new ol.layer.Tile({
     	preload: Infinity,
@@ -378,4 +378,4 @@ Lyr = {
               'World_Street_Map/MapServer/tile/{z}/{y}/{x}'
         })
     })
-}
+};

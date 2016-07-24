@@ -28,24 +28,25 @@ var FuncDecrypted=function(message){
 	return decrypted; 
 };
 
-Config.socketGeoAdmin.emit('GetMunicipio', '', function(message){	console.log("message Mun:" + message.length);
-	console.log(moment().format('h:mm:ss:SSSS')+" Mun");
-	var decrypted =FuncDecrypted(message);									console.log("decrypted Mun:" + decrypted.type);		
-	var geojson=topojson.feature(decrypted, decrypted.objects.collection);	
-  	glo["cod_mpio"]=geojson;												console.log("geojson Mun:" + glo["cod_mpio"].features[1].properties.id);
-  	//console.log(moment().format('h:mm:ss:SSSS')+" Mun2");
+Config.socketGeoAdmin.emit('GetMunicipio', '', function(message){			//console.log("message Mun:" + message.length);
+	console.log(moment().format('h:mm:ss:SSSS')+" Mun Ini");
+	var decrypted =FuncDecrypted(message);									//console.log("decrypted Mun:" + decrypted.type);		
+	var geojson=topojson.feature(decrypted, decrypted.objects.collection);
+  	Config["cod_mpio"]=geojson;												//console.log("geojson Mun:" + Config["cod_mpio"].features.length);
+  	console.log(moment().format('h:mm:ss:SSSS')+" Mun FIN");
 });	
 
-Config.socketGeoAdmin.emit('GetProvincia', '', function(message){	console.log("message Provincia");
-	//console.log(moment().format('h:mm:ss:SSSS')+" prov");
+Config.socketGeoAdmin.emit('GetProvincia', '', function(message){
+	console.log(moment().format('h:mm:ss:SSSS')+" prov Ini");
 	var decrypted =FuncDecrypted(message);
 	var geojson=topojson.feature(decrypted, decrypted.objects.collection);
-	glo["cod_prov"]=geojson;										console.log("message Provincia FIN");											
+	Config["cod_prov"]=geojson;
+	console.log(moment().format('h:mm:ss:SSSS')+" prov FIN");											
 });
-Config.socketGeoAdmin.emit('GetDepartamento', '', function(message){	//console.log(message);
-	console.log(moment().format('h:mm:ss:SSSS')+" Dpto");				console.log("message Dpto");
+Config.socketGeoAdmin.emit('GetDepartamento', '', function(message){
+	console.log(moment().format('h:mm:ss:SSSS')+" Dpto Ini");
 	var decrypted =FuncDecrypted(message);
 	var geojson=topojson.feature(decrypted, decrypted.objects.collection);
-	glo["cod_dpto"]=geojson;											//console.log(glo["cod_dpto"]);
-	console.log(moment().format('h:mm:ss:SSSS')+" Dpto (2) DOS");
+	Config["cod_dpto"]=geojson;
+	console.log(moment().format('h:mm:ss:SSSS')+" Dpto FIN");
 });

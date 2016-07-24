@@ -2,7 +2,7 @@
 var Func={
 	Decrypted : function (message) {
 		try {
-			var text=CryptoJS.AES.decrypt(message,Config.cl).toString(CryptoJS.enc.Utf8)
+			var text=CryptoJS.AES.decrypt(message,Config.cl).toString(CryptoJS.enc.Utf8);
 		}
 		catch(err) {
 		    this.CerrarAPP();
@@ -67,7 +67,7 @@ var Func={
 	    }
 	},
 	IntevaloLogin:function(){
-		var app=this
+		var app=this;
 		app.ValidaUsuario();
 		setInterval(function(){
 			console.log('Valido');
@@ -78,4 +78,4 @@ var Func={
        return deg * Math.PI * 2 / 360;
    }
 	
-}
+};

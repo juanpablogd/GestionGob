@@ -444,6 +444,7 @@ glo.getbreaks=function(fc){
 	}
 	return breaks;    
 };
+
 glo.AutoDisplayLeyend=function(){
 		$("#items").empty();
 		var leyend=document.getElementById('items');
@@ -451,7 +452,8 @@ glo.AutoDisplayLeyend=function(){
 		
 		for(var i=0;i<glo.breaks.length-1;i++){
 			labels.push('<i  style=" background:'+getColor(glo.breaks[i])+';"></i> '+formatNum(numeral(glo.breaks[i]).format('0,0.'))+' - '+formatNum(numeral(glo.breaks[i+1]-1).format('0,0.')));
-		}	
+		}
+		console.log(labels);	
 		labels.push('<i  style=" background:'+getColor(glo.breaks[glo.breaks.length-1])+';"></i> '+formatNum(numeral(glo.breaks[glo.breaks.length-1]).format('0,0.'))+' +');		
 		leyend.style.display='block';
 		leyend.innerHTML=labels.join('<br>');

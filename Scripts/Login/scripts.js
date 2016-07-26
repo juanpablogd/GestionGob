@@ -1,4 +1,4 @@
-var socket = io.connect(Config.UrlSocket+'/web');
+var socket = io.connect(Config.UrlSocket+'/web'); //console.log(Config.UrlSocket);
 $(document).ready(function () {
     $("#ingresar").click(function () {
         if (!$("#usuario").val()) {

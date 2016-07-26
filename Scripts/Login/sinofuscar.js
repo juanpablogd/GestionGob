@@ -1,14 +1,14 @@
 $(document).ready(function () {
     if (localStorage.getItem("id_usr") > 0) {
-        window.location.assign("http://saga.cundinamarca.gov.co/geoportal/gis/")
+        window.location.assign("http://saga.cundinamarca.gov.co/geoportal/gis/");
     };
     $("#acceder").click(function () {
         if (!$("#usuario").val()) {
             bootbox.alert("por favor ingrese el nombre de usuario", function () {});
-            $("#usuario").focus()
+            $("#usuario").focus();
         } else if (!$("#contrasena").val()) {
             bootbox.alert("por favor ingrese la contraseña", function () {});
-            $("#contrasena").focus()
+            $("#contrasena").focus();
         } else {
             var usuario = ($("#usuario").val());
             var login = ($("#contrasena").val());
@@ -53,5 +53,5 @@ $(document).ready(function () {
             });
             return false
         }
-    })
+    });
 });

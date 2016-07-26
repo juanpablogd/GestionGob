@@ -67,11 +67,31 @@
 	</nav>
    <!-- Panel Mapa -->
    <div id="map" class="map">
-   	  <div id="gmap" class="fill"></div>
-      <div id="olmap" class="fill"></div>
+   	  <div id="gmap" class="fill">&nbsp;</div>
+      <div id="olmap" class="fill">&nbsp;</div>
+      <div id="leyenda">
+            <div id="panel-primary-leyenda" class="panel panel-primary">
+                <div class="panel-heading">
+                    <h5 class="panel-title">
+	        			<a class="panel-title"> <span class="glyphicon glyphicon-list" aria-hidden="true">&nbsp;</span> Leyenda</a>
+	        			<div class="pull-right " id="OcultarLayenda">
+						  <span><i class="glyphicon glyphicon-remove">&nbsp;</i></span>
+						</div>
+		      		</h5>
+
+                </div>
+                <div id="panel_leyenda" class="panel-body" style="max-width: 300px;">
+                    <div class="well" style="max-height: 500px;overflow: auto;">
+                        <p><b><span id="LeyendaTasa" >Cantidad De Gestiones</span>
+                    	<span id="TituloLeyenda" >&nbsp;</span></b></p>
+                        <div id="items" class="divider"> </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
        <div id="PanelCapasBase"  class="PanelCapasBase" >
 		   	<div id="myCarousel" class="carousel slide">
-		    <!-- Carousel items -->
 		    <div class="carousel-inner">
 		    	<div class="item active">
 			        <div class="row-fluid">
@@ -82,7 +102,7 @@
 			          </div>
 			        </div><!--/row-fluid-->
 			    </div><!--/item-->
-		    </div><!--/carousel-inner-->
+		    </div>
 		  
 			  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
 			    <span class="glyphicon glyphicon-chevron-left"></span>
@@ -102,6 +122,7 @@
 	
 </body>
 	<!-- script Resources -->
+	<script src="../../Resources/Numeral/numeral.js"></script>
 	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
 	<script src="../../Resources/socket/socket.io.js"></script>
 	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
@@ -117,10 +138,8 @@
 	<script src="../../Resources/growl/Notificaciones.js"></script>
 	<script src="../../Resources/fastclick/fastclick.min.js"></script>
 	<script src="../../Resources/topojson/topojson.v1.min.js"></script>
+	<script src="../../Resources/turf/turf.min.js"></script>
 	<script src="../../Resources/ol3/ol.js"></script>
-	
-	
-	
 	
 	<!-- app Resources -->
 	<script src="../../Scripts/Config.js"></script>

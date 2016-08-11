@@ -19,7 +19,7 @@ $(document).ready(function () {
             		localStorage.dt=data;
             		bootbox.alert("Bienvenido, " + dat[0].nombre, function () {});
                     window.location.assign(Config.NextLogin);
-                }else{
+               }else{	console.log("Usuario no encontrado! ");
                     localStorage.clear();
                     bootbox.alert("Usuario no encontrado!", function () {});
                 }

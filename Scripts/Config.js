@@ -1,22 +1,12 @@
-
 var Config={
- 	UrlSocket: 'http://saga.cundinamarca.gov.co:4171', 			//Socket Login
- 	UrlSocketApp: 'http://saga.cundinamarca.gov.co:3322',		//Socket Aplicación
- 	cl:'1erf2a5f1e87g1',
- 	NextLogin:'../Home/',
-	
-	// TABLA public.p_perfil
-		//ADMIN           (18)			// tipo 'C'
-		//CONSULTA        (2)				// tipo 'C'
-		//77,89=Planeación -- 91=Administrativo -- 110=Gobierno\Rendición 
- 	id_perfil:[2,18,77,89,91,110], 					// tipo 'C'
- 	
-	 	//ADMIN           (24,69)			// tipo 'A'
-	 	//EDICIÓN Y CARGA (79,87,96)		// tipo 'A'
-	 	//CONSULTA        (70)				// tipo 'A'
-	id_perfil_admin:[24,69,70,79,87,96],	// tipo 'A'
+ 	UrlSocket: AppConfig.UrlSocket,
+ 	UrlSocketApp: AppConfig.UrlSocketApp,
+ 	cl:AppConfig.cl,
+ 	NextLogin:AppConfig.NextLogin,
+ 	id_perfil:AppConfig.id_perfil,
+	id_perfil_admin:AppConfig.id_perfil_admin,
 	socketGeoAdmin:'',
-	socketDataAdmin:'',
+	socketDataAdmin:AppConfig.socketDataAdmin,
 	format : new ol.format.GeoJSON(),
 	breaks:''
 };
@@ -151,10 +141,7 @@ ol.inherits(Config.CundinamarcaControl, ol.control.Control);
 Config.socketGeoAdmin = io.connect(Config.UrlSocketApp+'/GeoAdmin');
 Config.socketDataAdmin = io.connect(Config.UrlSocketApp+'/DataAdmin');
 
-var FuncDecrypted=function(message){
-	var decrypted = JSON.parse(CryptoJS.AES.decrypt(message,Config.cl).toString(CryptoJS.enc.Utf8));
-	return decrypted; 
-};
+
 
 Config.ReiniciarJSON=function(json){
 	//console.log(json);
@@ -179,10 +166,6 @@ Config.asigGeometria=function(result,escala){
 		dato=getDatosLugar(result.datos,escala,Config[escala].features[i].properties.id);	//console.log("dato Filtrado:"+dato.length);	console.log("dato Filtrado:"+dato[0].n);
 		if(dato.length!=0){ console.log("Asignado");
 			Config[escala].features[i].properties.t=parseInt(dato[0].n); 
-/*			if(dato[0].pob!=undefined){
-				Config[escala].features[i].properties.pob=parseInt(dato[0].pob);
-				Config[escala].features[i].properties.tp=parseInt(dato[0].tp);
-			}	*/
 		}
 	}
 	//console.log(Config[escala]);

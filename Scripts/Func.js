@@ -2,7 +2,7 @@
 var Func={
 	Decrypted : function (message) {
 		try {
-			var text=CryptoJS.AES.decrypt(message,Config.cl).toString(CryptoJS.enc.Utf8);
+			var text=CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8);
 		}
 		catch(err) {
 		    this.CerrarAPP();
@@ -12,12 +12,12 @@ var Func={
 			this.CerrarAPP();
 			return false;
 		}else{
-			var decrypted =JSON.parse(CryptoJS.AES.decrypt(message,Config.cl).toString(CryptoJS.enc.Utf8));
+			var decrypted =JSON.parse(CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));
 			return decrypted;	
 		}
 	},
 	Ecrypted: function (json){
-		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(json), Config.cl);
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(json), AppConfig.cl);
 		return ciphertext.toString();
 	},
 	DataLogin: function (){
@@ -61,7 +61,7 @@ var Func={
 			this.CerrarAPP();
 	    }else{
 	    	var id_perfil=this.GetIdPerfil();
-	        if(Config.id_perfil.indexOf(id_perfil)<0){
+	        if(AppConfig.id_perfil.indexOf(id_perfil)<0){
 	        	this.CerrarAPP();	
 	        }
 	    }
@@ -78,4 +78,10 @@ var Func={
        return deg * Math.PI * 2 / 360;
    }
 	
+};
+
+var FuncDecrypted=function(message){
+	//console.log("FuncDecrypted INI: "+AppConfig.cl);
+	var decrypted = JSON.parse(CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));	//console.log("FuncDecrypted INI"+CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));
+	return decrypted; 
 };

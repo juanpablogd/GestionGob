@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>SAGA</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- CSS Resources -->
+  <link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="../../Resources/FontAwesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
+  <link href="../../Resources/Animate/animate.css" rel="stylesheet">
+  <link href="../../Resources/ol3/ol.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+  
+  
+  <!-- CSS app -->
+  <link href="../../Content/Home/NavMap.css" rel="stylesheet">
+  <link href="../../Content/Home/ContentMap.css" rel="stylesheet">
+  <style>
+  	a {
+	    text-decoration: none !important;
+	}
+	h4 {
+		    margin-left: 5% !important;
+	}
+  </style>
+  
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar">&nbsp;</span>
+	        <span class="icon-bar">&nbsp;</span>
+	        <span class="icon-bar">&nbsp;</span>                        
+	      </button>
+	      <a  href="#">
+	      	<img src="../../Images/Home/logos_gobernacion.png" class="LogoMap"  >
+	      </a>
+	    </div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="../Home/">
+	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="#">
+	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="Adicionar.html">
+	        	<i class="fa fa-cloud-upload" aria-hidden="true">&nbsp;</i> Cargar </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li class="dropdown">
+	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <i class="fa fa-user fa-fw">&nbsp;</i>  <i class="fa fa-caret-down">&nbsp;</i>
+	                </a>
+	            	<ul class="dropdown-menu dropdown-user">
+	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
+	                    </li>
+	                    <li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li>
+	                    <li class="divider">&nbsp;</li>
+	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
+	                    </li>
+	                </ul>
+	          </li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+
+<div><h4><a href="Adicionar.html"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="label label-primary">Adicionar Gestión</span></a></h4></div>   
+<table id="TBList" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Municipios</th>
+                <th>Centros Gestores</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Municipios</th>
+                <th>Centros Gestores</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </tfoot>
+        <tbody id="ListaGes">&nbsp;</tbody>
+    </table>	
+</body>
+	<!-- script Resources -->
+	<script src="../../Resources/Numeral/numeral.js"></script>
+	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
+	<script src="../../Resources/socket/socket.io.js"></script>
+	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
+	<script src="../../Resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
+	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
+	<script src="../../Resources/socket/socket.io.js"></script>				
+	<script src="../../Resources/bootbox/bootbox.min.js"></script>
+	<script src="../../Resources/Crypto/core-min.js"></script>
+	<script src="../../Resources/Crypto/aes.js"></script>
+	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
+	<script src="../../Resources/growl/bootstrap-growl.min.js"></script>
+	<script src="../../Resources/growl/Notificaciones.js"></script>
+	<script src="../../Resources/fastclick/fastclick.min.js"></script>
+	
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	
+	<!-- app Resources -->
+	<script src="../../Scripts/AppConfig.js"></script>
+	<script src="../../Scripts/Func.js"></script>
+	<script src="../../Scripts/Gestiones/Gestiones.js"></script>
+	
+</html>

@@ -43,6 +43,15 @@
 		width: 100% !important;
 	}
 	/*********************************/
+	/* PANEL DESPLEGABLE */
+	.clickable{
+	    cursor: pointer !important;   
+	}
+	.panel-heading span {
+		margin-top: -20px !important;
+		font-size: 15px !important;
+	}
+	/*********************************/	
 	
   </style>
   
@@ -93,14 +102,166 @@
 	  </div>
 	</nav>
   <form role="form">
-	  <div class="form-group">
-	    <label for="codigo_pro">Municipio</label>
-		<select id="provincias" multiple="multiple">&nbsp;</select>
-	  </div>
-	  <div class="form-group">
-	    <label for="pwd">Categorización:</label>
-	    <input type="password" class="form-control" id="pwd">
-	  </div>
+	  	<div class="form-group">
+		    <label for="codigo_pro">Municipio</label>
+			<select id="provincias" multiple="multiple">&nbsp;</select>
+	  	</div>
+		<div class="form-group">
+		  	<label for="sel1">Categorización:</label>
+		  	<select class="form-control" id="sel1">
+		  		<option value="" selected=""> -- Seleccione -- </option>
+		    	<option value="1">Proyecto PDD</option>
+		    	<option value="2">Proyecto moño</option>
+		    	<option value="3">Gestión</option>
+		    	<option value="4">Compromiso especial</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="descripcion">Descripción</label>
+  			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
+		</div>
+		
+		<!--  RESPONSABLE --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Responsable</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+				    <label for="id_centrog">Secretaría</label>
+					<select id="id_centrog" multiple="multiple">
+						<option>Despacho Gobernador</option>
+						<option>Secretaría de Planeación</option>
+						<option>Secretaría de Prensa</option>
+						<option>Secretaría de TIC</option>
+					</select>
+				</div>
+				<div class="form-group">
+			    	<label for="pwd">Nombre contacto:</label>
+					<input type="text" class="form-control" id="pwd">
+				</div>			
+				<div class="form-group">
+			    	<label for="pwd">Teléfono contacto:</label>
+					<input type="text" class="form-control" id="pwd">
+				</div>
+				<div class="form-group">
+			    	<label for="pwd">Email contacto:</label>
+					<input type="text" class="form-control" id="pwd">
+				</div>
+			</div>
+		</div>
+		<!--  PANEL CONTRACTUAL --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Contractual</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body">
+
+				<div class="form-group">
+				  	<label for="sel1">Tipo contrato:</label>
+				  	<select class="form-control" id="sel1">
+				  		<option value="" selected=""> -- Seleccione -- </option>
+				    	<option value="1">Concurso de Méritos </option>
+				    	<option value="2">Contratación Directa </option>
+				    	<option value="3">Licitación Pública </option>
+				    	<option value="4">Mínima Cuantía </option>
+					</select>
+				</div>
+				<div class="form-group">
+	    			<label for="pwd">N° Contrato:</label>
+	    			<input type="text" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Enlace Secop:</label>
+	    			<input type="text" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Valor fuente nacional:</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Valor fuente departamento:</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="pwd">Valor fuente municipio:</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Valor fuente Sistema General de Participaciones - SGP</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Valor fuente regalias:</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="pwd">Otro ¿Cúal?:</label>
+	    			<input type="text" class="form-control" id="pwd">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="pwd">Valor fuente otros:</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="pwd">Fecha inicio:</label>
+	    			<input type="date" class="form-control" id="pwd">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="pwd">Fecha terminación:</label>
+	    			<input type="date" class="form-control" id="pwd">
+	  			</div>
+			</div>
+		</div>
+		
+		<!--  PANEL SEGUIMIENTO --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Seguimiento</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+				    <label for="cod_programa">Objetivo - Programa</label>
+					<select id="cod_programa" multiple="multiple">&nbsp;</select>
+				</div>
+				<div class="form-group">
+				    <label for="cod_meta">Sub Programa - Meta</label>
+					<select id="cod_meta" multiple="multiple">&nbsp;</select>
+				</div>
+				<div class="form-group">
+	    			<label for="pwd">Empleos generados directamente :</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Empleos generados indirectamente :</label>
+	    			<input type="number" class="form-control" id="pwd">
+	  			</div>
+				<div class="form-group">
+				    <label for="id_prensa">Productos Prensa</label>
+					<select id="id_prensa" multiple="multiple">
+						<option>Fotografía</option>
+						<option>Acompañamiento Prensa</option>
+						<option>Presentador de Eventos</option>
+						<option>Video</option>
+						<option>Periódico</option>
+						<option>Asistencia Técnica</option>
+						<option>Cuña Radial</option>
+						<option>Boletín de Prensa</option>
+						<option>Redes</option>
+						<option>Diseño de Campaña</option>
+						<option>Comunicación Interna</option>
+						<option>Diseño de Piezas Publicitarias</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="descripcion">Resultado</label>
+		  			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
+				</div>
+			</div>
+		</div>
 
 	  <button type="Guardar" class="btn btn-default">Guardar</button>
 </form>

@@ -13,7 +13,8 @@ AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 					if(name!="id_actividad"){
 						$('#f'+name1).append("<td>"+value+"</td>");
 					} else{
-						$('#f'+name1).append("<td>"+value+"</td><td>"+value+"</td>");
+						//$('#f'+name1).append("<td>"+value+"</td><td>"+value+"</td>");
+						$('#f'+name1).append('<td><div><h4><a href="AdicionarVisita.html"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><i class="fa fa-pencil" aria-hidden="true"></i></td><td><i class="fa fa-trash" aria-hidden="true"></i></td>');
 					}
 		      	});
 

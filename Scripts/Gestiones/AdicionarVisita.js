@@ -87,19 +87,7 @@ $(document).ready(function() {
             enableCaseInsensitiveFiltering: true
 	});
 
-    $('#id_prensa').multiselect();
-
-	/* CARGA LISTADO DE Productos de Prensa*/
-	$('#id_centrog').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-
-    $('#id_centrog').multiselect();    
-    
+    $('#id_prensa').multiselect(); 
     
     
     

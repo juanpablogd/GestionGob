@@ -1,109 +1,16 @@
 $(document).ready(function() {
-	
-	/* CARGA LISTADO DE PROVINCIAS*/
-	$('#provincias').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-	var optgroups = [
-        {
-            label: 'ALMEIDAS', children: [
-                {label: 'Chocontá', value: '25183'},
-                {label: 'Machetá', value: '25426'},
-                {label: 'Manta', value: '25436'}
-            ]
-        },
-        {
-            label: 'ALTO MAGDALENA', children: [
-                {label: 'Agua de Dios', value: '1'},
-                {label: 'Girardot', value: '2'},
-                {label: 'Guataquí', value: '3'}
-            ]
-        }
-    ]; console.log(optgroups);
-    $('#provincias').multiselect('dataprovider', optgroups);
 
-	/* CARGA LISTADO DE OBJTIVO - PROGRAMA*/
-	$('#cod_programa').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-	var optgroups = [
-        {
-            label: 'DESARROLLO INTEGRAL DEL SER HUMANO', children: [
-                {label: 'JOVENES CONSTRUCTORES DE PAZ', value: '25183'},
-                {label: 'ALIANZA POR LA INFANCIA', value: '25426'},
-                {label: 'VIVE Y CRECE ADOLESCENCIA', value: '25436'}
-            ]
-        },
-        {
-            label: 'SOSTENIBILIDAD Y RURALIDAD', children: [
-                {label: 'TERRITORIO SOPORTE PARA EL DESARROLLO', value: '1'},
-                {label: 'BIENES Y SERVICIOS AMBIENTALES PATRIMONIO DE CUNDINAMARCA', value: '2'},
-                {label: 'AGUA POTABLE Y SANEAMIENTO BASICO PARA LA SALUD DE LOS CUNDINAMARQUESES', value: '3'}
-            ]
-        }
-    ]; console.log(optgroups);
-    $('#cod_programa').multiselect('dataprovider', optgroups);
-
-	/* CARGA LISTADO DE Sub PROGRAMA - META*/
-	$('#cod_meta').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-	var optgroups = [
-        {
-            label: 'Existencia', children: [
-                {label: 'Vacunar en el cuatrienio a 24.000 niñas y niños de un año de edad con esquema de vacunación pai plus (hepatitis a y varicela).', value: '25183'},
-                {label: 'Completo Pruebas Desarrollo Texto Largo 012', value: '25426'},
-                {label: 'Promover la expansión de electrificación rural a 400 hogares. durante el periodo 2012-2016.', value: '25436'}
-            ]
-        },
-        {
-            label: 'Desarrollo', children: [
-                {label: 'Desarrollar procesos de normalización. certificación de producto y gestión de calidad en 250 empresas durante el periodo de gobierno', value: '1'},
-                {label: 'Crear y o fortalecer 1.000 mipymes en gestión e innovación empresarial para la productividad. durante el período de gobierno.', value: '2'},
-                {label: 'Desarrollar procesos de normalización. certificación de producto y gestión de calidad en 250 empresas durante el periodo de gobierno', value: '3'}
-            ]
-        }
-    ]; console.log(optgroups);
-    $('#cod_meta').multiselect('dataprovider', optgroups);    
-    
-	/* CARGA LISTADO DE Productos de Prensa*/
-	$('#id_prensa').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-
-    $('#id_prensa').multiselect();
-
-	/* CARGA LISTADO DE Productos de Prensa*/
-	$('#id_centrog').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-
-    $('#id_centrog').multiselect();    
-    
-    
-    
-    
-    /* CODIGO DE PANEL DESPLEGABLE */
+//Func.MsjPeligro("adfasdf");
+AppConfig.EstadoCentroGestor= function() {	
+	if(AppConfig['id_centrog'].length){
+		AppConfig.CargaMetas();	
+	}else{
+    	$("#MsjAlertaMetas").show();
+    	Func.MsjPeligro("Debe seleccionar al menos una secretaría para cargar las metas");		
+	}
+};
+AppConfig.Inicial= function() {
+	/* CODIGO DE PANEL DESPLEGABLE */
 	$(document).on('click', '.panel-heading span.clickable', function(e){
 	    var $this = $(this);
 		if(!$this.hasClass('panel-collapsed')) {
@@ -116,5 +23,192 @@ $(document).ready(function() {
 			$this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
 		}
 	});
+	
+	/* SELECT - PROVINCIAS/MUNICIPIO */
+	$('#codigo_mun').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){ return a;}).get();	//console.log(AppConfig['codigo_mun']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return a;}).get();;	//console.log(AppConfig['codigo_mun']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return a;}).get();;	//console.log(AppConfig['codigo_mun']);
+	        }
+	});
+
+	/* SELECT - SECTOR */
+	$('#id_sector').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_sector'] = $('#id_sector option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_sector']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_sector'] = $('#id_sector option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_sector']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_sector'] = $('#id_sector option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_sector']);
+	        }
+	});
+	/* SELECT - CENTRO GESTOR */
+	$('#id_centrog').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {	//	console.log("onChange");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig.EstadoCentroGestor();
+            },
+            onSelectAll: function(checked) {				//	console.log("onSelectAll");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig.EstadoCentroGestor();
+	        },
+            onDeselectAll: function(checked) {				//	console.log("onDeselectAll");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig.EstadoCentroGestor();
+	        }
+	});
+	/* SELECT - TIPO CONTRATO */
+	$('#id_tipo_cto').multiselect({
+			enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_tipo_cto'] = $('#id_tipo_cto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_tipo_cto']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_tipo_cto'] = $('#id_tipo_cto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_tipo_cto']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_tipo_cto'] = $('#id_tipo_cto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_tipo_cto']);
+	        }
+	});
+	/* SELECT - SUBPROGRAMA / META*/
+	$('#cod_meta').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+	        }
+	});
+	/* SELECT -  Productos de Prensa*/
+	$('#id_producto').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_producto'] = $('#id_producto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_producto']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_producto'] = $('#id_producto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_producto']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_producto'] = $('#id_producto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_producto']);
+	        }
+	});
+};
+
+
+AppConfig.CargaMunicipios= function() {	
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+  	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
+		$('#codigo_mun').multiselect('dataprovider', AppConfig["ListadoMpio"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+AppConfig.CargaSectores= function() {	
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+  	AppConfig.socketDataAdmin.emit('GetListSector', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Sector");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoSector"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
+		$('#id_sector').multiselect('dataprovider', AppConfig["ListadoSector"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+AppConfig.CargaSecretarias= function() {	
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+  	AppConfig.socketDataAdmin.emit('GetListSecretaria', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoSecretaria"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
+		$('#id_centrog').multiselect('dataprovider', AppConfig["ListadoSecretaria"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+
+AppConfig.CargaTipoContrato= function() {	
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+  	AppConfig.socketDataAdmin.emit('GetListTipoContrato', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Tipo de COntrato");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoTipoContrato"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
+		$('#id_tipo_cto').multiselect('dataprovider', AppConfig["ListadoTipoContrato"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+
+AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+	var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(id_centros);
+  	AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Metas");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoMeta"]=decrypted;											console.log("geojson Mun:" + AppConfig["ListadoMeta"].length);
+		if(AppConfig["ListadoMeta"].length == 0 ){
+			Func.MsjPeligro("No se encontraron metas para esta secretaría");
+			$("#MsjAlertaMetas").show();
+		}else $("#MsjAlertaMetas").hide();
+		$('#cod_meta').multiselect('dataprovider', AppConfig["ListadoMeta"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+   
+};
+AppConfig.CargaProductosPrensa= function() {
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+  	AppConfig.socketDataAdmin.emit('GetListProductoPren', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Productos Prensa");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoProductosPren"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
+		$('#id_producto').multiselect('dataprovider', AppConfig["ListadoProductosPren"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+AppConfig.Inicial();
+AppConfig.CargaMunicipios();
+AppConfig.CargaSectores();
+AppConfig.CargaSecretarias();
+AppConfig.CargaTipoContrato();
+AppConfig.CargaProductosPrensa();
+
+$('#id_ver').click(function(){
+
+});
+
+
     
 });

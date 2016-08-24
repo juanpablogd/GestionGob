@@ -76,12 +76,31 @@ var Func={
 	},
 	degToRad:function(deg) {
        return deg * Math.PI * 2 / 360;
-   }
+  	},
+	MsjPeligro:function(msj){
+		$.notify({
+			// options
+			icon: 'fa fa-exclamation-circle',
+			message: msj 
+		},{
+			// settings
+			type: 'danger',
+			timer : 100,
+			delay: 3000,
+			animate: {
+				enter: 'animated bounceInRight',
+				exit: 'animated bounceOutRight'
+			},
+			placement: {
+				from: "bottom",
+				align: "right"
+			}
+		});
+	}
 	
 };
 
-var FuncDecrypted=function(message){
-	//console.log("FuncDecrypted INI: "+AppConfig.cl);
+var FuncDecrypted=function(message){	//console.log("FuncDecrypted INI: "+AppConfig.cl);
 	var decrypted = JSON.parse(CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));	//console.log("FuncDecrypted INI"+CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));
-	return decrypted; 
+	return decrypted;
 };

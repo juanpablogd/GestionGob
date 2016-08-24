@@ -16,11 +16,11 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   
   <!-- CSS Resources -->
+  <link href="../../Resources/Animate/animate.css" rel="stylesheet">
   <link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
   <link href="../../Resources/FontAwesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
-  <link href="../../Resources/Animate/animate.css" rel="stylesheet">
   <link href="../../Resources/ol3/ol.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" rel="stylesheet"/>
@@ -103,8 +103,8 @@
 	</nav>
   <form role="form">
 	  	<div class="form-group">
-		    <label for="codigo_pro">Municipio</label>
-			<select id="provincias" multiple="multiple">&nbsp;</select>
+		    <label for="codigo_mun">Municipio</label>
+			<select id="codigo_mun" multiple="multiple">&nbsp;</select>
 	  	</div>
 		<div class="form-group">
 		  	<label for="sel1">Categorización:</label>
@@ -112,13 +112,18 @@
 		  		<option value="" selected=""> -- Seleccione -- </option>
 		    	<option value="1">Proyecto PDD</option>
 		    	<option value="2">Proyecto moño</option>
-		    	<option value="3">Gestión</option>
+		    	<option value="3">Gestión / Tarea</option>
 		    	<option value="4">Compromiso especial</option>
 			</select>
 		</div>
 		<div class="form-group">
 			<label for="descripcion">Descripción</label>
   			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
+		</div>
+		
+		<div class="form-group">
+		    <label for="id_sector">Sector</label>
+			<select id="id_sector" multiple="multiple">&nbsp;</select>
 		</div>
 		
 		<!--  RESPONSABLE --> 
@@ -130,12 +135,7 @@
 			<div class="panel-body">
 				<div class="form-group">
 				    <label for="id_centrog">Secretaría</label>
-					<select id="id_centrog" multiple="multiple">
-						<option>Despacho Gobernador</option>
-						<option>Secretaría de Planeación</option>
-						<option>Secretaría de Prensa</option>
-						<option>Secretaría de TIC</option>
-					</select>
+					<select id="id_centrog" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
 			    	<label for="pwd">Nombre contacto:</label>
@@ -158,25 +158,16 @@
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
 			<div class="panel-body">
-
 				<div class="form-group">
-				  	<label for="sel1">Tipo contrato:</label>
-				  	<select class="form-control" id="sel1">
-				  		<option value="" selected=""> -- Seleccione -- </option>
-				    	<option value="1">Concurso de Méritos </option>
-				    	<option value="2">Contratación Directa </option>
-				    	<option value="3">Licitación Pública </option>
-				    	<option value="4">Mínima Cuantía </option>
+				    <label for="id_tipo_cto">Tipo contrato:</label>
+					<select id="id_tipo_cto" >
+						<option value=""> -- Seleccione --</option>
 					</select>
 				</div>
 				<div class="form-group">
 	    			<label for="pwd">N° Contrato:</label>
 	    			<input type="text" class="form-control" id="pwd">
-	  			</div>
-				<div class="form-group">
-	    			<label for="pwd">Enlace Secop:</label>
-	    			<input type="text" class="form-control" id="pwd">
-	  			</div>
+	    		</div>
 				<div class="form-group">
 	    			<label for="pwd">Valor fuente nacional:</label>
 	    			<input type="number" class="form-control" id="pwd">
@@ -213,7 +204,12 @@
 	    			<label for="pwd">Fecha terminación:</label>
 	    			<input type="date" class="form-control" id="pwd">
 	  			</div>
+				<div class="form-group">
+	    			<label for="pwd">Enlace Secop:</label>
+	    			<input type="text" class="form-control" id="pwd">
+	  			</div>
 			</div>
+		
 		</div>
 		
 		<!--  PANEL SEGUIMIENTO --> 
@@ -224,11 +220,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-				    <label for="cod_programa">Objetivo - Programa</label>
-					<select id="cod_programa" multiple="multiple">&nbsp;</select>
-				</div>
-				<div class="form-group">
-				    <label for="cod_meta">Sub Programa - Meta</label>
+				    <label for="cod_meta">Sub Programa - Meta</label>&nbsp;<span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span>
 					<select id="cod_meta" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
@@ -240,21 +232,8 @@
 	    			<input type="number" class="form-control" id="pwd">
 	  			</div>
 				<div class="form-group">
-				    <label for="id_prensa">Productos Prensa</label>
-					<select id="id_prensa" multiple="multiple">
-						<option>Fotografía</option>
-						<option>Acompañamiento Prensa</option>
-						<option>Presentador de Eventos</option>
-						<option>Video</option>
-						<option>Periódico</option>
-						<option>Asistencia Técnica</option>
-						<option>Cuña Radial</option>
-						<option>Boletín de Prensa</option>
-						<option>Redes</option>
-						<option>Diseño de Campaña</option>
-						<option>Comunicación Interna</option>
-						<option>Diseño de Piezas Publicitarias</option>
-					</select>
+				    <label for="id_producto">Productos Prensa</label>
+					<select id="id_producto" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
 					<label for="descripcion">Resultado</label>
@@ -263,7 +242,8 @@
 			</div>
 		</div>
 
-	  <button type="Guardar" class="btn btn-default">Guardar</button>
+	  <button type="button" class="btn btn-default" id="id_ver">Guardar</button>
+	  
 </form>
 
 </body>
@@ -285,6 +265,8 @@
 	<script src="../../Resources/fastclick/fastclick.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="../../Resources/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
+	
 	
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>

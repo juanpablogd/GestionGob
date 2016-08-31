@@ -96,6 +96,21 @@ var Func={
 				align: "right"
 			}
 		});
+	},
+	ComparaFechas:function(dateTimeA, dateTimeB){
+	    var momentA = moment(dateTimeA,"YYYY-MM-DD");
+	    var momentB = moment(dateTimeB,"YYYY-MM-DD");
+	    if (momentA > momentB) return 1;
+	    else if (momentA < momentB) return -1;
+	    else return 0;
+	},
+	ValidaURL:function isUrlValid(userInput) {
+	    var regexQuery = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$";
+	    var url = new RegExp(regexQuery,"i");
+	    if (url.test(userInput)) {	//alert('valid url: ' + userInput);
+	        return true;
+	    }	//alert('invalid url: ' + userInput);
+	    return false;
 	}
 	
 };
@@ -104,3 +119,10 @@ var FuncDecrypted=function(message){	//console.log("FuncDecrypted INI: "+AppConf
 	var decrypted = JSON.parse(CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));	//console.log("FuncDecrypted INI"+CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));
 	return decrypted;
 };
+/*	FORMATO DE MILES PARA LA CLASE VALOR*/
+$( ".valor" ).each(function( index ) {	//console.log( index + ": " + $( this ).text() );
+  	new Cleave($( this ), {
+	    numeral: true,
+	    numeralThousandsGroupStyle: 'thousand'
+	});
+});

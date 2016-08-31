@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 //Func.MsjPeligro("adfasdf");
 AppConfig.EstadoCentroGestor= function() {	
 	if(AppConfig['id_centrog'].length){
@@ -127,6 +126,13 @@ AppConfig.Inicial= function() {
             	AppConfig['id_producto'] = $('#id_producto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_producto']);
 	        }
 	});
+	
+	$('#fecha_ini').datetextentry({
+        max_date         : '2020-30-06',
+        max_date_message : 'Seleccione una fecha de este cuatrenio'
+    });
+	$('#fecha_fin').datetextentry();
+	
 };
 
 
@@ -178,7 +184,7 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
   	AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Metas");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
-		AppConfig["ListadoMeta"]=decrypted;											console.log("geojson Mun:" + AppConfig["ListadoMeta"].length);
+		AppConfig["ListadoMeta"]=decrypted;											console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);
 		if(AppConfig["ListadoMeta"].length == 0 ){
 			Func.MsjPeligro("No se encontraron metas para esta secretaría");
 			$("#MsjAlertaMetas").show();
@@ -191,8 +197,8 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 AppConfig.CargaProductosPrensa= function() {
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
   	AppConfig.socketDataAdmin.emit('GetListProductoPren', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
-		console.log(moment().format('h:mm:ss:SSSS')+" Listado Productos Prensa");				//console.log("message:" + message);
-		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Productos Prensa");			//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);												//console.log(message);									
 		AppConfig["ListadoProductosPren"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
 		$('#id_producto').multiselect('dataprovider', AppConfig["ListadoProductosPren"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
@@ -205,10 +211,169 @@ AppConfig.CargaSecretarias();
 AppConfig.CargaTipoContrato();
 AppConfig.CargaProductosPrensa();
 
-$('#id_ver').click(function(){
-
+$('#btn_guardar').click(function(){
+	bootbox.confirm("Seguro que desea Guardar?", function(result) {
+	  	console.log("Confirm result: "+result);
+	  	if(result){
+	  		var id_categoria = $("#id_categoria option:selected").val();
+	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
+	  		var responsable_nom = $("#responsable_nom").val().trim();
+	  		var responsable_tel = $("#responsable_tel").val().trim();
+	  		var nro_cto = $("#nro_cto").val().trim();
+	  		var fte_nacional = $("#fte_nacional").val().trim();				//console.log(fte_nacional);
+	  		var fte_depto = $("#fte_depto").val().trim();
+	  		var fte_mpio = $("#fte_mpio").val().trim();
+	  		var fte_sgp = $("#fte_sgp").val().trim();
+	  		var fte_regalias = $("#fte_regalias").val().trim();
+	  		var fte_otros = $("#fte_otros").val().trim();					//console.log(fte_otros);
+	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();
+	  		var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);
+	  		var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
+	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
+	  		var resultado = $("#resultado").val().trim();		console.log(resultado);
+	  		
+	  		if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"].length<1){
+	  			Func.MsjPeligro("Debe seleccionar al menos un Municipio");
+	  			$('#codigo_mun').nextAll('div').addClass("open");
+	  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  			return;
+	  		}else if(id_categoria == ""){
+	  			Func.MsjPeligro("Debe seleccionar una Categoría");
+	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
+	  			return;
+	  		}else if(descripcion==""){
+	  			Func.MsjPeligro("Digite una descripción");
+	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
+	  			return;	  			
+	  		}else if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
+	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
+	  			$('#id_sector').nextAll('div').addClass("open");
+	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  			return;
+	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
+	  			$('#responsable-panel-body').show();
+	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
+	  			$('#id_centrog').nextAll('div').addClass("open");
+	  			setTimeout(function() { $('#id_centrog').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  			return;
+	  		}else if(responsable_nom==""){
+	  			$('#responsable-panel-body').show();
+	  			Func.MsjPeligro("Digite el nombre del responsable");
+	  			setTimeout(function() { $('#responsable_nom').focus(); }, 500);
+	  			return;
+	  		}else if(responsable_tel==""){
+	  			$('#responsable-panel-body').show();
+	  			Func.MsjPeligro("Digite el teléfono des responsable");
+	  			setTimeout(function() { $('#responsable_tel').focus(); }, 500);
+	  			return;
+	  		}else if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
+	  			if(AppConfig["id_tipo_cto"]===undefined || AppConfig["id_tipo_cto"].length<1){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Debe seleccionar el tipo de contrato");
+		  			$('#id_tipo_cto').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#id_tipo_cto').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+	  			}else if(nro_cto==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Digite el número de contrato");
+		  			setTimeout(function() { $('#nro_cto').focus(); }, 500);
+		  			return;
+	  			}else if(fte_nacional==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Digite el valor de la fuente nacional");
+		  			setTimeout(function() { $('#fte_nacional').focus(); }, 500);
+		  			return;
+	  			}else if(fte_depto==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Digite el valor de la fuente Departamental");
+		  			setTimeout(function() { $('#fte_depto').focus(); }, 500);
+		  			return;
+	  			}else if(fte_mpio==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Digite el valor de la fuente Municipal");
+		  			setTimeout(function() { $('#fte_mpio').focus(); }, 500);
+		  			return;
+	  			}else if(fte_sgp==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Digite el valor de la fuente SGP");
+		  			setTimeout(function() { $('#fte_sgp').focus(); }, 500);
+		  			return;
+	  			}else if(fte_regalias==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Digite el valor de la fuente Regalias");
+		  			setTimeout(function() { $('#fte_regalias').focus(); }, 500);
+		  			return;
+	  			}else if(fte_otros!=""){
+	  				if(fte_otros>0 && descripcion_fte_otros==""){
+		  				$('#contractual-panel-body').show();
+			  			Func.MsjPeligro("Digite la descripción de la fuente");
+			  			setTimeout(function() { $('#descripcion_fte_otros').focus(); }, 500);
+			  			return;
+					}		  			
+	  			}
+	  			if(descripcion_fte_otros!=""){
+	  				if(fte_otros<1 || fte_otros==""){
+		  				$('#contractual-panel-body').show();
+			  			Func.MsjPeligro("Digite el valor de la fuente");
+			  			setTimeout(function() { $('#fte_otros').focus(); }, 500);
+			  			return;
+					}		  			
+	  			}
+	  			if(fecha_ini==""){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Ingrese una fecha Inicial");
+		  			//setTimeout(function() { $('#fecha_ini').focus(); }, 500);
+		  			setTimeout(function() { $('#fecha_ini').nextAll('span').find('.jq-dte-day').focus();}, 500);
+		  			return;
+		  		}else if(fecha_ini!="" && fecha_fin!=""){
+		  			if(Func.ComparaFechas(fecha_ini,fecha_fin)==1){
+		  				$('#contractual-panel-body').show();
+			  			Func.MsjPeligro("La fecha final debe ser mayor o igual que la inicial");
+			  			setTimeout(function() { $('#fecha_fin').nextAll('span').find('.jq-dte-day').focus();}, 500);
+			  			return;		  				
+		  			}
+	  			}
+				if(enlace_secop==""){ console.log("enlace_secop VACIO");
+		  				$('#contractual-panel-body').show();
+			  			Func.MsjPeligro("Ingrese el enlace del secop");
+			  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
+			  			return;
+	  			}else{	console.log("enlace_secop con INFO");
+  						if(Func.ValidaURL(enlace_secop)==false){ console.log("enlace_secop con INFO NO VALIDO");
+			  				$('#contractual-panel-body').show();
+				  			Func.MsjPeligro("Ingrese una URL valida");
+				  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
+				  			return;
+						}	
+				}
+				if(AppConfig["cod_meta"]===undefined || AppConfig["cod_meta"].length<1){
+					$('#seguimiento-panel-body').show();
+		  			Func.MsjPeligro("Debe seleccionar al menos una meta");
+		  			$('#cod_meta').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#cod_meta').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+		  		}// FIN CONTRAROS
+	  		}
+	  		if(empleos_gen_directo==""){
+  				$('#seguimiento-panel-body').show();
+	  			Func.MsjPeligro("Ingrese el númeo de empleos generados directamente");
+	  			setTimeout(function() { $('#empleos_gen_directo').focus(); }, 500);
+	  			return;
+  			}else if(empleos_gen_indirecto==""){
+  				$('#seguimiento-panel-body').show();
+	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
+	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
+	  			return;
+  			}else if(resultado==""){
+		  				$('#seguimiento-panel-body').show();
+			  			Func.MsjPeligro("Describa el resultado de la gestión");
+			  			setTimeout(function() { $('#resultado').focus();}, 500);
+			  			return;
+	  		}
+			//numeral().unformat($("#fte_mpio").val().trim());
+	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
+	  	}
+	});
 });
-
-
     
 });

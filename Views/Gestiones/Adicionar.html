@@ -24,6 +24,7 @@
   <link href="../../Resources/ol3/ol.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" rel="stylesheet"/>
+  <link href="../../Resources/jquery-datetextentry/jquery.datetextentry.css" type="text/css" rel="stylesheet"/>
   
   <!-- CSS app -->
   <link href="../../Content/Home/NavMap.css" rel="stylesheet">
@@ -101,14 +102,14 @@
 	    </div>
 	  </div>
 	</nav>
-  <form role="form">
+  <form role="form" id="FrmAdicionar" >
 	  	<div class="form-group">
 		    <label for="codigo_mun">Municipio</label>
 			<select id="codigo_mun" multiple="multiple">&nbsp;</select>
 	  	</div>
 		<div class="form-group">
-		  	<label for="sel1">Categorización:</label>
-		  	<select class="form-control" id="sel1">
+		  	<label for="id_categoria">Categorización:</label>
+		  	<select class="form-control" id="id_categoria" >
 		  		<option value="" selected=""> -- Seleccione -- </option>
 		    	<option value="1">Proyecto PDD</option>
 		    	<option value="2">Proyecto moño</option>
@@ -118,7 +119,7 @@
 		</div>
 		<div class="form-group">
 			<label for="descripcion">Descripción</label>
-  			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
+  			<textarea class="form-control" rows="5" id="descripcion" >&nbsp;</textarea>
 		</div>
 		
 		<div class="form-group">
@@ -132,22 +133,22 @@
 				<h3 class="panel-title">Responsable</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" id="responsable-panel-body">
 				<div class="form-group">
 				    <label for="id_centrog">Secretaría</label>
 					<select id="id_centrog" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-			    	<label for="pwd">Nombre contacto:</label>
-					<input type="text" class="form-control" id="pwd">
+			    	<label for="responsable_nom">Nombre contacto:</label>
+					<input type="text" class="form-control" id="responsable_nom">
 				</div>			
 				<div class="form-group">
-			    	<label for="pwd">Teléfono contacto:</label>
-					<input type="text" class="form-control" id="pwd">
+			    	<label for="responsable_tel">Teléfono contacto:</label>
+					<input type="text" class="form-control" id="responsable_tel">
 				</div>
 				<div class="form-group">
-			    	<label for="pwd">Email contacto:</label>
-					<input type="text" class="form-control" id="pwd">
+			    	<label for="responsable_email">Email contacto:</label>
+					<input type="text" class="form-control" id="responsable_email">
 				</div>
 			</div>
 		</div>
@@ -157,7 +158,7 @@
 				<h3 class="panel-title">Contractual</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" id="contractual-panel-body">
 				<div class="form-group">
 				    <label for="id_tipo_cto">Tipo contrato:</label>
 					<select id="id_tipo_cto" >
@@ -165,48 +166,48 @@
 					</select>
 				</div>
 				<div class="form-group">
-	    			<label for="pwd">N° Contrato:</label>
-	    			<input type="text" class="form-control" id="pwd">
+	    			<label for="nro_cto">N° Contrato:</label>
+	    			<input type="text" class="form-control" id="nro_cto">
 	    		</div>
 				<div class="form-group">
-	    			<label for="pwd">Valor fuente nacional:</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="fte_nacional">Valor fuente nacional:</label>
+	    			<input type="text" class="form-control valor" id="fte_nacional">
 	  			</div>
 				<div class="form-group">
-	    			<label for="pwd">Valor fuente departamento:</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="fte_depto">Valor fuente departamento:</label>
+	    			<input type="text" class="form-control valor" id="fte_depto">
 	  			</div>
 	  			<div class="form-group">
-	    			<label for="pwd">Valor fuente municipio:</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="fte_mpio">Valor fuente municipio:</label>
+	    			<input type="text" class="form-control valor" id="fte_mpio">
 	  			</div>
 				<div class="form-group">
-	    			<label for="pwd">Valor fuente Sistema General de Participaciones - SGP</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="fte_sgp">Valor fuente Sistema General de Participaciones - SGP</label>
+	    			<input type="text" class="form-control valor" id="fte_sgp">
 	  			</div>
 				<div class="form-group">
-	    			<label for="pwd">Valor fuente regalias:</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="fte_regalias">Valor fuente regalias:</label>
+	    			<input type="text" class="form-control valor" id="fte_regalias">
 	  			</div>
 	  			<div class="form-group">
-	    			<label for="pwd">Otro ¿Cúal?:</label>
-	    			<input type="text" class="form-control" id="pwd">
+	    			<label for="descripcion_fte_otros">Otro ¿Cúal?:</label>
+	    			<input type="text" class="form-control" id="descripcion_fte_otros">
 	  			</div>
 	  			<div class="form-group">
-	    			<label for="pwd">Valor fuente otros:</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="fte_otros">Valor fuente otros:</label>
+	    			<input type="text" class="form-control valor" id="fte_otros">
 	  			</div>
 	  			<div class="form-group">
-	    			<label for="pwd">Fecha inicio:</label>
-	    			<input type="date" class="form-control" id="pwd">
+	    			<label for="fecha_ini">Fecha inicio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	    			<input type="date" class="form-control" id="fecha_ini">
 	  			</div>
 	  			<div class="form-group">
-	    			<label for="pwd">Fecha terminación:</label>
-	    			<input type="date" class="form-control" id="pwd">
+	    			<label for="fecha_fin">Fecha terminación:</label>
+	    			<input type="date" class="form-control" id="fecha_fin">
 	  			</div>
 				<div class="form-group">
-	    			<label for="pwd">Enlace Secop:</label>
-	    			<input type="text" class="form-control" id="pwd">
+	    			<label for="enlace_secop">Enlace Secop:</label>
+	    			<input type="text" class="form-control" id="enlace_secop">
 	  			</div>
 			</div>
 		
@@ -218,31 +219,33 @@
 				<h3 class="panel-title">Seguimiento</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body"  id="seguimiento-panel-body">
 				<div class="form-group">
 				    <label for="cod_meta">Sub Programa - Meta</label>&nbsp;<span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span>
 					<select id="cod_meta" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-	    			<label for="pwd">Empleos generados directamente :</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="empleos_gen_directo">Empleos generados directamente :</label>
+	    			<input type="number" class="form-control" id="empleos_gen_directo">
 	  			</div>
 				<div class="form-group">
-	    			<label for="pwd">Empleos generados indirectamente :</label>
-	    			<input type="number" class="form-control" id="pwd">
+	    			<label for="empleos_gen_indirecto">Empleos generados indirectamente :</label>
+	    			<input type="number" class="form-control" id="empleos_gen_indirecto">
 	  			</div>
 				<div class="form-group">
 				    <label for="id_producto">Productos Prensa</label>
 					<select id="id_producto" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-					<label for="descripcion">Resultado</label>
+					<label for="resultado">Resultado</label>
 		  			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
 				</div>
 			</div>
 		</div>
 
-	  <button type="button" class="btn btn-default" id="id_ver">Guardar</button>
+	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
+	  		<span class="glyphicon glyphicon-save"></span> Guardar
+		</a>
 	  
 </form>
 
@@ -256,7 +259,7 @@
 	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
 	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
 	<script src="../../Resources/socket/socket.io.js"></script>				
-	<script src="../../Resources/bootbox/bootbox.min.js"></script>
+	<script src="../../Resources/bootbox/bootbox.js"></script>
 	<script src="../../Resources/Crypto/core-min.js"></script>
 	<script src="../../Resources/Crypto/aes.js"></script>
 	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
@@ -266,6 +269,9 @@
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="../../Resources/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<script src="../../Resources/jquery-datetextentry/jquery.datetextentry.js"></script>
+	<script src="../../Resources/cleave-js/cleave.min.js"></script>
+	
 	
 	
 	<!-- app Resources -->

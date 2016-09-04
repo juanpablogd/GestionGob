@@ -111,7 +111,13 @@ var Func={
 	        return true;
 	    }	//alert('invalid url: ' + userInput);
 	    return false;
-	}
+	},
+	ValidaPorcentaje:function(str){
+		var x = parseFloat(str);
+		if (isNaN(x) || x < 0 || x > 100) {
+			return false;
+		} else return true; 
+	}	
 	
 };
 

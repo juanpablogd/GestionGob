@@ -31,13 +31,13 @@ AppConfig.Inicial= function() {
             includeSelectAllOption: true,
             enableCaseInsensitiveFiltering: true,
             onChange: function(option, checked, select) {
-            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){ return a;}).get();	//console.log(AppConfig['codigo_mun']);
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){ return item.value;}).get();		//console.log(AppConfig['codigo_mun']);
             },
             onSelectAll: function(checked) {
-            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return a;}).get();;	//console.log(AppConfig['codigo_mun']);
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return item.value;}).get();		//console.log(AppConfig['codigo_mun']);
 	        },
             onDeselectAll: function(checked) {
-            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return a;}).get();;	//console.log(AppConfig['codigo_mun']);
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return item.value;}).get();		//console.log(AppConfig['codigo_mun']);
 	        }
 	});
 
@@ -125,8 +125,8 @@ AppConfig.Inicial= function() {
             onDeselectAll: function(checked) {
             	AppConfig['id_producto'] = $('#id_producto option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_producto']);
 	        }
-	});
-	
+	});	//console.log(moment().format('YYYY-MM-DD'));
+	$('#fecha').datetextentry('set_date',moment().format('YYYY-MM-DD'));
 	$('#fecha_ini').datetextentry({
         max_date         : '2020-30-06',
         max_date_message : 'Seleccione una fecha de este cuatrenio'
@@ -141,8 +141,8 @@ AppConfig.CargaMunicipios= function() {
   	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
-		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
-		$('#codigo_mun').multiselect('dataprovider', AppConfig["ListadoMpio"]);
+		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["ListadoMpio"].features.length);
+		$('#codigo_mun').multiselect('dataprovider', AppConfig["ListadoMpio"]);		//console.log(AppConfig["ListadoMpio"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -214,9 +214,11 @@ AppConfig.CargaProductosPrensa();
 $('#btn_guardar').click(function(){
 	bootbox.confirm("Seguro que desea Guardar?", function(result) {
 	  	console.log("Confirm result: "+result);
-	  	if(result){
+	  	if(result){	//CAMPOS OBLIGATORIOS
+	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
 	  		var id_categoria = $("#id_categoria option:selected").val();
 	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
+	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
 	  		var nro_cto = $("#nro_cto").val().trim();
@@ -230,9 +232,16 @@ $('#btn_guardar').click(function(){
 	  		var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);
 	  		var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
 	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
-	  		var resultado = $("#resultado").val().trim();		console.log(resultado);
+	  		var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
+	  		var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		
-	  		if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"].length<1){
+	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
+	  		
+	  		if(fecha == ""){
+	  			Func.MsjPeligro("Debe ingresar una fecha");
+	  			setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 500);
+	  			return;
+	  		}else if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"].length<1){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Municipio");
 	  			$('#codigo_mun').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
@@ -245,7 +254,19 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Digite una descripción");
 	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
 	  			return;	  			
-	  		}else if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
+	  		}
+	  		if(avance_porcentaje==""){
+	  			Func.MsjPeligro("Digite un porcentaje de avance");
+	  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
+	  			return;	  			
+	  		}else{
+	  			if(Func.ValidaPorcentaje(avance_porcentaje)==false){
+		  			Func.MsjPeligro("Digite un porcentaje de avance VALIDO");
+		  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
+		  			return;	
+	  			}
+	  		}
+	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
 	  			$('#id_sector').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
@@ -322,7 +343,6 @@ $('#btn_guardar').click(function(){
 	  			if(fecha_ini==""){
 	  				$('#contractual-panel-body').show();
 		  			Func.MsjPeligro("Ingrese una fecha Inicial");
-		  			//setTimeout(function() { $('#fecha_ini').focus(); }, 500);
 		  			setTimeout(function() { $('#fecha_ini').nextAll('span').find('.jq-dte-day').focus();}, 500);
 		  			return;
 		  		}else if(fecha_ini!="" && fecha_fin!=""){
@@ -333,13 +353,13 @@ $('#btn_guardar').click(function(){
 			  			return;		  				
 		  			}
 	  			}
-				if(enlace_secop==""){ console.log("enlace_secop VACIO");
+				if(enlace_secop==""){ //console.log("enlace_secop VACIO");
 		  				$('#contractual-panel-body').show();
 			  			Func.MsjPeligro("Ingrese el enlace del secop");
 			  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
 			  			return;
-	  			}else{	console.log("enlace_secop con INFO");
-  						if(Func.ValidaURL(enlace_secop)==false){ console.log("enlace_secop con INFO NO VALIDO");
+	  			}else{	//console.log("enlace_secop con INFO");
+  						if(Func.ValidaURL(enlace_secop)==false){ //console.log("enlace_secop con INFO NO VALIDO");
 			  				$('#contractual-panel-body').show();
 				  			Func.MsjPeligro("Ingrese una URL valida");
 				  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
@@ -372,6 +392,48 @@ $('#btn_guardar').click(function(){
 	  		}
 			//numeral().unformat($("#fte_mpio").val().trim());
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
+	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
+	  		fecha = Func.Ecrypted(fecha);
+	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
+	  		id_categoria = Func.Ecrypted(id_categoria);
+	  		descripcion = Func.Ecrypted(descripcion);
+	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
+	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
+	  		var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
+	  		responsable_nom = Func.Ecrypted(responsable_nom);
+	  		responsable_tel = Func.Ecrypted(responsable_tel);
+	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
+	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
+	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
+	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
+	  		nro_cto = Func.Ecrypted(nro_cto);
+	  		fte_nacional = Func.Ecrypted(fte_nacional);
+	  		fte_depto = Func.Ecrypted(fte_depto);
+	  		fte_mpio = Func.Ecrypted(fte_mpio);
+	  		fte_sgp = Func.Ecrypted(fte_sgp);
+	  		fte_regalias = Func.Ecrypted(fte_regalias);
+	  		descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);
+	  		fte_otros = Func.Ecrypted(fte_otros);
+	  		fecha_ini = Func.Ecrypted(fecha_ini);
+	  		fecha_fin = Func.Ecrypted(fecha_fin);
+	  		enlace_secop = Func.Ecrypted(enlace_secop);
+	  		empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);
+	  		empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
+	  		resultado = Func.Ecrypted(resultado);
+	  		
+  			AppConfig.socketDataAdmin.emit('SetGestion', {	fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,descripcion:descripcion,
+  															avance_porcentaje:avance_porcentaje,id_sector:id_sector,id_centrog:id_centrog,responsable_nom:responsable_nom,
+  															responsable_tel:responsable_tel,responsable_email:responsable_email,id_tipo_cto:id_tipo_cto,
+  															nro_cto:nro_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
+  															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,
+  															fecha_ini:fecha_ini,fecha_fin:fecha_fin,enlace_secop:enlace_secop,cod_meta:cod_meta,
+  															empleos_gen_directo:empleos_gen_directo,empleos_gen_indirecto:empleos_gen_indirecto,
+  															id_producto:id_producto,resultado:resultado
+  				 }, function(message){
+				console.log(message);
+  			});
+	  		
+	  		
 	  	}
 	});
 });

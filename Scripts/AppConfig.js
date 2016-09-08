@@ -12,7 +12,7 @@ var AppConfig={
 	 	//ADMIN           (24,69)			// tipo 'A'
 	 	//EDICIÓN Y CARGA (79,87,96)		// tipo 'A'
 	 	//CONSULTA        (70)				// tipo 'A'
-	id_perfil_admin:[24,69,70,79,87,96],	// tipo 'A',
+	id_perfil_admin:[24,69,79,87,96,70],	// tipo 'A',
 	//id_centros_gestores:[],
 	socketGeoAdmin:''
 };

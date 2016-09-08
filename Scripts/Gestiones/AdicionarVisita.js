@@ -1,97 +1,28 @@
 $(document).ready(function() {
+	var IdGestion = Func.GetIdGestion();
 	
-	/* CARGA LISTADO DE PROVINCIAS*/
-	$('#provincias').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-	var optgroups = [
-        {
-            label: 'ALMEIDAS', children: [
-                {label: 'Chocontá', value: '25183'},
-                {label: 'Machetá', value: '25426'},
-                {label: 'Manta', value: '25436'}
-            ]
-        },
-        {
-            label: 'ALTO MAGDALENA', children: [
-                {label: 'Agua de Dios', value: '1'},
-                {label: 'Girardot', value: '2'},
-                {label: 'Guataquí', value: '3'}
-            ]
-        }
-    ]; console.log(optgroups);
-    $('#provincias').multiselect('dataprovider', optgroups);
+	console.log(IdGestion);
+if(IdGestion == ""){
+	window.location.href = 'index.html';
+}
 
-	/* CARGA LISTADO DE OBJTIVO - PROGRAMA*/
-	$('#cod_programa').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-	var optgroups = [
-        {
-            label: 'DESARROLLO INTEGRAL DEL SER HUMANO', children: [
-                {label: 'JOVENES CONSTRUCTORES DE PAZ', value: '25183'},
-                {label: 'ALIANZA POR LA INFANCIA', value: '25426'},
-                {label: 'VIVE Y CRECE ADOLESCENCIA', value: '25436'}
-            ]
-        },
-        {
-            label: 'SOSTENIBILIDAD Y RURALIDAD', children: [
-                {label: 'TERRITORIO SOPORTE PARA EL DESARROLLO', value: '1'},
-                {label: 'BIENES Y SERVICIOS AMBIENTALES PATRIMONIO DE CUNDINAMARCA', value: '2'},
-                {label: 'AGUA POTABLE Y SANEAMIENTO BASICO PARA LA SALUD DE LOS CUNDINAMARQUESES', value: '3'}
-            ]
-        }
-    ]; console.log(optgroups);
-    $('#cod_programa').multiselect('dataprovider', optgroups);
 
-	/* CARGA LISTADO DE Sub PROGRAMA - META*/
-	$('#cod_meta').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
-	var optgroups = [
-        {
-            label: 'Existencia', children: [
-                {label: 'Vacunar en el cuatrienio a 24.000 niñas y niños de un año de edad con esquema de vacunación pai plus (hepatitis a y varicela).', value: '25183'},
-                {label: 'Completo Pruebas Desarrollo Texto Largo 012', value: '25426'},
-                {label: 'Promover la expansión de electrificación rural a 400 hogares. durante el periodo 2012-2016.', value: '25436'}
-            ]
-        },
-        {
-            label: 'Desarrollo', children: [
-                {label: 'Desarrollar procesos de normalización. certificación de producto y gestión de calidad en 250 empresas durante el periodo de gobierno', value: '1'},
-                {label: 'Crear y o fortalecer 1.000 mipymes en gestión e innovación empresarial para la productividad. durante el período de gobierno.', value: '2'},
-                {label: 'Desarrollar procesos de normalización. certificación de producto y gestión de calidad en 250 empresas durante el periodo de gobierno', value: '3'}
-            ]
-        }
-    ]; console.log(optgroups);
-    $('#cod_meta').multiselect('dataprovider', optgroups);    
-    
-	/* CARGA LISTADO DE Productos de Prensa*/
-	$('#id_prensa').multiselect({
-            enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            enableCaseInsensitiveFiltering: true
-	});
+AppConfig.SetNombreGestion= function() {
+	var NomGestion = Func.GetNomGestion();
+	$("#nom_gestion").text(NomGestion);
+};
 
-    $('#id_prensa').multiselect(); 
-    
-    
-    
-    /* CODIGO DE PANEL DESPLEGABLE */
+AppConfig.EstadoCentroGestor= function() {
+	AppConfig['cod_meta'] = "";
+	if(AppConfig['id_centrog'].length){
+		AppConfig.CargaMetas();	
+	}else{
+    	$("#MsjAlertaMetas").show();
+    	Func.MsjPeligro("Debe seleccionar al menos una secretaría para cargar las metas");
+	}
+};
+AppConfig.Inicial= function() {
+	/* CODIGO DE PANEL DESPLEGABLE */
 	$(document).on('click', '.panel-heading span.clickable', function(e){
 	    var $this = $(this);
 		if(!$this.hasClass('panel-collapsed')) {
@@ -104,5 +35,186 @@ $(document).ready(function() {
 			$this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
 		}
 	});
+	
+	/* SELECT - PROVINCIAS/MUNICIPIO */
+	$('#codigo_mun').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){ return item.value;}).get();		//console.log(AppConfig['codigo_mun']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return item.value;}).get();		//console.log(AppConfig['codigo_mun']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['codigo_mun'] = $('#codigo_mun option:selected').map(function(a, item){return item.value;}).get();		//console.log(AppConfig['codigo_mun']);
+	        }
+	});
+
+	/* SELECT - CENTRO GESTOR */
+	$('#id_centrog').multiselect({
+			enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {	//	console.log("onChange");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig.EstadoCentroGestor();
+            },
+            onSelectAll: function(checked) {				//	console.log("onSelectAll");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig.EstadoCentroGestor();
+	        },
+            onDeselectAll: function(checked) {				//	console.log("onDeselectAll");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig.EstadoCentroGestor();
+	        }
+	});
+
+
+	$('#fecha').datetextentry('set_date',moment().format('YYYY-MM-DD'));
+	
+	
+	$('#input-1').on('fileloaded', function(event, file, previewId, index, reader) {
+		console.log("fileloaded");
+		$('.kv-file-upload.btn.btn-xs.btn-default').hide();
+	});
+	
+	$('#input-1').on('filebatchuploadcomplete', function(event, files, extra) {
+	    //console.log('File batch upload complete');
+	 	bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+			window.location.href = 'index.html';
+		});
+	});
+
+	$("#input-1").fileinput({
+	    uploadUrl: "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen.php", // server upload action
+	    language: "es",
+	    minFileCount: 1,
+	    maxFileCount: 5,
+	    minImageWidth: 240,
+    	minImageHeight: 240,
+    	showUpload: false,
+    	maxFileSize: 3000,
+	    uploadExtraData: function (previewId, index) {
+	    		console.log(AppConfig["id_visita"]);
+			    var data = {
+				        id_gestion: IdGestion,
+				        id_visita: AppConfig["id_visita"]
+				    }
+				console.log(data);
+			    return data;
+			    
+/*		    var obj = {};
+		    $('.your-form-class').find('input').each(function() {
+		        var id = $(this).attr('id'), val = $(this).val();
+		        obj[id] = val;
+		    });
+		    return obj; */
+		}
+	});
+
+};
+
+
+AppConfig.CargaMunicipios= function() {	
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+  	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["ListadoMpio"].features.length);
+		$('#codigo_mun').multiselect('dataprovider', AppConfig["ListadoMpio"]);		//console.log(AppConfig["ListadoMpio"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+
+
+AppConfig.Inicial();
+AppConfig.CargaMunicipios();
+AppConfig.SetNombreGestion();
+
+$('#btn_guardar').click(function(){
+//	var NumArchivos = $('#input-1').fileinput('getFileStack').length;	console.log(files.length);
+//	
+ 	bootbox.confirm("Seguro que desea Guardar?", function(result) { //console.log("Confirm result: "+result);
+	  	if(result){	//CAMPOS OBLIGATORIOS
+	  		//var codigo_mun = $("#codigo_mun option:selected").val();
+	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
+	  		var avance_porcen = $("#avance_porcen").val().trim();
+	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
+	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	//console.log(NumArchivos);
+	  		var valor = $("#valor").val().trim();
+	  		var und = $("#und").val().trim();
+	  		
+	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
+
+	  		if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"].length<1){
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Debe seleccionar el municipio");
+		  			$('#codigo_mun').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+	  		}
+	  		if(fecha == ""){
+	  			Func.MsjPeligro("Debe ingresar una fecha");
+	  			setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 500);
+	  			return;
+	  		}
+			
+			if(avance_porcen==""){
+	  			Func.MsjPeligro("Digite un porcentaje de avance");
+	  			setTimeout(function() { $('#avance_porcen').focus(); }, 500);
+	  			return;	  			
+	  		}else{
+	  			if(Func.ValidaPorcentaje(avance_porcen)==false){
+		  			Func.MsjPeligro("Digite un porcentaje de avance VALIDO");
+		  			setTimeout(function() { $('#avance_porcen').focus(); }, 500);
+		  			return;	
+	  			}
+	  		}
+			if(descripcion==""){
+	  			Func.MsjPeligro("Digite una descripción");
+	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
+	  			return;	  			
+	  		}
+	  		if(NumArchivos==0){
+	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
+	  			setTimeout(function() { $('#input-1').focus(); }, 500);
+	  			return;
+	  		}
+/*			if(empleos_gen_indirecto==""){
+  				$('#seguimiento-panel-body').show();
+	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
+	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
+	  			return;
+  			}	*/
+	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
+
+	  		
+	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
+	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
+	  		fecha = Func.Ecrypted(fecha);
+	  		valor = Func.Ecrypted(numeral().unformat(valor));
+	  		und = Func.Ecrypted(und);
+	  		avance_porcen = Func.Ecrypted(avance_porcen);
+	  		descripcion = Func.Ecrypted(descripcion);	//	console.log(Func.Ecrypted(IdGestion));
+	  		
+  			AppConfig.socketDataAdmin.emit('SetGestionVisita', {id_gestion:Func.Ecrypted(IdGestion),codigo_mun:codigo_mun,fecha:fecha,valor:valor,und:und,
+  															avance_porcen:avance_porcen,descripcion:descripcion
+			 }, function(message){				//console.log(message);
+			 		if($.isNumeric(message)){
+			 			AppConfig["id_visita"] = message;	//console.log(AppConfig["IdVisita"]);
+			 			$('#input-1').fileinput('upload');
+
+			 		}else{
+			 			Func.MsjPeligro("No se pudo Guardar el registro");
+			 		}
+			});
+	  		
+	  		
+	  	}
+	});
+});
     
 });

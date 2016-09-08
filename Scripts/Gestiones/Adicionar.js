@@ -1,11 +1,12 @@
 $(document).ready(function() {
 //Func.MsjPeligro("adfasdf");
-AppConfig.EstadoCentroGestor= function() {	
+AppConfig.EstadoCentroGestor= function() {
+	AppConfig['cod_meta'] = "";
 	if(AppConfig['id_centrog'].length){
 		AppConfig.CargaMetas();	
 	}else{
     	$("#MsjAlertaMetas").show();
-    	Func.MsjPeligro("Debe seleccionar al menos una secretaría para cargar las metas");		
+    	Func.MsjPeligro("Debe seleccionar al menos una secretaría para cargar las metas");
 	}
 };
 AppConfig.Inicial= function() {
@@ -158,7 +159,8 @@ AppConfig.CargaSectores= function() {
 };
 AppConfig.CargaSecretarias= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-  	AppConfig.socketDataAdmin.emit('GetListSecretaria', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG());
+  	AppConfig.socketDataAdmin.emit('GetListSecretaria', {id_centrog : id_centroges }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoSecretaria"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
@@ -180,7 +182,7 @@ AppConfig.CargaTipoContrato= function() {
 
 AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-	var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(id_centros);
+	var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	console.log(AppConfig["id_centrog"]);
   	AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Metas");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
@@ -390,7 +392,6 @@ $('#btn_guardar').click(function(){
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
 			  			return;
 	  		}
-			//numeral().unformat($("#fte_mpio").val().trim());
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 	  		fecha = Func.Ecrypted(fecha);
@@ -407,13 +408,13 @@ $('#btn_guardar').click(function(){
 	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
 	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
 	  		nro_cto = Func.Ecrypted(nro_cto);
-	  		fte_nacional = Func.Ecrypted(fte_nacional);
-	  		fte_depto = Func.Ecrypted(fte_depto);
-	  		fte_mpio = Func.Ecrypted(fte_mpio);
-	  		fte_sgp = Func.Ecrypted(fte_sgp);
-	  		fte_regalias = Func.Ecrypted(fte_regalias);
+	  		fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));
+	  		fte_depto = Func.Ecrypted(numeral().unformat(fte_depto));
+	  		fte_mpio = Func.Ecrypted(numeral().unformat(fte_mpio));
+	  		fte_sgp = Func.Ecrypted(numeral().unformat(fte_sgp));
+	  		fte_regalias = Func.Ecrypted(numeral().unformat(fte_regalias));
 	  		descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);
-	  		fte_otros = Func.Ecrypted(fte_otros);
+	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));
 	  		fecha_ini = Func.Ecrypted(fecha_ini);
 	  		fecha_fin = Func.Ecrypted(fecha_fin);
 	  		enlace_secop = Func.Ecrypted(enlace_secop);
@@ -429,9 +430,15 @@ $('#btn_guardar').click(function(){
   															fecha_ini:fecha_ini,fecha_fin:fecha_fin,enlace_secop:enlace_secop,cod_meta:cod_meta,
   															empleos_gen_directo:empleos_gen_directo,empleos_gen_indirecto:empleos_gen_indirecto,
   															id_producto:id_producto,resultado:resultado
-  				 }, function(message){
-				console.log(message);
-  			});
+			 }, function(message){	//console.log(message);
+			 		if(message=="Ok"){
+			 			bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+			 				window.location.href = 'index.html';
+			 			});
+			 		}else{
+			 			Func.MsjPeligro("No se pudo Guardar el registro");
+			 		}
+			});
 	  		
 	  		
 	  	}

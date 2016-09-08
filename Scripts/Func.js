@@ -28,7 +28,7 @@ var Func={
 		var data=this.DataLogin();
 		return data[0].nombre;
 	},
-	GetIdPerfil: function (){
+	GetIdPerfil: function (){	//jp 18
 		var data=this.DataLogin();
 		return data[0].id_perfil;
 	},
@@ -39,6 +39,26 @@ var Func={
 	    }else{
 	    	return false;	
 	    }
+	},
+	GetTipo: function (){ //jp 24
+		var data=this.DataLogin();		//console.log(data);
+		var id_perfil_admin = data[0].id_perfil_admin; 
+		if(id_perfil_admin==24||id_perfil_admin==69){
+	        return "A";	
+	    }else if(id_perfil_admin==79||id_perfil_admin==87||id_perfil_admin==96){
+	    	return "E";	
+	    }else if(id_perfil_admin==70){
+	    	return "C";	
+	    }
+	},
+	GetCentrosG: function (){ //jp 24
+		var data=this.DataLogin();	//console.log(data);
+		data = data[0].centrog;		//console.log(data.length);
+		var cg = [];
+		for (s=0;s<data.length;s++) {
+			cg.push(data[s].id); //console.log(data[s]);
+		}
+		return cg; 
 	},
 	GetHoraLogin: function (){
 		var data=this.DataLogin();
@@ -76,6 +96,20 @@ var Func={
 	},
 	degToRad:function(deg) {
        return deg * Math.PI * 2 / 360;
+  	},
+  	SetIdGestion:function(IdGestion){	//console.log(this.Ecrypted(IdGestion));
+  		localStorage.setItem("t", this.Ecrypted(IdGestion));
+  	},
+  	GetIdGestion:function(){	//console.log(this.Ecrypted(IdGestion));
+  		var IdGestion = this.Decrypted(localStorage.t);
+  		return IdGestion;
+  	},
+  	SetNomGestion:function(NomGestion){	//console.log(this.Ecrypted(IdGestion));
+  		localStorage.setItem("n", this.Ecrypted(NomGestion));
+  	},
+  	GetNomGestion:function(){	//console.log(this.Ecrypted(IdGestion));
+  		var NomGestion = this.Decrypted(localStorage.n); //console.log(NomGestion);
+  		return NomGestion;
   	},
 	MsjPeligro:function(msj){
 		$.notify({

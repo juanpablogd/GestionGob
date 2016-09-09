@@ -26,7 +26,8 @@ $(document).ready(function() {
 									"sSortDescending": ": Activar para ordenar la columna de manera descendente"
 								}
 					},
-					"deferRender": true
+					"deferRender": true,
+					"aaSorting": []
 				};
 	var Eventos = function(){
 	  	$(".btn_add_visita").click(function(){		//console.log("Click");	console.log($(this).attr( 'val' ));
@@ -67,7 +68,7 @@ $(document).ready(function() {
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);											//console.log(decrypted);									
 			$.each(decrypted, function () {
-				$.each(this, function (name1, value1) {	//console.log(name1 + '=' + value1);
+				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
 						if(name!="id_gestion"){

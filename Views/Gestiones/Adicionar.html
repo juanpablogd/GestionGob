@@ -30,12 +30,10 @@
   <link href="../../Content/Home/NavMap.css" rel="stylesheet">
   <link href="../../Content/Home/ContentMap.css" rel="stylesheet">
   <style>
-  	
   	form {
 	    width: 90%;
 	    margin: 0 auto;
 	}
-	
 	/* ANCHO DEL COMBO DE MUNICIPIO */
 	.btn-group>.btn:first-child {
 	    width: 100% !important;
@@ -53,7 +51,11 @@
 		font-size: 15px !important;
 	}
 	/*********************************/	
-	
+	/****CAMPOS REQUERIDOS************/
+	.control-label.required:after {
+	  content:" *";color:red;font-size: 18px;
+	}
+	/*********************************/
   </style>
   
 </head>
@@ -79,10 +81,6 @@
 	        <li class="active"><a href="../Gestiones/">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav">
-	        <li class="active"><a href="#">
-	        	<i class="fa fa-cloud-upload" aria-hidden="true">&nbsp;</i> Cargar </a></li>
-	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
 	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -104,15 +102,15 @@
 	</nav>
   <form role="form" id="FrmAdicionar" >
 		<div class="form-group">
-			<label for="fecha">Fecha: </label>
+			<label for="fecha" class="control-label required">Fecha </label>
 			<input type="date" class="form-control" id="fecha">
 		</div>
 	  	<div class="form-group">
-		    <label for="codigo_mun">Municipio</label>
+		    <label for="codigo_mun" class="control-label required">Municipio</label>
 			<select id="codigo_mun" multiple="multiple">&nbsp;</select>
 	  	</div>
 		<div class="form-group">
-		  	<label for="id_categoria">Categorización:</label>
+		  	<label for="id_categoria" class="control-label required">Categorización</label>
 		  	<select class="form-control" id="id_categoria" >
 		  		<option value="" selected=""> -- Seleccione -- </option>
 		    	<option value="1">Proyecto PDD</option>
@@ -122,15 +120,15 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="descripcion">Descripción</label>
+			<label for="descripcion" class="control-label required">Descripción</label>
   			<textarea class="form-control" rows="5" id="descripcion" >&nbsp;</textarea>
 		</div>
 		<div class="form-group">
-			<label for="avance_porcentaje">% Porcentaje de avance :</label>
+			<label for="avance_porcentaje" class="control-label required">% Porcentaje de avance </label>
 			<input type="number" class="form-control" id="avance_porcentaje">
 		</div>
 		<div class="form-group">
-		    <label for="id_sector">Sector</label>
+		    <label for="id_sector" class="control-label required">Sector</label>
 			<select id="id_sector" multiple="multiple">&nbsp;</select>
 		</div>
 		
@@ -142,15 +140,15 @@
 			</div>
 			<div class="panel-body" id="responsable-panel-body">
 				<div class="form-group">
-				    <label for="id_centrog">Secretaría</label>
+				    <label for="id_centrog" class="control-label required">Entidad</label>
 					<select id="id_centrog" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-			    	<label for="responsable_nom">Nombre contacto:</label>
+			    	<label for="responsable_nom" class="control-label required">Nombre contacto:</label>
 					<input type="text" class="form-control" id="responsable_nom">
 				</div>			
 				<div class="form-group">
-			    	<label for="responsable_tel">Teléfono contacto:</label>
+			    	<label for="responsable_tel" class="control-label required">Teléfono contacto:</label>
 					<input type="text" class="form-control" id="responsable_tel">
 				</div>
 				<div class="form-group">
@@ -160,7 +158,7 @@
 			</div>
 		</div>
 		<!--  PANEL CONTRACTUAL --> 
-		<div class="panel panel-primary">
+		<!--div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">Contractual</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
@@ -212,13 +210,10 @@
 	    			<label for="fecha_fin">Fecha terminación:</label>
 	    			<input type="date" class="form-control" id="fecha_fin">
 	  			</div>
-				<div class="form-group">
-	    			<label for="enlace_secop">Enlace Secop:</label>
-	    			<input type="text" class="form-control" id="enlace_secop">
-	  			</div>
+
 			</div>
 		
-		</div>
+		</div -->
 		
 		<!--  PANEL SEGUIMIENTO --> 
 		<div class="panel panel-primary">
@@ -228,15 +223,19 @@
 			</div>
 			<div class="panel-body"  id="seguimiento-panel-body">
 				<div class="form-group">
-				    <label for="cod_meta">Sub Programa - Meta</label>&nbsp;<span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span>
+				    <label for="cod_meta">Sub Programa - Meta</label>&nbsp;<!-- span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span -->
 					<select id="cod_meta" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-	    			<label for="empleos_gen_directo">Empleos generados directamente :</label>
+	    			<label for="enlace_secop">Enlace Secop:</label>
+	    			<input type="text" class="form-control" id="enlace_secop">
+	  			</div>
+				<div class="form-group">
+	    			<label for="empleos_gen_directo" class="control-label required">Empleos generados directamente </label>
 	    			<input type="number" class="form-control" id="empleos_gen_directo">
 	  			</div>
 				<div class="form-group">
-	    			<label for="empleos_gen_indirecto">Empleos generados indirectamente :</label>
+	    			<label for="empleos_gen_indirecto" class="control-label required">Empleos generados indirectamente </label>
 	    			<input type="number" class="form-control" id="empleos_gen_indirecto">
 	  			</div>
 				<div class="form-group">
@@ -244,14 +243,14 @@
 					<select id="id_producto" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-					<label for="resultado">Resultado</label>
+					<label for="resultado" class="control-label required">Resultado</label>
 		  			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
 				</div>
 			</div>
 		</div>
 
 	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
-	  		<span class="glyphicon glyphicon-save"></span> Guardar
+	  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
 		</a>
 	  
 </form>

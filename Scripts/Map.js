@@ -1,6 +1,6 @@
 var AppMap = {
     center: [-8230000, 535000],
-    zoom: 8,
+    zoom: 9,
     view: new ol.View({
         maxZoom: 21
     }),
@@ -186,7 +186,6 @@ var AppMap = {
 	        Lyr.Base_ESRI_Calles.setVisible(true);
 	    });	    
     }
-
 };
 
 gmaps = {

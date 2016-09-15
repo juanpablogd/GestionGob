@@ -19,6 +19,7 @@
   <link href="../../Resources/Animate/animate.css" rel="stylesheet">
   <link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
   <link href="../../Resources/FontAwesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
   <link href="../../Resources/ol3/ol.css" rel="stylesheet">
@@ -77,7 +78,7 @@
 	        <li class="active"><a href="../Home/">
 	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav">
+	      <ul class="nav navbar-nav" id="opcion_listado">
 	        <li class="active"><a href="../Gestiones/">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
@@ -89,8 +90,8 @@
 	            	<ul class="dropdown-menu dropdown-user">
 	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
 	                    </li>
-	                    <li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
-	                    </li>
+	                    <!--li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li-->
 	                    <li class="divider">&nbsp;</li>
 	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
 	                    </li>
@@ -114,7 +115,7 @@
 		  	<select class="form-control" id="id_categoria" >
 		  		<option value="" selected=""> -- Seleccione -- </option>
 		    	<option value="1">Proyecto PDD</option>
-		    	<option value="2">Proyecto moño</option>
+		    	<option value="2">Proyecto Estratégico - Moño</option>
 		    	<option value="3">Gestión / Tarea</option>
 		    	<option value="4">Compromiso especial</option>
 			</select>
@@ -135,7 +136,7 @@
 		<!--  RESPONSABLE --> 
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Responsable</h3>
+				<h3 class="panel-title">Responsable Gobernación</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
 			<div class="panel-body" id="responsable-panel-body">
@@ -154,6 +155,27 @@
 				<div class="form-group">
 			    	<label for="responsable_email">Email contacto:</label>
 					<input type="text" class="form-control" id="responsable_email">
+				</div>
+			</div>
+		</div>
+		<!--  CONTACTO EXTERNO --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Contacto Externo</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body" id="responsable-panel-body">
+				<div class="form-group">
+			    	<label for="responsable_nom_ext" class="control-label">Nombre contacto:</label>
+					<input type="text" class="form-control" id="responsable_nom_ext">
+				</div>			
+				<div class="form-group">
+			    	<label for="responsable_tel_ext" class="control-label">Teléfono contacto:</label>
+					<input type="text" class="form-control" id="responsable_tel_ext">
+				</div>
+				<div class="form-group">
+			    	<label for="responsable_email_ext">Email contacto:</label>
+					<input type="text" class="form-control" id="responsable_email_ext">
 				</div>
 			</div>
 		</div>
@@ -248,7 +270,10 @@
 				</div>
 			</div>
 		</div>
-
+		<div class="form-group">
+			<label class="control-label">Seleccione archivos adjuntos (Imágenes, Texto, Cálculo, etc)</label>
+			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
+		</div>
 	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
 	  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
 		</a>
@@ -277,12 +302,14 @@
 	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
 	<script src="../../Resources/jquery-datetextentry/jquery.datetextentry.js"></script>
 	<script src="../../Resources/cleave-js/cleave.min.js"></script>
-	
+	<script src="../../Resources/bootstrap-fileinput/js/fileinput.min.js"></script>
+	<script src="../../Resources/bootstrap-fileinput/js/locales/es.js"></script>
 	
 	
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>
 	<script src="../../Scripts/Func.js"></script>
+	<script src="../../Scripts/Home/Navbar.js"></script>
 	<script src="../../Scripts/Gestiones/Adicionar.js"></script>
 
 	

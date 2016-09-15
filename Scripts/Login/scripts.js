@@ -1,5 +1,9 @@
 var socket = io.connect(Config.UrlSocket+'/web'); //console.log(Config.UrlSocket);
-$(document).ready(function () {
+$(document).ready(function () {	console.log(Func.UsuarioLogueado());
+	 if(Func.UsuarioLogueado()){
+		window.location.href = '../Gestiones/index.html'; 	
+	 }
+ 
     $("#ingresar").click(function () {
         if (!$("#usuario").val()) {
             bootbox.alert("por favor ingrese el nombre de usuario", function () {});

@@ -1,4 +1,3 @@
-
 var Func={
 	Decrypted : function (message) {
 		try {
@@ -42,7 +41,8 @@ var Func={
 	},
 	GetTipo: function (){ //jp 24
 		var data=this.DataLogin();		//console.log(data);
-		var id_perfil_admin = data[0].id_perfil_admin; 
+		//console.log("CORREGIR: id_perfil_admin");
+		var id_perfil_admin = data[0].id_perfil_admin;	//var id_perfil_admin = data[0].id_perfil_admin; //JP
 		if(id_perfil_admin==24||id_perfil_admin==69){
 	        return "A";	
 	    }else if(id_perfil_admin==79||id_perfil_admin==87||id_perfil_admin==96){
@@ -53,7 +53,9 @@ var Func={
 	},
 	GetCentrosG: function (){ //jp 24
 		var data=this.DataLogin();	//console.log(data);
-		data = data[0].centrog;		//console.log(data.length);
+		//console.log("CORREGIR: centrog");
+		data = data[0].centrog;		//console.log(data.length);	//JP
+		//data = 1119;		//console.log(data.length);
 		var cg = [];
 		for (s=0;s<data.length;s++) {
 			cg.push(data[s].id); //console.log(data[s]);
@@ -73,8 +75,9 @@ var Func={
 		return data[0].usuario;
 	},
 	CerrarAPP: function(){
-		localStorage.clear();
-	   window.location.assign("../Login/index.html");
+		//console.log("CORREGIR: CERRAR APP");
+		localStorage.clear();								//JP
+	   	window.location.assign("../Login/index.html");		//JP
 	},
 	ValidaUsuario: function(){
 		if(!localStorage.dt){
@@ -86,11 +89,17 @@ var Func={
 	        }
 	    }
 	},
+	UsuarioLogueado: function(){
+		if(localStorage.dt){
+			return true;
+	    }else{
+	    	return false;
+	    }
+	},
 	IntevaloLogin:function(){
 		var app=this;
 		app.ValidaUsuario();
-		setInterval(function(){
-			console.log('Valido');
+		setInterval(function(){	//console.log('Valido');
 			app.ValidaUsuario();
 		}, 1000*5);	
 	},
@@ -166,3 +175,5 @@ $( ".valor" ).each(function( index ) {	//console.log( index + ": " + $( this ).t
 	    numeralThousandsGroupStyle: 'thousand'
 	});
 });
+//console.log(Func.GetTipo());
+//if(Func.GetTipo()=="C") $("#opcion_listado").hide();

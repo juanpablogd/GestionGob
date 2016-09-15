@@ -8,7 +8,8 @@ var Config={
 	socketGeoAdmin:'',
 	socketDataAdmin:AppConfig.socketDataAdmin,
 	format : new ol.format.GeoJSON(),
-	breaks:''
+	breaks:'',
+	informacion:''
 };
 
 Config.view=new ol.View({
@@ -161,7 +162,7 @@ function getDatosLugar(result,escala,dato) {
 
 Config.asigGeometria=function(result,escala){
 	var i=0,tempjson,array=[],Sitio;
-	Config.ReiniciarJSON(Config[escala]);			//console.log(Config[escala].features.length);
+	Config.ReiniciarJSON(Config[escala]);			console.log(Config[escala].features.length);
 	for(i=0;i<Config[escala].features.length;i++){		
 		dato=getDatosLugar(result.datos,escala,Config[escala].features[i].properties.id);	//console.log("dato Filtrado:"+dato.length);	console.log("dato Filtrado:"+dato[0].n);
 		if(dato.length!=0){ console.log("Asignado");
@@ -231,7 +232,7 @@ Config.socketGeoAdmin.emit('GetMunicipio', '', function(message){			//console.lo
   	
   	Config.socketDataAdmin.emit('GetMunicipioNumGes', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Mun Gestiones Ini");					//console.log("message Mun:" + FuncDecrypted(message));
-		var decrypted = FuncDecrypted(message);									
+		var decrypted = FuncDecrypted(message);		console.log(decrypted);					
 /*		$.each(decrypted, function () {
 		   $.each(this, function (name1, value1) {	//console.log(name1 + '=' + value1);
 		      $.each(value1, function (name, value) {
@@ -246,9 +247,10 @@ Config.socketGeoAdmin.emit('GetMunicipio', '', function(message){			//console.lo
 		Config.breaks=Config.getbreaks(geo);				console.log(Config.breaks);	
 		Config.layer_vect.clear();			
 		Config.layer_vect.addFeatures(Config.format.readFeatures(geo));		
-		AppMap.map.addLayer(Config.layerGestion);								
+		AppMap.map.addLayer(Config.layerGestion);	//console.log("Adicionar Capa");	
 		//Config.map.getView().fit(Config.layer_vect.getExtent(), Config.map.getSize());	console.log("test");
 		Config.AutoDisplayLeyend();
+		Config.AddTooltip();
 	  	console.log(moment().format('h:mm:ss:SSSS')+" Mun Gestiones FIN");
 	});	
   	
@@ -268,3 +270,38 @@ Config.socketGeoAdmin.emit('GetDepartamento', '', function(message){
 	Config["cod_dpto"]=geojson;
 	//console.log(moment().format('h:mm:ss:SSSS')+" Dpto FIN");
 });
+
+Config.displayFeatureValue=function(pixel){	//console.log(pixel);
+	Config.informacion.css({
+		left:pixel[0]+'px',top:(pixel[1] - 6)+'px'
+	});
+	var feature=AppMap.map.forEachFeatureAtPixel(pixel,function(feature,layer){
+			return feature;
+	});	//console.log(feature);
+	if(feature){
+		var field_show='<b>'+feature.get('n')+'</b><br> '+
+			' <b>Gestiones: '+formatNum(numeral(feature.get('t')).format('0,0.'))+'</b><br>';	
+		Config.informacion.tooltip('hide').attr('data-original-title',field_show).tooltip('fixTitle').tooltip('show');
+		//Config.remove_features_over(feature);
+	}
+	else{
+		Config.informacion.tooltip('hide');
+	}
+};
+	
+Config.AddTooltip=function(){
+	Config.informacion = $('#info2');
+	Config.informacion.tooltip({
+	        animation: false,
+	        trigger: 'manual',
+	        html:true
+	      });
+	      
+	AppMap.map.on('pointermove', function(evt) {
+	    if (evt.dragging) {
+	      Config.informacion.tooltip('hide');
+	      return;
+	    }
+	    Config.displayFeatureValue(AppMap.map.getEventPixel(evt.originalEvent));
+	});
+};

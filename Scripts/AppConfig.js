@@ -14,5 +14,10 @@ var AppConfig={
 	 	//CONSULTA        (70)				// tipo 'A'
 	id_perfil_admin:[24,69,79,87,96,70],	// tipo 'A',
 	//id_centros_gestores:[],
-	socketGeoAdmin:''
+	socketGeoAdmin:'',
+	MinImagen: 3,
+	MaxImagen: 10,
+	minImageWidth: 600,
+	minImageHeight: 600,
+	tamanoArchivo: 5000
 };

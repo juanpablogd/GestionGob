@@ -1,11 +1,7 @@
 $(document).ready(function() {
-	var IdGestion = Func.GetIdGestion();
-	
-	console.log(IdGestion);
-if(IdGestion == ""){
-	window.location.href = 'index.html';
-}
-
+	var IdGestion = Func.GetIdGestion(); //console.log(IdGestion);
+	/* VAlida Acceso */	
+	if(IdGestion == "" || Func.GetTipo()=="C")	window.location.href = 'index.html';
 
 AppConfig.SetNombreGestion= function() {
 	var NomGestion = Func.GetNomGestion();
@@ -91,27 +87,18 @@ AppConfig.Inicial= function() {
 	$("#input-1").fileinput({
 	    uploadUrl: "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen.php", // server upload action
 	    language: "es",
-	    minFileCount: 1,
-	    maxFileCount: 5,
-	    minImageWidth: 240,
-    	minImageHeight: 240,
+	    minFileCount: AppConfig.MinImagen,
+	    maxFileCount: AppConfig.MaxImagen,
+	    minImageWidth: AppConfig.minImageWidth,
+    	minImageHeight: AppConfig.minImageHeight,
     	showUpload: false,
-    	maxFileSize: 3000,
-	    uploadExtraData: function (previewId, index) {
-	    		console.log(AppConfig["id_visita"]);
+    	maxFileSize: AppConfig.tamanoArchivo,
+	    uploadExtraData: function (previewId, index) {	//console.log(AppConfig["id_visita"]);
 			    var data = {
 				        id_gestion: IdGestion,
 				        id_visita: AppConfig["id_visita"]
-				    }
-				console.log(data);
+				    }	//console.log(data);
 			    return data;
-			    
-/*		    var obj = {};
-		    $('.your-form-class').find('input').each(function() {
-		        var id = $(this).attr('id'), val = $(this).val();
-		        obj[id] = val;
-		    });
-		    return obj; */
 		}
 	});
 
@@ -120,12 +107,18 @@ AppConfig.Inicial= function() {
 
 AppConfig.CargaMunicipios= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-  	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+  	AppConfig.socketDataAdmin.emit('GetListMpioSimple', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["ListadoMpio"].features.length);
 		$('#codigo_mun').multiselect('dataprovider', AppConfig["ListadoMpio"]);		//console.log(AppConfig["ListadoMpio"]);
-	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+		console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+/*		$('option', $('#codigo_mun')).each(function(element) {
+                $(this).removeAttr('selected').prop('selected', false);
+        });
+        $('#codigo_mun').multiselect('refresh');
+		//$('.multiselect-selected-text').text(' -- Seleccione -- '); */
+	  	
 	});
 };
 
@@ -206,7 +199,6 @@ $('#btn_guardar').click(function(){
 			 		if($.isNumeric(message)){
 			 			AppConfig["id_visita"] = message;	//console.log(AppConfig["IdVisita"]);
 			 			$('#input-1').fileinput('upload');
-
 			 		}else{
 			 			Func.MsjPeligro("No se pudo Guardar el registro");
 			 		}

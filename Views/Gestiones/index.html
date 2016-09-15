@@ -35,6 +35,11 @@
 	h4 {
 		    margin-left: 5% !important;
 	}
+	tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
   </style>
   
 </head>
@@ -56,7 +61,7 @@
 	        <li class="active"><a href="../Home/">
 	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav">
+	      <ul class="nav navbar-nav" id="opcion_listado">
 	        <li class="active"><a href="#">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
@@ -68,10 +73,10 @@
 	            	<ul class="dropdown-menu dropdown-user">
 	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
 	                    </li>
-	                    <li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
-	                    </li>
+	                    <!--li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li-->
 	                    <li class="divider">&nbsp;</li>
-	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
+	                    <li id="CerrarSession"><a href="#"><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
 	                    </li>
 	                </ul>
 	          </li>
@@ -80,32 +85,32 @@
 	  </div>
 	</nav>
 
-<div><h4><a href="Adicionar.html"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="label label-primary">Adicionar Gestión</span></a></h4></div>   
+<div id="div_add"><h4><a href="Adicionar.html"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="label label-primary">Adicionar Gestión</span></a></h4></div>   
 <table id="TBList" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Fecha</th>
+                <th>Fecha (AAAA-MM-DD)</th>
                 <th>Categorización</th>
                 <th>Descripción</th>
                 <th>% Avance</th>
                 <th>Meta</th>
                 <th>Municipios</th>
                 <th>Entidades</th>
-                <th>Visita</th>
+                <th>Avances</th>
                 <th>Eliminar</th>
                 <th>Detalle</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Fecha</th>
+                <th>Fecha (AAAA-MM-DD)</th>
                 <th>Categorización</th>
                 <th>Descripción</th>
                 <th>% Avance</th>
                 <th>Meta</th>
                 <th>Municipios</th>
                 <th>Entidades</th>
-                <th>Visita</th>
+                <th>Avances</th>
                 <th>Eliminar</th>
                 <th>Detalle</th>
             </tr>
@@ -135,6 +140,7 @@
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>
 	<script src="../../Scripts/Func.js"></script>
+	<script src="../../Scripts/Home/Navbar.js"></script>
 	<script src="../../Scripts/Gestiones/Gestiones.js"></script>
 	
 </html>

@@ -1,9 +1,10 @@
  Func.IntevaloLogin(); 
- var socket = io.connect(Config.UrlSocket+'/web');
+ var socket = io.connect(AppConfig.UrlSocket+'/web');
  $("#Perfil").click(function() {
  	var TextAdmin;
- 	if(Func.GetAdmin()){TextAdmin='Administrador'; }
- 	else{TextAdmin='Consulta';} 	
+ 	if (Func.GetTipo()=="A") {TextAdmin='Administrador'; }
+ 	else if(Func.GetTipo()=="C") {TextAdmin='Consulta';}
+ 	else {TextAdmin='Carga de Información'; } 	
  	BootstrapDialog.show({
         title: 'Perfil',
         message: '<ul class="chat">'+

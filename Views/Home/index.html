@@ -46,7 +46,7 @@
 	        <li class="active"><a href="#">
 	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav">
+	      <ul class="nav navbar-nav" id="opcion_listado">
 	        <li class="active"><a href="../Gestiones">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
@@ -58,8 +58,8 @@
 	            	<ul class="dropdown-menu dropdown-user">
 	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
 	                    </li>
-	                    <li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
-	                    </li>
+	                    <!-- li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li -->
 	                    <li class="divider">&nbsp;</li>
 	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
 	                    </li>
@@ -71,9 +71,10 @@
 	</nav>
    <!-- Panel Mapa -->
    <div id="map" class="map">
-   	  <div id="gmap" class="fill">&nbsp;</div>
-      <div id="olmap" class="fill">&nbsp;</div>
-      <div id="leyenda">
+   		<div id="info2">&nbsp;</div>
+   	  	<div id="gmap" class="fill">&nbsp;</div>
+      	<div id="olmap" class="fill">&nbsp;</div>
+      	<div id="leyenda">
             <div id="panel-primary-leyenda" class="panel panel-primary">
                 <div class="panel-heading">
                     <h5 class="panel-title">
@@ -94,7 +95,7 @@
             </div>
 
         </div>
-       <div id="PanelCapasBase"  class="PanelCapasBase" >
+       	<div id="PanelCapasBase"  class="PanelCapasBase" >
 		   	<div id="myCarousel" class="carousel slide">
 		    <div class="carousel-inner">
 		    	<div class="item active">
@@ -122,7 +123,6 @@
    <!-- Panel Street View -->
    <div id="PanelStreetView" class="PanelStreetView">&nbsp;</div>
    <!-- Carousel Base Layers -->
-  
 	
 </body>
 	<!-- script Resources -->

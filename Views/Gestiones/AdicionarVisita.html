@@ -54,6 +54,11 @@
 		font-size: 15px !important;
 	}
 	/*********************************/	
+	/****CAMPOS REQUERIDOS************/
+	.control-label.required:after {
+	  content:" *";color:red;font-size: 18px;
+	}
+	/*********************************/
 	
   </style>
   
@@ -76,7 +81,7 @@
 	        <li class="active"><a href="../Home/">
 	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav">
+	      <ul class="nav navbar-nav" id="opcion_listado">
 	        <li class="active"><a href="../Gestiones/">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
@@ -88,8 +93,8 @@
 	            	<ul class="dropdown-menu dropdown-user">
 	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
 	                    </li>
-	                    <li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
-	                    </li>
+	                    <!-- li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li -->
 	                    <li class="divider">&nbsp;</li>
 	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
 	                    </li>
@@ -101,16 +106,14 @@
 	</nav>
   <form role="form">
   		<div class="form-group">
-		    <label id="nom_gestion">Entrega de bibliotecas agropecuarias</label>
+		    <label id="nom_gestion">&nbsp;</label>
 	  	</div>
 	  	<div class="form-group">
-		    <label for="codigo_mun">Municipio</label>
-			<select id="codigo_mun" >
-				<option value=""> -- Seleccione --</option>
-			</select>
+		    <label for="codigo_mun" class="control-label required">Municipio</label>
+			<select id="codigo_mun" >&nbsp;</select>
 	  	</div>
 		<div class="form-group">
-			<label for="fecha">Fecha:</label>
+			<label for="fecha" class="control-label required">Fecha:</label>
 			<input type="date" class="form-control" id="fecha">
 		</div>
 		<div class="form-group">
@@ -121,20 +124,20 @@
 	    	<label for="und">Und medida:</label>
 	    	<input type="text" class="form-control" id="und">
 		</div>
-		<div class="form-group">
-	    	<label for="avance_porcen">% de Avance:</label>
+		<div class="form-group" >
+	    	<label for="avance_porcen" class="control-label required">% de Avance:</label>
 	    	<input type="number" class="form-control" id="avance_porcen">
 		</div>
 		<div class="form-group">
-			<label for="descripcion">Descripción</label>
+			<label for="descripcion" class="control-label required">Descripción</label>
   			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
 		</div>
 		<div class="form-group">
-			<label class="control-label">Seleccione las Imagenes</label>
-			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true" accept="image/*">
+			<label for="input-1" class="control-label required">Seleccione archivos adjuntos (Imágenes, Texto, Cálculo, etc)</label>
+			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
 		</div>
 	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
-	  		<span class="glyphicon glyphicon-save"></span> Guardar
+	  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
 		</a>
 </form>
 
@@ -162,12 +165,11 @@
 	<script src="../../Resources/cleave-js/cleave.min.js"></script>
 	<script src="../../Resources/bootstrap-fileinput/js/fileinput.min.js"></script>
 	<script src="../../Resources/bootstrap-fileinput/js/locales/es.js"></script>
-	
-	
-	
+
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>
 	<script src="../../Scripts/Func.js"></script>
+	<script src="../../Scripts/Home/Navbar.js"></script>
 	<script src="../../Scripts/Gestiones/AdicionarVisita.js"></script>
 	
 </html>

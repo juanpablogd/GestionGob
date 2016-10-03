@@ -97,7 +97,7 @@ AppConfig.Inicial= function() {
 			    var data = {
 				        id_gestion: IdGestion,
 				        id_visita: AppConfig["id_visita"]
-				    }	//console.log(data);
+				    };	//console.log(data);
 			    return data;
 		}
 	});

@@ -148,8 +148,8 @@ var Func={
 	    else return 0;
 	},
 	ValidaURL:function isUrlValid(userInput) {
-	    var regexQuery = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$";
-	    var url = new RegExp(regexQuery,"i");
+	    var regexQuery = "^(https?://)?(www\\.)?([a-z]+\:\/+)([^\/\s]*)([a-z0-9\-@\^=%&;\/~\+]*)[\?]?([^ \#]*)#?([^ \#]*)?$";
+	    var url = new RegExp(regexQuery,"i");	//console.log(url);
 	    if (url.test(userInput)) {	//alert('valid url: ' + userInput);
 	        return true;
 	    }	//alert('invalid url: ' + userInput);

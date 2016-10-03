@@ -1,4 +1,4 @@
-var socket = io.connect(Config.UrlSocket+'/web'); //console.log(Config.UrlSocket);
+var socket = io.connect(AppConfig.UrlSocket+'/web'); //console.log(AppConfig.UrlSocket);
 $(document).ready(function () {	console.log(Func.UsuarioLogueado());
 	 if(Func.UsuarioLogueado()){
 		window.location.href = '../Gestiones/index.html'; 	
@@ -22,7 +22,7 @@ $(document).ready(function () {	console.log(Func.UsuarioLogueado());
             	if (dat.length>0){
             		localStorage.dt=data;
             		bootbox.alert("Bienvenido, " + dat[0].nombre, function () {});
-                    window.location.assign(Config.NextLogin);
+                    window.location.assign(AppConfig.NextLogin);
                }else{	console.log("Usuario no encontrado! ");
                     localStorage.clear();
                     bootbox.alert("Usuario no encontrado!", function () {});

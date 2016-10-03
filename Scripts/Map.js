@@ -299,7 +299,6 @@ gmaps = {
         		var center = ol.proj.transform(view.getCenter(), 'EPSG:3857', 'EPSG:4326');
             	gmap.setCenter(new google.maps.LatLng(center[1], center[0]));	
         	}
-            
         });
         view.on('change:resolution', function() {
             if(gmaps.ActiveMapGoogle){
@@ -310,7 +309,6 @@ gmaps = {
         var olMapDiv = document.getElementById('olmap');
         
         var map = new ol.Map({
-        	
             controls: ol.control.defaults({
                 attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
                     collapsible: false
@@ -330,7 +328,6 @@ gmaps = {
         });
 		olMapDiv.parentNode.removeChild(olMapDiv);
         gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(olMapDiv);
-		
 		
 		//Inicializacion Panorama
 		var panoramaOptions = {pov: { heading: 0, pitch: 10}};

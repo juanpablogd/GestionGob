@@ -172,7 +172,7 @@ AppConfig.Inicial= function() {
 	    uploadExtraData: function (previewId, index) {
 			    var data = {
 				        id_gestion: AppConfig["id_gestion"]
-				    }
+				   };
 				console.log(data);
 			    return data;
 		}

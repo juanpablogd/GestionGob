@@ -142,8 +142,6 @@ ol.inherits(Config.CundinamarcaControl, ol.control.Control);
 Config.socketGeoAdmin = io.connect(Config.UrlSocketApp+'/GeoAdmin');
 Config.socketDataAdmin = io.connect(Config.UrlSocketApp+'/DataAdmin');
 
-
-
 Config.ReiniciarJSON=function(json){	//console.log(json);
 	for(i=0;i<json.features.length;i++){
 		json.features[i].properties.t=0;
@@ -157,7 +155,7 @@ function getDatosLugar(result,escala,dato) {
   );
 }
 
-Config.asigGeometria=function(result,escala){	console.log("asignar geometrias");
+Config.asigGeometria=function(result,escala){	//console.log("asignar geometrias");
 	var i=0,tempjson,array=[],Sitio;
 	Config.ReiniciarJSON(Config[escala]);			//console.log(Config[escala].features.length);
 	var suma = 0;
@@ -169,7 +167,6 @@ Config.asigGeometria=function(result,escala){	console.log("asignar geometrias");
 		}
 	}
 	$("#txt-conteo").html(suma);
-	
 	return Config[escala];
 };
 
@@ -221,15 +218,10 @@ Config.AutoDisplayLeyend=function(){
 		leyend.style.display='block';
 		leyend.innerHTML=labels.join('<br>');
 };
-/*
- * Config["tiempoini"],Config["tiempofin"],Config["id_categoria"],Config["avance_porcentaje"][0],
-								 Config["avance_porcentaje"][1],id_centrog,cod_meta
- */
 Config.DataMunicipio=function(fini,ffin,id_categoria,avanceini,avancefin,id_centrog,cod_meta){	
 	  	Config.socketDataAdmin.emit('GetMunicipioNumGes', {fini:fini, ffin:ffin, ffin:ffin, id_categoria:id_categoria, avanceini:avanceini, avancefin:avancefin, id_centrog:id_centrog, cod_meta:cod_meta }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Mun Gestiones Ini");					//console.log("message Mun:" + FuncDecrypted(message));
-			var decrypted = FuncDecrypted(message);		//console.log(decrypted);					
-			Config["MunicipioNumGes"]=decrypted;									//console.log("geojson Mun:" + Config["cod_mpio"].features.length);		//console.log(Config["MunicipioNumGes"]);
+			var decrypted = FuncDecrypted(message);		//console.log(decrypted);	//Config["MunicipioNumGes"]=decrypted;									//console.log("geojson Mun:" + Config["cod_mpio"].features.length);		//console.log(Config["MunicipioNumGes"]);
 			//CRUZA DATOS CON GEOMETRÍA
 			var geo=Config.asigGeometria(decrypted,"cod_mpio"); 			//console.log(geo);
 			Config.breaks=Config.getbreaks(geo);							//console.log(Config.breaks);	
@@ -243,31 +235,71 @@ Config.DataMunicipio=function(fini,ffin,id_categoria,avanceini,avancefin,id_cent
 		  	console.log(moment().format('h:mm:ss:SSSS')+" Mun Gestiones FIN");
 		});
 };
+Config.DataProvincia=function(fini,ffin,id_categoria,avanceini,avancefin,id_centrog,cod_meta){	//console.log("Prov");
+	  	Config.socketDataAdmin.emit('GetProvinciaNumGes', {fini:fini, ffin:ffin, ffin:ffin, id_categoria:id_categoria, avanceini:avanceini, avancefin:avancefin, id_centrog:id_centrog, cod_meta:cod_meta }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+			console.log(moment().format('h:mm:ss:SSSS')+" Prov Gestiones Ini");					//console.log("message Mun:" + FuncDecrypted(message));
+			var decrypted = FuncDecrypted(message);		//console.log(decrypted);	//Config["ProvinciaNumGes"]=decrypted;									//console.log("geojson Mun:" + Config["cod_mpio"].features.length);		//console.log(Config["MunicipioNumGes"]);
+			//CRUZA DATOS CON GEOMETRÍA
+			var geo=Config.asigGeometria(decrypted,"codigo_pro"); 			//console.log(geo);
+			Config.breaks=Config.getbreaks(geo);							//console.log(Config.breaks);	
+			Config.layer_vect.clear();			
+			Config.layer_vect.addFeatures(Config.format.readFeatures(geo));
+			AppMap.map.removeLayer(Config.layerGestion);					//console.log("ELimina Capa");
+			AppMap.map.addLayer(Config.layerGestion);						//console.log("Adicionar Capa");	
+			//Config.map.getView().fit(Config.layer_vect.getExtent(), Config.map.getSize());	console.log("test");
+			Config.AutoDisplayLeyend();
+			Config.AddTooltip();
+		  	console.log(moment().format('h:mm:ss:SSSS')+" PRov Gestiones FIN");
+		});
+};
+Config.DataDepartamento=function(fini,ffin,id_categoria,avanceini,avancefin,id_centrog,cod_meta){	//console.log("Prov");
+	  	Config.socketDataAdmin.emit('GetDepartamentoNumGes', {fini:fini, ffin:ffin, ffin:ffin, id_categoria:id_categoria, avanceini:avanceini, avancefin:avancefin, id_centrog:id_centrog, cod_meta:cod_meta }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+			console.log(moment().format('h:mm:ss:SSSS')+" Dpto Gestiones Ini");					//console.log("message Mun:" + FuncDecrypted(message));
+			var decrypted = FuncDecrypted(message);		//console.log(decrypted);	//Config["ProvinciaNumGes"]=decrypted;									//console.log("geojson Mun:" + Config["cod_mpio"].features.length);		//console.log(Config["MunicipioNumGes"]);
+			//CRUZA DATOS CON GEOMETRÍA
+			var geo=Config.asigGeometria(decrypted,"codigo_dep"); 			//console.log(geo);
+			Config.breaks=Config.getbreaks(geo);							//console.log(Config.breaks);	
+			Config.layer_vect.clear();			
+			Config.layer_vect.addFeatures(Config.format.readFeatures(geo));
+			AppMap.map.removeLayer(Config.layerGestion);					//console.log("ELimina Capa");
+			AppMap.map.addLayer(Config.layerGestion);						//console.log("Adicionar Capa");	
+			//Config.map.getView().fit(Config.layer_vect.getExtent(), Config.map.getSize());	console.log("test");
+			Config.AutoDisplayLeyend();
+			Config.AddTooltip();
+		  	console.log(moment().format('h:mm:ss:SSSS')+" Dpto Gestiones FIN");
+		});
+};
 Config.GeoMunicipio=function(){
 	Config.socketGeoAdmin.emit('GetMunicipio', '', function(message){			//console.log("message Mun:" + message.length);
 		console.log(moment().format('h:mm:ss:SSSS')+" Mun Ini");
 		var decrypted =FuncDecrypted(message);									//console.log("decrypted Mun:" + decrypted.type);		
-		var geojson=topojson.feature(decrypted, decrypted.objects.collection);
+		var geojson=topojson.feature(decrypted, decrypted.objects.collection);	//console.log(geojson);
 	  	Config["cod_mpio"]=geojson;												//console.log(Config["cod_mpio"].features[1].properties.id); //console.log("geojson Mun:" + Config["cod_mpio"].features.length);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" Mun FIN");
 	  	Config.DataMunicipio();
 	});
 };
 
-Config.socketGeoAdmin.emit('GetProvincia', '', function(message){
-	//console.log(moment().format('h:mm:ss:SSSS')+" prov Ini");
-	var decrypted =FuncDecrypted(message);
-	var geojson=topojson.feature(decrypted, decrypted.objects.collection);
-	Config["cod_prov"]=geojson;
-	//console.log(moment().format('h:mm:ss:SSSS')+" prov FIN");											
-});
-Config.socketGeoAdmin.emit('GetDepartamento', '', function(message){
-	//console.log(moment().format('h:mm:ss:SSSS')+" Dpto Ini");
-	var decrypted =FuncDecrypted(message);
-	var geojson=topojson.feature(decrypted, decrypted.objects.collection);
-	Config["cod_dpto"]=geojson;
-	//console.log(moment().format('h:mm:ss:SSSS')+" Dpto FIN");
-});
+Config.GeoProvincia=function(){
+	Config.socketGeoAdmin.emit('GetProvincia', '', function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" prov Ini");
+		var decrypted =FuncDecrypted(message);
+		var geojson=topojson.feature(decrypted, decrypted.objects.collection);	//console.log(geojson);
+		Config["codigo_pro"]=geojson;	
+		console.log(moment().format('h:mm:ss:SSSS')+" prov FIN");											
+	});	
+};
+
+Config.GeoDepartamento=function(){
+	Config.socketGeoAdmin.emit('GetDepartamento', '', function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Dpto Ini");
+		var decrypted =FuncDecrypted(message);
+		var geojson=topojson.feature(decrypted, decrypted.objects.collection);
+		Config["codigo_dep"]=geojson;			//console.log(geojson);
+		console.log(moment().format('h:mm:ss:SSSS')+" Dpto FIN");
+	});	
+};
+
 
 Config.displayFeatureValue=function(pixel){	//console.log(pixel);
 	Config.informacion.css({

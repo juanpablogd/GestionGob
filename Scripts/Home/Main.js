@@ -34,7 +34,7 @@ $( document ).ready(function() {
 	  	
 	  	arr = $('#id_centrog option:selected').map(function(a, item){return item.label;}).get();
 	  	$("#br-centro").remove();
-	  	$('#txt-centro').html('');	console.log($('#id_centrog option').length + " " + arr.length); 
+	  	$('#txt-centro').html('');	//console.log($('#id_centrog option').length + " " + arr.length); 
   		if(($('#id_centrog option').length) == arr.length && arr.length > 0) {
   			$('#txt-centro').html('Entidad(es): Todas (' + arr.length +')').after('<br id="br-centro" />');
   		}else if(arr.length>0){
@@ -146,20 +146,28 @@ $( document ).ready(function() {
 		        }
 		});
 		
-		$("#btn_consultar").click(function(){	console.log('Data Municipio');
+		$("#btn_consultar").click(function(){				//console.log('Data');
 			var id_centrog = AppConfig['id_centrog'];		//console.log(id_centrog);
 			if(id_centrog !== undefined) id_centrog = id_centrog.join();
-			
 			var cod_meta = AppConfig['cod_meta'];
 			if(cod_meta !== undefined) cod_meta = cod_meta.join();
-			
-			Config.DataMunicipio(Config["tiempoini"],Config["tiempofin"],Config["id_categoria"],Config["avance_porcentaje"][0],
-								 Config["avance_porcentaje"][1],id_centrog,cod_meta);	
+			if(Config["espacio"]=='Municipio'){
+				Config.DataMunicipio(Config["tiempoini"],Config["tiempofin"],Config["id_categoria"],Config["avance_porcentaje"][0],
+								 Config["avance_porcentaje"][1],id_centrog,cod_meta);
+			}else if(Config["espacio"]=='Provincia'){
+				Config.DataProvincia(Config["tiempoini"],Config["tiempofin"],Config["id_categoria"],Config["avance_porcentaje"][0],
+								 Config["avance_porcentaje"][1],id_centrog,cod_meta);				
+			}else{
+				Config.DataDepartamento(Config["tiempoini"],Config["tiempofin"],Config["id_categoria"],Config["avance_porcentaje"][0],
+								 Config["avance_porcentaje"][1],id_centrog,cod_meta);
+			}			
 		});
     	
 	};
 	
 	Config.GeoMunicipio();
+	Config.GeoProvincia();
+	Config.GeoDepartamento();
 	AppMap.map=AppMap.InitMap();
 	AppMap.addZoomControl(AppMap.map);
 	AppMap.addStreetViewControl(AppMap.map);

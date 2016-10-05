@@ -163,6 +163,42 @@ $( document ).ready(function() {
 			}			
 		});
     	
+		function onMapClick(e) {
+			var id_centrog = AppConfig['id_centrog'];		//console.log(id_centrog);
+			(id_centrog !== undefined)? id_centrog = id_centrog.join() : id_centrog = ''; //console.log("id_centrog: "+id_centrog);
+			var cod_meta = AppConfig['cod_meta'];				
+			(cod_meta !== undefined)? cod_meta = cod_meta.join() : cod_meta = '';
+			
+			var pixel = e.pixel;
+		    AppMap.map.forEachFeatureAtPixel(pixel, function(feature, layer) { //console.log(feature.U.id);
+				localStorage.ps = Func.Ecrypted(Config["espacio"]);
+				localStorage.pid = Func.Ecrypted(feature.U.id);
+				localStorage.pfi = Func.Ecrypted(Config["tiempoini"]);
+				localStorage.pff = Func.Ecrypted(Config["tiempofin"]);
+				localStorage.pic = Func.Ecrypted(Config["id_categoria"]);
+				localStorage.pai = Func.Ecrypted(Config["avance_porcentaje"][0]);
+				localStorage.paf = Func.Ecrypted(Config["avance_porcentaje"][1]);
+				localStorage.pcg = Func.Ecrypted(id_centrog);
+				localStorage.pmt = Func.Ecrypted(cod_meta);
+				setTimeout(function(){	//console.log('Valido');
+					$.fancybox.open([
+				        {
+				            type: 'iframe',
+				            href : '../Gestiones/ListaFiltro.html',                
+				            width		: '90%',
+							height		: '100%',
+							autoSize	: false,
+							fitToView	: false,
+				        }
+				    ], {
+				        padding : 20
+				    });
+				}, 1000*0.1);
+	        });
+		}
+		
+		AppMap.map.on('click', onMapClick);
+		
 	};
 	
 	Config.GeoMunicipio();

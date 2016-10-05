@@ -77,10 +77,21 @@ $(document).ready(function() {
 		 $('#TBList tfoot th').each( function () {
 	        var title = $(this).text();
 	        $(this).html( '<input type="text" placeholder="Buscar: '+title+'" />' );
-	    } );
+	    });
+		
+		//console.log(Func.Decrypted(localStorage.pcg)); 
+		var espacio=Func.Decrypted(localStorage.ps);
+		var feature_id=Func.Decrypted(localStorage.pid);
+		var fini=Func.Decrypted(localStorage.pfi);
+		var ffin=Func.Decrypted(localStorage.pff);
+		var id_categoria=Func.Decrypted(localStorage.pic);
+		var avanceini=Func.Decrypted(localStorage.pai);
+		var avancefin=Func.Decrypted(localStorage.paf);
+		var id_centrog=Func.Decrypted(localStorage.pcg);
+		var cod_meta=Func.Decrypted(localStorage.pmt); 
 		
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-	  	AppConfig.socketDataAdmin.emit('GetListadoGes',  {usrTipo : usrTipo, id_centrog : centroGestor}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+	  	AppConfig.socketDataAdmin.emit('GetListadoGesFiltro',  {espacio : espacio, feature_id : feature_id, fini:fini, ffin:ffin, ffin:ffin, id_categoria:id_categoria, avanceini:avanceini, avancefin:avancefin, id_centrog:id_centrog, cod_meta:cod_meta}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);											//console.log(decrypted);
 			if(Func.GetTipo()=="C"){

@@ -16,7 +16,7 @@ $(document).ready(function () {	console.log(Func.UsuarioLogueado());
             var login = $("#contrasena").val();
             var modulo = $("#modulo").val();
             var data= {'usr': usuario,'mod': modulo,'pas': login};
-            var DataAES =Func.Ecrypted(data);
+            var DataAES = Func.Ecrypted(data);
             socket.emit('LoginUsuario',DataAES,function(data){
             	var dat=Func.Decrypted(data); console.log(dat);
             	if (dat.length>0){

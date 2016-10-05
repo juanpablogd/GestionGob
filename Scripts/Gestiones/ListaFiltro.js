@@ -36,7 +36,10 @@ $(document).ready(function() {
 	  		Func.SetNomGestion(NomG);
 	  		Func.SetIdGestion($(this).attr( 'val' ));
 	  		setTimeout(function(){
-		    	window.location.href = 'AdicionarVisita.html';
+	  			window.open(
+				  'AdicionarVisita.html',
+				  '_blank' // <- This is what makes it open in a new window.
+				);	//window.location.href = 'AdicionarVisita.html';
 			}, 50);
 		});
 		$(".btn_editar").click(function(){		//console.log("Click");
@@ -66,8 +69,7 @@ $(document).ready(function() {
 	  			window.open(
 				  'Detalle.html',
 				  '_blank' // <- This is what makes it open in a new window.
-				);
-		    	//window.location.href = 'Detalle.html';
+				);	//window.location.href = 'Detalle.html';
 			}, 50);
 		});
 	};

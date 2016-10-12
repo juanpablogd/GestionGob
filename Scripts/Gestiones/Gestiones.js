@@ -39,8 +39,17 @@ $(document).ready(function() {
 		    	window.location.href = 'AdicionarVisita.html';
 			}, 50);
 		});
-		$(".btn_editar").click(function(){		//console.log("Click");
-			console.log($(this).attr( 'val' ));
+		$(".btn_editar").click(function(){		console.log($(this).attr( 'val' ));
+	  		var fila = $(this).attr('f');
+	  		var NomG = $('#d'+fila).text(); //console.log(NomG);
+	  		Func.SetNomGestion(NomG);
+	  		Func.SetIdGestion($(this).attr( 'val' ));
+	  		setTimeout(function(){
+	  			window.open(
+				  'Editar.html',
+				  '_blank' // <- This is what makes it open in a new window.
+				); 
+			}, 50);
 		});
 		$(".btn_eliminar").click(function(){	console.log("Click ELiminar");
 			var fila = $(this).attr('f');				//console.log(fila);	//console.log();
@@ -84,8 +93,9 @@ $(document).ready(function() {
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);											//console.log(decrypted);
 			if(Func.GetTipo()=="C"){
-				$("#TBList tr td,th").filter(':nth-child(8)').remove();
-				$("#TBList tr td,th").filter(':nth-child(8)').remove();				
+				$("#TBList tr td,th").filter(':nth-child(9)').remove();
+				$("#TBList tr td,th").filter(':nth-child(9)').remove();
+				$("#TBList tr td,th").filter(':nth-child(9)').remove();				
 			}
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
@@ -99,7 +109,7 @@ $(document).ready(function() {
 							if(Func.GetTipo()=="C"){
 								$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');
 							} else{
-								$('#f'+name1).append('<td><div><h4><a href="#" class="btn_add_visita" val="'+value+'" f="'+name1+'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><a href="#" class="btn_eliminar" val="'+value+'" f="'+name1+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td><td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');								
+								$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td><td><div><h4><a href="#" class="btn_add_visita" val="'+value+'" f="'+name1+'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><a href="#" class="btn_editar" val="'+value+'" f="'+name1+'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td><td><a href="#" class="btn_eliminar" val="'+value+'" f="'+name1+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td>');								
 							}
 						}
 			      	});

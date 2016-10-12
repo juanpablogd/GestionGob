@@ -30,7 +30,7 @@ $(document).ready(function() {
 					"aaSorting": []
 				};
 	var Eventos = function(){
-	  	$(".btn_add_visita").click(function(){		//console.log("Click");	console.log($(this).attr( 'val' ));
+/*	  	$(".btn_add_visita").click(function(){		//console.log("Click");	console.log($(this).attr( 'val' ));
 	  		var fila = $(this).attr('f');
 	  		var NomG = $('#d'+fila).text(); //console.log(NomG);
 	  		Func.SetNomGestion(NomG);
@@ -41,11 +41,11 @@ $(document).ready(function() {
 				  '_blank' // <- This is what makes it open in a new window.
 				);	//window.location.href = 'AdicionarVisita.html';
 			}, 50);
-		});
+		});	*/
 		$(".btn_editar").click(function(){		//console.log("Click");
 			console.log($(this).attr( 'val' ));
 		});
-		$(".btn_eliminar").click(function(){	console.log("Click ELiminar");
+/*		$(".btn_eliminar").click(function(){	console.log("Click ELiminar");
 			var fila = $(this).attr('f');				//console.log(fila);	//console.log();
 			var id_gestion = $(this).attr('val' );		//console.log(id_gestion);	//console.log($.fn.dataTable.isDataTable( oTable ));
 			bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> la gestión: '+$('#d'+fila).text(), function(result) {
@@ -59,7 +59,7 @@ $(document).ready(function() {
 					});
 			  	}
 			});
-		});
+		});	*/
 		$(".btn_detalle").click(function(){	console.log("Click Detalle");
 	  		var fila = $(this).attr('f');
 	  		var NomG = $('#d'+fila).text(); //console.log(NomG);
@@ -112,7 +112,8 @@ $(document).ready(function() {
 							if(Func.GetTipo()=="C"){
 								$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');
 							} else{
-								$('#f'+name1).append('<td><div><h4><a href="#" class="btn_add_visita" val="'+value+'" f="'+name1+'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><a href="#" class="btn_eliminar" val="'+value+'" f="'+name1+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td><td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');								
+								//$('#f'+name1).append('<td><div><h4><a href="#" class="btn_add_visita" val="'+value+'" f="'+name1+'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><a href="#" class="btn_eliminar" val="'+value+'" f="'+name1+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td><td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');
+								$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');								
 							}
 						}
 			      	});

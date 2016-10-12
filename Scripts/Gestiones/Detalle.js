@@ -1,10 +1,8 @@
 $(document).ready(function() {
+
 	var IdGestion = Func.GetIdGestion();
 	console.log(IdGestion);
-if(IdGestion == ""){
-	window.location.href = 'index.html';
-}
-
+	if(IdGestion == "")	window.location.href = 'index.html';
 
 AppConfig.SetNombreGestion= function() {
 	var NomGestion = Func.GetNomGestion();

@@ -101,6 +101,8 @@ AppConfig.Inicial= function() {
 			    return data;
 		}
 	});
+	
+	$('[data-toggle="tooltip"]').tooltip();
 
 };
 

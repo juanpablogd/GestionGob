@@ -131,11 +131,7 @@ AppConfig.Inicial= function() {
 	        }
 	});	//console.log(moment().format('YYYY-MM-DD'));
 	$('#fecha').datetextentry('set_date',moment().format('YYYY-MM-DD'));
-/*	$('#fecha_ini').datetextentry({
-        max_date         : '2020-30-06',
-        max_date_message : 'Seleccione una fecha de este cuatrenio'
-    });
-	$('#fecha_fin').datetextentry(); */ 
+
 	$( "#id_categoria" ).change(function() {
 		var id_cat = $( this ).val();
 		var csecop = $( "label[for='enlace_secop']" );
@@ -178,6 +174,8 @@ AppConfig.Inicial= function() {
 		}
 	});
 	
+	$('[data-toggle="tooltip"]').tooltip();
+	//console.log("ToolTip");
 };
 
 

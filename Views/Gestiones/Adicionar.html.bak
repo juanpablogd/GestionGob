@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8">
 
@@ -100,8 +100,7 @@
 	    </div>
 	  </div>
 	</nav>
-	<div style="text-align: center;"><label id="nom_gestion" >&nbsp;</label></div>
-  <form role="form" id="FrmAdicionar">
+  <form role="form" id="FrmAdicionar" >
 		<div class="form-group">
 			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<input type="date" class="form-control" id="fecha">
@@ -178,64 +177,6 @@
 				</div>
 			</div>
 		</div>
-		<!--  PANEL CONTRACTUAL --> 
-		<!--div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Contractual</h3>
-					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-			</div>
-			<div class="panel-body" id="contractual-panel-body">
-				<div class="form-group">
-				    <label for="id_tipo_cto">Tipo contrato:</label>
-					<select id="id_tipo_cto" >
-						<option value=""> -- Seleccione --</option>
-					</select>
-				</div>
-				<div class="form-group">
-	    			<label for="nro_cto">N° Contrato:</label>
-	    			<input type="text" class="form-control" id="nro_cto">
-	    		</div>
-				<div class="form-group">
-	    			<label for="fte_nacional">Valor fuente nacional:</label>
-	    			<input type="text" class="form-control valor" id="fte_nacional">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_depto">Valor fuente departamento:</label>
-	    			<input type="text" class="form-control valor" id="fte_depto">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="fte_mpio">Valor fuente municipio:</label>
-	    			<input type="text" class="form-control valor" id="fte_mpio">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_sgp">Valor fuente Sistema General de Participaciones - SGP</label>
-	    			<input type="text" class="form-control valor" id="fte_sgp">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_regalias">Valor fuente regalias:</label>
-	    			<input type="text" class="form-control valor" id="fte_regalias">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="descripcion_fte_otros">Otro ¿Cúal?:</label>
-	    			<input type="text" class="form-control" id="descripcion_fte_otros">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="fte_otros">Valor fuente otros:</label>
-	    			<input type="text" class="form-control valor" id="fte_otros">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="fecha_ini">Fecha inicio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	    			<input type="date" class="form-control" id="fecha_ini">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="fecha_fin">Fecha terminación:</label>
-	    			<input type="date" class="form-control" id="fecha_fin">
-	  			</div>
-
-			</div>
-		
-		</div -->
-		
 		<!--  PANEL SEGUIMIENTO --> 
 		<div class="panel panel-primary">
 			<div class="panel-heading">
@@ -308,7 +249,7 @@
 	<script src="../../Scripts/AppConfig.js"></script>
 	<script src="../../Scripts/Func.js"></script>
 	<script src="../../Scripts/Home/Navbar.js"></script>
-	<script src="../../Scripts/Gestiones/Editar.js"></script>
+	<script src="../../Scripts/Gestiones/Adicionar.js"></script>
 
 	
 </html>

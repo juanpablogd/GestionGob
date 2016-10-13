@@ -103,15 +103,15 @@
 	<div style="text-align: center;"><label id="nom_gestion" >&nbsp;</label></div>
   <form role="form" id="FrmAdicionar">
 		<div class="form-group">
-			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<input type="date" class="form-control" id="fecha">
+			<label for="fecha" class="control-label required">Fecha </label>
+			<input type="date" class="form-control" id="fecha" data-toggle="tooltip" title="Fecha de Inicio">
 		</div>
 	  	<div class="form-group">
-		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		    <label for="codigo_mun" class="control-label required">Municipio</label>
 			<select id="codigo_mun" multiple="multiple">&nbsp;</select>
 	  	</div>
 		<div class="form-group">
-		  	<label for="id_categoria" class="control-label required"  data-toggle="tooltip" title="Clasificación de la intervención, proyecto ó gestión">Categorización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		  	<label for="id_categoria" class="control-label required">Categorización</label>
 		  	<select class="form-control" id="id_categoria" >
 		  		<option value="" selected=""> -- Seleccione -- </option>
 		    	<option value="1">Proyecto PDD</option>
@@ -120,15 +120,15 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-  			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
+			<label for="descripcion" class="control-label required">Descripción</label>
+  			<textarea class="form-control" rows="5" id="descripcion" >&nbsp;</textarea>
 		</div>
 		<div class="form-group">
-			<label for="avance_porcentaje" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención (0-100%)">% Porcentaje de avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<label for="avance_porcentaje" class="control-label required">% Porcentaje de avance </label>
 			<input type="number" class="form-control" id="avance_porcentaje">
 		</div>
 		<div class="form-group">
-		    <label for="id_sector" class="control-label required" data-toggle="tooltip" title="Sector(es) económico al que beneficia">Sector </label>
+		    <label for="id_sector" class="control-label required">Sector</label>
 			<select id="id_sector" multiple="multiple">&nbsp;</select>
 		</div>
 		
@@ -140,19 +140,19 @@
 			</div>
 			<div class="panel-body" id="responsable-panel-body">
 				<div class="form-group">
-				    <label for="id_centrog" class="control-label required" data-toggle="tooltip" title="Entidad(es) que intervienen, pueden ser del sector central (secretarías) o desentralizadas">Entidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				    <label for="id_centrog" class="control-label required">Entidad</label>
 					<select id="id_centrog" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-			    	<label for="responsable_nom" class="control-label required" data-toggle="tooltip" title="Nombre de la persona de la gobernación que lidera el proyecto, puede ser el Secretario, Director o Funcionario">Nombre contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<label for="responsable_nom" class="control-label required">Nombre contacto:</label>
 					<input type="text" class="form-control" id="responsable_nom">
 				</div>			
 				<div class="form-group">
-			    	<label for="responsable_tel" class="control-label required" data-toggle="tooltip" title="Teléfono(s) Fijo y/o celular de la persona de la gobernación que lidera el proyecto.">Teléfono contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<label for="responsable_tel" class="control-label required">Teléfono contacto:</label>
 					<input type="text" class="form-control" id="responsable_tel">
 				</div>
 				<div class="form-group">
-			    	<label for="responsable_email"  data-toggle="tooltip" title="Correo electrónico de la persona de la gobernación que lidera el proyecto.">Email contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<label for="responsable_email">Email contacto:</label>
 					<input type="text" class="form-control" id="responsable_email">
 				</div>
 			</div>
@@ -165,15 +165,15 @@
 			</div>
 			<div class="panel-body" id="responsable-panel-body">
 				<div class="form-group">
-			    	<label for="responsable_nom_ext" class="control-label" data-toggle="tooltip" title="Nombre del contacto externo, puede ser un Cundinamarques o contratista, con el fin de realizar seguimiento">Nombre contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<label for="responsable_nom_ext" class="control-label">Nombre contacto:</label>
 					<input type="text" class="form-control" id="responsable_nom_ext">
 				</div>			
 				<div class="form-group">
-			    	<label for="responsable_tel_ext" class="control-label" data-toggle="tooltip" title="Teléfono(s) Fijo y/o celular del contacto externo">Teléfono contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<label for="responsable_tel_ext" class="control-label">Teléfono contacto:</label>
 					<input type="text" class="form-control" id="responsable_tel_ext">
 				</div>
 				<div class="form-group">
-			    	<label for="responsable_email_ext" data-toggle="tooltip" title="Correo electrónico del contacto externo.">Email contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<label for="responsable_email_ext">Email contacto:</label>
 					<input type="text" class="form-control" id="responsable_email_ext">
 				</div>
 			</div>
@@ -244,33 +244,33 @@
 			</div>
 			<div class="panel-body"  id="seguimiento-panel-body">
 				<div class="form-group">
-				    <label for="cod_meta" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;<!-- span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span -->
+				    <label for="cod_meta">Sub Programa - Meta</label>&nbsp;<!-- span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span -->
 					<select id="cod_meta" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-	    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<label for="enlace_secop">Enlace Secop:</label>
 	    			<input type="text" class="form-control" id="enlace_secop">
 	  			</div>
 				<div class="form-group">
-	    			<label for="empleos_gen_directo" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de empleos que se generan directamente por la intervención.">Empleos generados directamente  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<label for="empleos_gen_directo" class="control-label required">Empleos generados directamente </label>
 	    			<input type="number" class="form-control" id="empleos_gen_directo">
 	  			</div>
 				<div class="form-group">
-	    			<label for="empleos_gen_indirecto" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de empleos que se generan Indirectamente por la intervención.">Empleos generados indirectamente  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<label for="empleos_gen_indirecto" class="control-label required">Empleos generados indirectamente </label>
 	    			<input type="number" class="form-control" id="empleos_gen_indirecto">
 	  			</div>
 				<div class="form-group">
-				    <label for="id_producto" data-toggle="tooltip" title="Señalar los productos que la Secretaría de Prensa realizó respecto a la intervención.">Productos Prensa <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				    <label for="id_producto">Productos Prensa</label>
 					<select id="id_producto" multiple="multiple">&nbsp;</select>
 				</div>
 				<div class="form-group">
-					<label for="resultado" class="control-label required" data-toggle="tooltip" title="Describir detalladamente el resultado de la intervención.">Resultado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<label for="resultado" class="control-label required">Resultado</label>
 		  			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<label class="control-label">Seleccione archivos adjuntos (Imágenes, Texto, Cálculo, etc)</label>
 			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
 		</div>
 	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">

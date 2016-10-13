@@ -109,31 +109,32 @@
 		    <label id="nom_gestion">&nbsp;</label>
 	  	</div>
 	  	<div class="form-group">
-		    <label for="codigo_mun" class="control-label required">Municipio</label>
+		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<select id="codigo_mun" >&nbsp;</select>
 	  	</div>
 		<div class="form-group">
-			<label for="fecha" class="control-label required">Fecha:</label>
+			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio del avance">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<input type="date" class="form-control" id="fecha">
 		</div>
 		<div class="form-group">
-	    	<label for="valor">Cantidad:</label>
-	    	<input type="number" class="form-control valor" id="valor">
-		</div>
-		<div class="form-group">
-	    	<label for="und">Und medida:</label>
+	    	<label for="und" class="control-label required" data-toggle="tooltip" title="Dependiendo de la intervención describir unidad de medida. p.e. En una entrega de 100 Viviendas escribir 'Viviendas'">Und medida <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 	    	<input type="text" class="form-control" id="und">
 		</div>
+		<div class="form-group">
+	    	<label for="valor" class="control-label required" data-toggle="tooltip" title="Dependiendo de la intervención describir la cantidad de la unidad de medida anterior. p.e. En una entrega de 100 Viviendas escribir '100'">Cantidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    	<input type="number" class="form-control valor" id="valor">
+		</div>
+
 		<div class="form-group" >
-	    	<label for="avance_porcen" class="control-label required">% de Avance:</label>
+	    	<label for="avance_porcentaje" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención (0-100%)">% Porcentaje de avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 	    	<input type="number" class="form-control" id="avance_porcen">
 		</div>
 		<div class="form-group">
-			<label for="descripcion" class="control-label required">Descripción</label>
+			<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta el avance realizado (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
   			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
 		</div>
 		<div class="form-group">
-			<label for="input-1" class="control-label required">Seleccione archivos adjuntos (Imágenes, Texto, Cálculo, etc)</label>
+			<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
 		</div>
 	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">

@@ -184,6 +184,19 @@ div.fill {
 #txt-metas{
 	max-width: 280px;
 }
+
+.btn_eliminar_visita {
+	    float: right;
+	    color:white;
+}
+.btn_eliminar_visita:hover {
+	    float: right;
+	    color: red;
+}
+.btn_eliminar_visita:link {
+	    float: right;
+	    color: white;
+}
 /*	.panel-body {
     max-height: 640px;
 }	*/

@@ -202,7 +202,6 @@ AppConfig.Inicial= function() {
 	//console.log("ToolTip");
 };
 
-
 AppConfig.CargaMunicipios= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
   	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
@@ -262,7 +261,7 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoMeta"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		if(AppConfig["ListadoMeta"].length == 0 ){
-			Func.MsjPeligro("No se encontraron metas para esta secretar韆");
+			Func.MsjPeligro("No se encontraron metas para esta secretar铆a");
 			$("#MsjAlertaMetas").show();
 		}else $("#MsjAlertaMetas").hide();
 		$('#cod_meta').multiselect('dataprovider', AppConfig["ListadoMeta"]);
@@ -326,7 +325,7 @@ $('#btn_guardar').click(function(){
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
 	  		var id_categoria = $("#id_categoria option:selected").val();
-	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripci髇: " + descripcion);
+	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripci贸n: " + descripcion);
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
@@ -347,11 +346,11 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
 	  		}else if(id_categoria == ""){
-	  			Func.MsjPeligro("Debe seleccionar una Categor韆");
+	  			Func.MsjPeligro("Debe seleccionar una Categor铆a");
 	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
 	  			return;
 	  		}else if(descripcion==""){
-	  			Func.MsjPeligro("Digite una descripci髇");
+	  			Func.MsjPeligro("Digite una descripci贸n");
 	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
 	  			return;	  			
 	  		}
@@ -373,7 +372,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"]==null || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Debe seleccionar al menos una Secretar韆");
+	  			Func.MsjPeligro("Debe seleccionar al menos una Secretar铆a");
 	  			$('#id_centrog').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#id_centrog').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
@@ -384,7 +383,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(responsable_tel==""){
 	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Digite el tel閒ono des responsable");
+	  			Func.MsjPeligro("Digite el tel茅fono des responsable");
 	  			setTimeout(function() { $('#responsable_tel').focus(); }, 500);
 	  			return;
 	  		}else if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
@@ -411,17 +410,17 @@ $('#btn_guardar').click(function(){
 	  		}
 	  		if(empleos_gen_directo==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el n鷐eo de empleos generados directamente");
+	  			Func.MsjPeligro("Ingrese el n煤meo de empleos generados directamente");
 	  			setTimeout(function() { $('#empleos_gen_directo').focus(); }, 500);
 	  			return;
   			}else if(empleos_gen_indirecto==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el n鷐eo de empleos generados Indirectamente");
+	  			Func.MsjPeligro("Ingrese el n煤meo de empleos generados Indirectamente");
 	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
 	  			return;
   			}else if(resultado==""){
 		  				$('#seguimiento-panel-body').show();
-			  			Func.MsjPeligro("Describa el resultado de la gesti髇");
+			  			Func.MsjPeligro("Describa el resultado de la gesti贸n");
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
 			  			return;
 	  		}
@@ -441,7 +440,6 @@ $('#btn_guardar').click(function(){
 	  		responsable_tel_ext = Func.Ecrypted($("#responsable_tel_ext").val().trim()); //OPCIONAL
 	  		responsable_email_ext = Func.Ecrypted($("#responsable_email_ext").val().trim()); //OPCIONAL
 	  		
-	  		
 	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
 	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
 	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
@@ -460,14 +458,14 @@ $('#btn_guardar').click(function(){
   															//fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,fecha_ini:fecha_ini,fecha_fin:fecha_fin,
   															enlace_secop:enlace_secop,cod_meta:cod_meta,empleos_gen_directo:empleos_gen_directo,empleos_gen_indirecto:empleos_gen_indirecto,
   															id_producto:id_producto,resultado:resultado
-			 }, function(message){	//console.log(message);
+			 }, function(message){	console.log(message);
 			 		if($.isNumeric(message)){
 			 			if(NumArchivos>0){
 			 				console.log("Adjuntos: "+NumArchivos);
 							AppConfig["id_gestion"] = message;	//console.log(AppConfig["IdVisita"]);
 				 			$('#input-1').fileinput('upload');
 			 			}else{
-				 			bootbox.alert("La Gesti髇 se ha guardado exitosamente!!!", function() {
+				 			bootbox.alert("La Gesti贸n se ha guardado exitosamente!!!", function() {
 				 				window.location.href = 'index.html';
 				 			});			 				
 			 			}
@@ -475,8 +473,7 @@ $('#btn_guardar').click(function(){
 			 			Func.MsjPeligro("No se pudo Guardar el registro");
 			 		}
 			});
-	  		
-	  		
+  		
 	  	}
 	});
 });

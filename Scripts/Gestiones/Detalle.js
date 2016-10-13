@@ -70,15 +70,40 @@ AppConfig.CargarGestion= function() {
 		    console.log(moment().format('h:mm:ss:SSSS')+" Unica Gestión FIN");	//console.log($.fn.dataTable.isDataTable( '#TBList' ));
 		});
 };
+var Eventos = function(){
+	$('#aniimated-thumbnials').lightGallery({
+		thumbnail:true
+	});
+	$(".btn_eliminar_visita").click(function(){	console.log("Click ELiminar");
+		var vis = $(this).attr('v');				//console.log(fila);	//console.log();
+		var id = $(this).attr('val' );		//console.log(id_gestion);	//console.log($.fn.dataTable.isDataTable( oTable ));
+		bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> la gestión: <B>'+$('#descripcion_vis_'+vis).text()+'</B>', function(result) {
+		  	if(result){
+	  			AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	 //console.log("Cliente:"+AppConfig.socketDataAdmin.io.engine.id);		
+			  	AppConfig.socketDataAdmin.emit('DeleteVisita', {id : id }, function(message){			
+			  		console.log(message);
+			  		if(message=="Ok"){	
+			  			AppConfig.CargarVisitas();
+			  		}
+				});
+		  	}
+		});
+	});
+};
 
 AppConfig.CargarVisitas= function() {
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 	  	AppConfig.socketDataAdmin.emit('GetUnicaGesVisita',  {id_gestion : IdGestion}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Visitas Ini");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);											console.log(decrypted.datos.length); console.log(decrypted);
+			$("#panel-visitas").html('');
 			if(decrypted.datos.length){
 				$.each(decrypted, function () {
-					$.each(this, function (name1, value1) {		console.log(name1 + '=' + value1);
+					$.each(this, function (name1, value1) {		//console.log(value1.id);
+						var eliminar;
+						if(Func.GetTipo()!="C"){
+							eliminar  = '<a  class="btn_eliminar_visita" val="'+value1.id+'" v="'+name1+'">Eliminar <i class="fa fa-trash" aria-hidden="true"></i></a>';
+						}
 						var html =	  '<div id="panel_heading_'+name1+'" class="panel-heading"></div>'+
 								      '<div id="panel_body_'+name1+'" class="panel-body">'+
 										  	'<div class="form-group">'+
@@ -99,9 +124,9 @@ AppConfig.CargarVisitas= function() {
 											'<div id="aniimated-thumbnials_'+name1+'"></div>'+
 											'<div id="lista_archivos_'+name1+'"></div>'+
 								      '</div>';
-					 	$("#panel-visitas").append(html);
-						$.each(value1, function (name, value) {	console.log(name + '=' + value);
-							if(name == "fecha" ) $('#panel_heading_'+name1).html("Avance "+(name1+1)+":      "+value);
+					 	$("#panel-visitas").append(html);	//console.log(eliminar);
+						$.each(value1, function (name, value) {	//console.log(name + '=' + value);
+							if(name == "fecha" ) $('#panel_heading_'+name1).html("Avance "+(name1+1)+":      "+value+"      "+eliminar);
 							if(name == "nombre_mun" ) $('#codigo_mun_vis_'+name1).html(value);
 							if(name == "descripcion" ) $('#descripcion_vis_'+name1).html(value);
 							if(name == "avance_porcen" ) $('#avance_porcen_'+name1).html(value);
@@ -115,7 +140,7 @@ AppConfig.CargarVisitas= function() {
 								}else{
 									var str_array = str.split(',');
 									for(var i = 0; i < str_array.length; i++) {
-									   str = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");	console.log(str);
+									   str = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");	//console.log(str);
 									   var datafile = str.split('@');	console.log(datafile[1].substring(0, 5));
 										if(datafile[1].substring(0, 5)=="image"){
 											$("#aniimated-thumbnials_"+name1).append('<a href="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'"><img class="galeria" src="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'" /></a>');	
@@ -134,9 +159,7 @@ AppConfig.CargarVisitas= function() {
 						
 					}); //console.log("Cargaaaaaa");
 				});
-				$('#aniimated-thumbnials').lightGallery({
-				    thumbnail:true
-				});
+				Eventos();
 			}else
 			{
 				//$("#panel-visitas").hide();

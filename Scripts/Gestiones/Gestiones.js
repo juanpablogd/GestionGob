@@ -101,15 +101,19 @@ $(document).ready(function() {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
-						if(name!="id_gestion"){
-							if(name=="descripcion"){
-								$('#f'+name1).append('<td id="d'+name1+'">'+value+'</td>');
-							}else $('#f'+name1).append("<td>"+value+"</td>");
-						} else {
-							if(Func.GetTipo()=="C"){
-								$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');
-							} else{
-								$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td><td><div><h4><a href="#" class="btn_add_visita" val="'+value+'" f="'+name1+'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><a href="#" class="btn_editar" val="'+value+'" f="'+name1+'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td><td><a href="#" class="btn_eliminar" val="'+value+'" f="'+name1+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td>');								
+						if(name=="avance"){
+							if(value=="0") $('#f'+name1).css('color', 'red'); 
+						} else {	
+							if(name!="id_gestion"){
+								if(name=="descripcion"){
+									$('#f'+name1).append('<td id="d'+name1+'">'+value+'</td>');
+								}else $('#f'+name1).append("<td>"+value+"</td>");
+							} else {
+								if(Func.GetTipo()=="C"){
+									$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td>');
+								} else{
+									$('#f'+name1).append('<td><a href="#" class="btn_detalle" val="'+value+'" f="'+name1+'"><i class="fa fa-outdent" aria-hidden="true"></i></a></td><td><div><h4><a href="#" class="btn_add_visita" val="'+value+'" f="'+name1+'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></h4></div></td><td><a href="#" class="btn_editar" val="'+value+'" f="'+name1+'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td><td><a href="#" class="btn_eliminar" val="'+value+'" f="'+name1+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td>');								
+								}
 							}
 						}
 			      	});
@@ -128,7 +132,7 @@ $(document).ready(function() {
 		        } );
 		    } );
 		    console.log(moment().format('h:mm:ss:SSSS')+" Mun Gestiones FIN");	//console.log($.fn.dataTable.isDataTable( '#TBList' ));
-		  	Eventos();			
+		  	Eventos();
 		});
 	};
 	console.log("Carga Inicial de Gestiones!");

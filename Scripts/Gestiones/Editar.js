@@ -147,7 +147,7 @@ AppConfig.Inicial= function() {
 	
 	$('#input-1').on('filebatchuploadcomplete', function(event, files, extra) {
 	    //console.log('File batch upload complete');
-	 	bootbox.alert("La Gesti�n se ha guardado exitosamente!!!", function() {
+	 	bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
 			window.location.href = 'index.html';
 		});
 	});
@@ -262,7 +262,7 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoMeta"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		if(AppConfig["ListadoMeta"].length == 0 ){
-			Func.MsjPeligro("No se encontraron metas para esta secretar�a");
+			Func.MsjPeligro("No se encontraron metas para esta secretaría");
 			$("#MsjAlertaMetas").show();
 		}else $("#MsjAlertaMetas").hide();
 		$('#cod_meta').multiselect('dataprovider', AppConfig["ListadoMeta"]);
@@ -327,7 +327,7 @@ $('#btn_guardar').click(function(){
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
 	  		var noticia = $("#noticia").val().trim();	if(noticia.length > 255) noticia = noticia.substring(0,255);
 	  		var id_categoria = $("#id_categoria option:selected").val();
-	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripci�n: " + descripcion);
+	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
@@ -347,7 +347,7 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#noticia').focus(); }, 500);
 	  			return;
 	  		}else if(descripcion==""){
-	  			Func.MsjPeligro("Digite una descripci�n");
+	  			Func.MsjPeligro("Digite una descripción");
 	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
 	  			return;
 	  		}else if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"]==null || AppConfig["codigo_mun"].length<1){
@@ -368,7 +368,7 @@ $('#btn_guardar').click(function(){
 	  			}
 	  		}
 	  		if(id_categoria == ""){
-	  			Func.MsjPeligro("Debe seleccionar una Categor�a");
+	  			Func.MsjPeligro("Debe seleccionar una Categoría");
 	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
 	  			return;
 	  		}
@@ -379,7 +379,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"]==null || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Debe seleccionar al menos una Secretar�a");
+	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
 	  			$('#id_centrog').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#id_centrog').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
@@ -390,7 +390,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(responsable_tel==""){
 	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Digite el tel�fono des responsable");
+	  			Func.MsjPeligro("Digite el teléfono des responsable");
 	  			setTimeout(function() { $('#responsable_tel').focus(); }, 500);
 	  			return;
 	  		}else if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
@@ -413,17 +413,17 @@ $('#btn_guardar').click(function(){
 			}
 	  		if(empleos_gen_directo==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el n�meo de empleos generados directamente");
+	  			Func.MsjPeligro("Ingrese el número de empleos generados directamente");
 	  			setTimeout(function() { $('#empleos_gen_directo').focus(); }, 500);
 	  			return;
   			}else if(empleos_gen_indirecto==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el n�meo de empleos generados Indirectamente");
+	  			Func.MsjPeligro("Ingrese el número de empleos generados Indirectamente");
 	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
 	  			return;
   			}else if(resultado==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Describa el resultado de la gesti�n");
+	  			Func.MsjPeligro("Describa el resultado de la gestión");
 	  			setTimeout(function() { $('#resultado').focus();}, 500);
 	  			return;
 	  		}
@@ -470,7 +470,7 @@ $('#btn_guardar').click(function(){
 							AppConfig["id_gestion"] = message;	//console.log(AppConfig["IdVisita"]);
 				 			$('#input-1').fileinput('upload');
 			 			}else{
-				 			bootbox.alert("La Gesti�n se ha guardado exitosamente!!!", function() {
+				 			bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
 				 				window.location.href = 'index.html';
 				 			});			 				
 			 			}

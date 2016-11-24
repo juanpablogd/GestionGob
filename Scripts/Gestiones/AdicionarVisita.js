@@ -79,7 +79,7 @@ AppConfig.Inicial= function() {
 	
 	$('#input-1').on('filebatchuploadcomplete', function(event, files, extra) {
 	    //console.log('File batch upload complete');
-	 	bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+	 	bootbox.alert("El avance se ha guardado exitosamente!", function() {
 			window.location.href = 'index.html';
 		});
 	});

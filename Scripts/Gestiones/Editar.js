@@ -128,14 +128,14 @@ AppConfig.Inicial= function() {
 	});	//console.log(moment().format('YYYY-MM-DD'));
 	$('#fecha').datetextentry('set_date',AppConfig['fecha']);
 
-	$( "#id_categoria" ).change(function() {
+	$( "#id_categoria" ).change(function() { console.log("CAmbia categoria");
 		var id_cat = $( this ).val();
-		var csecop = $( "label[for='enlace_secop']" );
+		//var csecop = $( "label[for='enlace_secop']" );
 		var cmetas = $( "label[for='cod_meta']" );
-		csecop.removeClass("control-label required");
+		//csecop.removeClass("control-label required");
 		cmetas.removeClass("control-label required");
 		if(id_cat == 1 || id_cat == 2) {
-			csecop.addClass("control-label required");
+			//csecop.addClass("control-label required");
 			cmetas.addClass("control-label required");
 		}
 	});
@@ -147,7 +147,7 @@ AppConfig.Inicial= function() {
 	
 	$('#input-1').on('filebatchuploadcomplete', function(event, files, extra) {
 	    //console.log('File batch upload complete');
-	 	bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+	 	bootbox.alert("La Gestiï¿½n se ha guardado exitosamente!!!", function() {
 			window.location.href = 'index.html';
 		});
 	});
@@ -262,7 +262,7 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoMeta"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		if(AppConfig["ListadoMeta"].length == 0 ){
-			Func.MsjPeligro("No se encontraron metas para esta secretaría");
+			Func.MsjPeligro("No se encontraron metas para esta secretarï¿½a");
 			$("#MsjAlertaMetas").show();
 		}else $("#MsjAlertaMetas").hide();
 		$('#cod_meta').multiselect('dataprovider', AppConfig["ListadoMeta"]);
@@ -325,8 +325,9 @@ $('#btn_guardar').click(function(){
 	  	console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
+	  		var noticia = $("#noticia").val().trim();	if(noticia.length > 255) noticia = noticia.substring(0,255);
 	  		var id_categoria = $("#id_categoria option:selected").val();
-	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
+	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripciï¿½n: " + descripcion);
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
@@ -341,19 +342,19 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Debe ingresar una fecha");
 	  			setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 500);
 	  			return;
+	  		}else if(noticia==""){
+	  			Func.MsjPeligro("Digite el nombre de la Noticia");
+	  			setTimeout(function() { $('#noticia').focus(); }, 500);
+	  			return;
+	  		}else if(descripcion==""){
+	  			Func.MsjPeligro("Digite una descripciï¿½n");
+	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
+	  			return;
 	  		}else if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"]==null || AppConfig["codigo_mun"].length<1){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Municipio");
 	  			$('#codigo_mun').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
-	  		}else if(id_categoria == ""){
-	  			Func.MsjPeligro("Debe seleccionar una Categoría");
-	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
-	  			return;
-	  		}else if(descripcion==""){
-	  			Func.MsjPeligro("Digite una descripción");
-	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
-	  			return;	  			
 	  		}
 	  		if(avance_porcentaje==""){
 	  			Func.MsjPeligro("Digite un porcentaje de avance");
@@ -366,6 +367,11 @@ $('#btn_guardar').click(function(){
 		  			return;	
 	  			}
 	  		}
+	  		if(id_categoria == ""){
+	  			Func.MsjPeligro("Debe seleccionar una Categorï¿½a");
+	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
+	  			return;
+	  		}
 	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
 	  			$('#id_sector').nextAll('div').addClass("open");
@@ -373,7 +379,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"]==null || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
+	  			Func.MsjPeligro("Debe seleccionar al menos una Secretarï¿½a");
 	  			$('#id_centrog').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#id_centrog').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
@@ -384,7 +390,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(responsable_tel==""){
 	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Digite el teléfono des responsable");
+	  			Func.MsjPeligro("Digite el telï¿½fono des responsable");
 	  			setTimeout(function() { $('#responsable_tel').focus(); }, 500);
 	  			return;
 	  		}else if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
@@ -395,41 +401,38 @@ $('#btn_guardar').click(function(){
 		  			setTimeout(function() { $('#cod_meta').nextAll('div').find('.multiselect-search').focus();}, 500);
 		  			return;
 		  		}
-				if(enlace_secop==""){ //console.log("enlace_secop VACIO");
-		  				$('#contractual-panel-body').show();
-			  			Func.MsjPeligro("Ingrese el enlace del secop");
-			  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
-			  			return;
-	  			}else{	//console.log("enlace_secop con INFO");
-  						if(Func.ValidaURL(enlace_secop)==false){ //console.log("enlace_secop con INFO NO VALIDO");
-			  				$('#contractual-panel-body').show();
-				  			Func.MsjPeligro("Ingrese una URL valida");
-				  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
-				  			return;
-						}	
-				}// FIN INFO CONTRACTUAL
+				// FIN INFO CONTRACTUAL
 	  		}
+			if(enlace_secop!=""){ console.log("enlace_secop NO VACIO");
+				if(Func.ValidaURL(enlace_secop)==false){	//console.log("enlace_secop con INFO NO VALIDO");
+	  				$('#contractual-panel-body').show();
+		  			Func.MsjPeligro("Ingrese una URL valida");
+		  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
+		  			return;
+				}	
+			}
 	  		if(empleos_gen_directo==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el númeo de empleos generados directamente");
+	  			Func.MsjPeligro("Ingrese el nï¿½meo de empleos generados directamente");
 	  			setTimeout(function() { $('#empleos_gen_directo').focus(); }, 500);
 	  			return;
   			}else if(empleos_gen_indirecto==""){
   				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
+	  			Func.MsjPeligro("Ingrese el nï¿½meo de empleos generados Indirectamente");
 	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
 	  			return;
   			}else if(resultado==""){
-		  				$('#seguimiento-panel-body').show();
-			  			Func.MsjPeligro("Describa el resultado de la gestión");
-			  			setTimeout(function() { $('#resultado').focus();}, 500);
-			  			return;
+  				$('#seguimiento-panel-body').show();
+	  			Func.MsjPeligro("Describa el resultado de la gestiï¿½n");
+	  			setTimeout(function() { $('#resultado').focus();}, 500);
+	  			return;
 	  		}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 	  		fecha = Func.Ecrypted(fecha);	//console.log(AppConfig["codigo_mun"]);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
 	  		id_categoria = Func.Ecrypted(id_categoria);
+	  		noticia = Func.Ecrypted(noticia);
 	  		descripcion = Func.Ecrypted(descripcion);
 	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
 	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
@@ -452,7 +455,7 @@ $('#btn_guardar').click(function(){
 	  		resultado = Func.Ecrypted(resultado);
 	  		id_gestion = Func.Ecrypted(IdGestion);
 	  		
-  			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,descripcion:descripcion,
+  			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,noticia:noticia,descripcion:descripcion,
   															avance_porcentaje:avance_porcentaje,id_sector:id_sector,id_centrog:id_centrog,responsable_nom:responsable_nom,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,responsable_nom_ext:responsable_nom_ext,
   															responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,id_tipo_cto:id_tipo_cto,
@@ -467,7 +470,7 @@ $('#btn_guardar').click(function(){
 							AppConfig["id_gestion"] = message;	//console.log(AppConfig["IdVisita"]);
 				 			$('#input-1').fileinput('upload');
 			 			}else{
-				 			bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+				 			bootbox.alert("La Gestiï¿½n se ha guardado exitosamente!!!", function() {
 				 				window.location.href = 'index.html';
 				 			});			 				
 			 			}

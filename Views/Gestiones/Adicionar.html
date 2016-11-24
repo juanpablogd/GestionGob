@@ -105,26 +105,30 @@
 			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<input type="date" class="form-control" id="fecha">
 		</div>
-	  	<div class="form-group">
-		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<select id="codigo_mun" multiple="multiple">&nbsp;</select>
-	  	</div>
 		<div class="form-group">
-		  	<label for="id_categoria" class="control-label required"  data-toggle="tooltip" title="Clasificación de la intervención, proyecto ó gestión">Categorización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-		  	<select class="form-control" id="id_categoria" >
-		  		<option value="" selected=""> -- Seleccione -- </option>
-		    	<option value="1">Proyecto PDD</option>
-		    	<option value="2">Proyecto Estratégico - Moño</option>
-		    	<option value="3">Gestión / Tarea</option>
-			</select>
+			<label for="noticia" class="control-label required" data-toggle="tooltip" title="Describir de manera Resumida la Nombre de la Noticia">Noticia <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+  			<textarea class="form-control" rows="2" id="noticia" maxlength="255">&nbsp;</textarea>
 		</div>
 		<div class="form-group">
 			<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
   			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
 		</div>
+	  	<div class="form-group">
+		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<select id="codigo_mun" multiple="multiple">&nbsp;</select>
+	  	</div>
 		<div class="form-group">
 			<label for="avance_porcentaje" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención (0-100%)">% Porcentaje de avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<input type="number" class="form-control" id="avance_porcentaje">
+		</div>
+		<div class="form-group">
+		  	<label for="id_categoria" class="control-label required"  data-toggle="tooltip" title="Clasificación de la intervención, proyecto ó gestión">Categorización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		  	<select class="form-control" id="id_categoria" >
+		  		<option value="" selected=""> -- Seleccione -- </option>
+		    	<option value="1">Proyecto PDD</option>
+		    	<option value="2">Proyecto Estratégico</option>
+		    	<option value="3">Gestión / Tarea</option>
+			</select>
 		</div>
 		<div class="form-group">
 		    <label for="id_sector" class="control-label required" data-toggle="tooltip" title="Sector(es) económico al que beneficia">Sector </label>

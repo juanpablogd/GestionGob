@@ -365,6 +365,11 @@ $('#btn_guardar').click(function(){
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
 			  			return;
 	  		}
+	  		if(NumArchivos==0){
+	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
+	  			setTimeout(function() { $('#input-1').focus(); }, 500);
+	  			return;
+	  		}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 	  		fecha = Func.Ecrypted(fecha);

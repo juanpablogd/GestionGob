@@ -180,11 +180,7 @@ AppConfig.Inicial= function() {
 
 
 AppConfig.CargaMunicipios= function() {	
-<<<<<<< HEAD
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-=======
-	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
->>>>>>> origin/master
   	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
@@ -194,11 +190,7 @@ AppConfig.CargaMunicipios= function() {
 	});
 };
 AppConfig.CargaSectores= function() {	
-<<<<<<< HEAD
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-=======
-	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
->>>>>>> origin/master
   	AppConfig.socketDataAdmin.emit('GetListSector', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Sector");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
@@ -208,11 +200,7 @@ AppConfig.CargaSectores= function() {
 	});
 };
 AppConfig.CargaSecretarias= function() {	
-<<<<<<< HEAD
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-=======
-	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
->>>>>>> origin/master
 	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG());
   	AppConfig.socketDataAdmin.emit('GetListSecretaria', {id_centrog : id_centroges, tipo_usr : Func.Ecrypted(Func.GetTipo()) }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");				//console.log("message:" + message);
@@ -235,11 +223,7 @@ AppConfig.CargaSecretarias= function() {
 };	*/
 
 AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
-<<<<<<< HEAD
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-=======
-	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
->>>>>>> origin/master
 	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
 	//AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
   	AppConfig.socketDataAdmin.emit('GetListMeta', '', function(message){
@@ -256,11 +240,7 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
    
 };
 AppConfig.CargaProductosPrensa= function() {
-<<<<<<< HEAD
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-=======
-	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
->>>>>>> origin/master
   	AppConfig.socketDataAdmin.emit('GetListProductoPren', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Productos Prensa");			//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);												//console.log(message);									
@@ -289,7 +269,6 @@ $('#btn_guardar').click(function(){
 	  		var id_categoria = $("#id_categoria option:selected").val();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
-<<<<<<< HEAD
 	  		//var nro_cto = $("#nro_cto").val().trim();	
 	  		var fte_nacional = $("#fte_nacional").val().trim();
 	  		var fte_depto = $("#fte_depto").val().trim();
@@ -304,12 +283,6 @@ $('#btn_guardar').click(function(){
 	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
 	  		var areaint = $("#areaint").val().trim();
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
-=======
-	  		//var nro_cto = $("#nro_cto").val().trim();	//var fte_nacional = $("#fte_nacional").val().trim();//var fte_depto = $("#fte_depto").val().trim();//var fte_mpio = $("#fte_mpio").val().trim();//var fte_sgp = $("#fte_sgp").val().trim();//var fte_regalias = $("#fte_regalias").val().trim();//var fte_otros = $("#fte_otros").val().trim();//console.log(fte_otros);//var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();//var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);//var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
-	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
-	  		var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
-	  		var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
->>>>>>> origin/master
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
 	  		
@@ -386,7 +359,6 @@ $('#btn_guardar').click(function(){
 			  			return;
 					}	
 			}
-<<<<<<< HEAD
 	  		if(pbeneficiadas==""){
   				$('#seguimiento-panel-body').show();
 	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
@@ -397,18 +369,6 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
 	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
 	  			return;		*/
-=======
-	  		if(empleos_gen_directo==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el númeo de empleos generados directamente");
-	  			setTimeout(function() { $('#empleos_gen_directo').focus(); }, 500);
-	  			return;
-  			}else if(empleos_gen_indirecto==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
-	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
-	  			return;
->>>>>>> origin/master
   			}else if(resultado==""){
 		  				$('#seguimiento-panel-body').show();
 			  			Func.MsjPeligro("Describa el resultado de la gestión");
@@ -421,11 +381,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
-<<<<<<< HEAD
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
-=======
-	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
->>>>>>> origin/master
 	  		fecha = Func.Ecrypted(fecha);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
 	  		id_categoria = Func.Ecrypted(id_categoria);
@@ -440,16 +396,12 @@ $('#btn_guardar').click(function(){
 	  		responsable_nom_ext = Func.Ecrypted($("#responsable_nom_ext").val().trim()); //OPCIONAL
 	  		responsable_tel_ext = Func.Ecrypted($("#responsable_tel_ext").val().trim()); //OPCIONAL
 	  		responsable_email_ext = Func.Ecrypted($("#responsable_email_ext").val().trim()); //OPCIONAL
-<<<<<<< HEAD
 	  		areaint = Func.Ecrypted($("#areaint").val().trim()); //OPCIONAL
-=======
->>>>>>> origin/master
 	  		
 	  		
 	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
 	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
 	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
-<<<<<<< HEAD
 	  		//nro_cto = Func.Ecrypted(nro_cto);
 	  		fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));
 	  		fte_depto = Func.Ecrypted(numeral().unformat(fte_depto));
@@ -463,28 +415,15 @@ $('#btn_guardar').click(function(){
 	  		pbeneficiadas = Func.Ecrypted(pbeneficiadas);
 	  		
 	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
-=======
-	  		//nro_cto = Func.Ecrypted(nro_cto);//fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));//fte_depto = Func.Ecrypted(numeral().unformat(fte_depto));//fte_mpio = Func.Ecrypted(numeral().unformat(fte_mpio));//fte_sgp = Func.Ecrypted(numeral().unformat(fte_sgp));//fte_regalias = Func.Ecrypted(numeral().unformat(fte_regalias));//descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);//fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
-	  		enlace_secop = Func.Ecrypted(enlace_secop);
-	  		empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);
-	  		empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
->>>>>>> origin/master
 	  		resultado = Func.Ecrypted(resultado);
 	  		
   			AppConfig.socketDataAdmin.emit('SetGestion', {	fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,noticia:noticia,descripcion:descripcion,
   															avance_porcentaje:avance_porcentaje,id_sector:id_sector,id_centrog:id_centrog,responsable_nom:responsable_nom,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,responsable_nom_ext:responsable_nom_ext,
-<<<<<<< HEAD
   															responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,id_tipo_cto:id_tipo_cto,	//nro_cto:nro_cto,
   															fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
   															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,//empleos_gen_indirecto:empleos_gen_indirecto,
-=======
-  															responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,id_tipo_cto:id_tipo_cto,
-  															//nro_cto:nro_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
-  															//fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,fecha_ini:fecha_ini,fecha_fin:fecha_fin,
-  															enlace_secop:enlace_secop,cod_meta:cod_meta,empleos_gen_directo:empleos_gen_directo,empleos_gen_indirecto:empleos_gen_indirecto,
->>>>>>> origin/master
   															id_producto:id_producto,resultado:resultado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){

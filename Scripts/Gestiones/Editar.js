@@ -331,7 +331,6 @@ $('#btn_guardar').click(function(){
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
-<<<<<<< HEAD
 	  		var fte_nacional = $("#fte_nacional").val().trim();
 	  		var fte_depto = $("#fte_depto").val().trim();
 	  		var fte_mpio = $("#fte_mpio").val().trim();
@@ -343,12 +342,6 @@ $('#btn_guardar').click(function(){
 	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
 	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
 	  		var areaint = $("#areaint").val().trim();				//var pbeneficiadas = $("#pbeneficiadas").val().trim();//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
-=======
-	  		//var nro_cto = $("#nro_cto").val().trim();	//var fte_nacional = $("#fte_nacional").val().trim();//var fte_depto = $("#fte_depto").val().trim();//var fte_mpio = $("#fte_mpio").val().trim();//var fte_sgp = $("#fte_sgp").val().trim();//var fte_regalias = $("#fte_regalias").val().trim();//var fte_otros = $("#fte_otros").val().trim();//console.log(fte_otros);//var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();//var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);//var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
-	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
-	  		var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
-	  		var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
->>>>>>> origin/master
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
 	  		
@@ -425,7 +418,6 @@ $('#btn_guardar').click(function(){
 		  			return;
 				}	
 			}
-<<<<<<< HEAD
 	  		if(pbeneficiadas==""){
   				$('#seguimiento-panel-body').show();
 	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
@@ -436,18 +428,6 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Ingrese el número de empleos generados Indirectamente");
 	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
 	  			return;	*/
-=======
-	  		if(empleos_gen_directo==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el número de empleos generados directamente");
-	  			setTimeout(function() { $('#empleos_gen_directo').focus(); }, 500);
-	  			return;
-  			}else if(empleos_gen_indirecto==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el número de empleos generados Indirectamente");
-	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
-	  			return;
->>>>>>> origin/master
   			}else if(resultado==""){
   				$('#seguimiento-panel-body').show();
 	  			Func.MsjPeligro("Describa el resultado de la gestión");
@@ -475,7 +455,6 @@ $('#btn_guardar').click(function(){
 	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
 	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
 	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
-<<<<<<< HEAD
 	  		//nro_cto = Func.Ecrypted(nro_cto);//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
 	  		enlace_secop = Func.Ecrypted(enlace_secop);
 	  		fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));
@@ -487,29 +466,16 @@ $('#btn_guardar').click(function(){
 	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));	//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
 	  		areaint = Func.Ecrypted(areaint);
 	  		pbeneficiadas = Func.Ecrypted(pbeneficiadas);				//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
-=======
-	  		//nro_cto = Func.Ecrypted(nro_cto);//fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));//fte_depto = Func.Ecrypted(numeral().unformat(fte_depto));//fte_mpio = Func.Ecrypted(numeral().unformat(fte_mpio));//fte_sgp = Func.Ecrypted(numeral().unformat(fte_sgp));//fte_regalias = Func.Ecrypted(numeral().unformat(fte_regalias));//descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);//fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
-	  		enlace_secop = Func.Ecrypted(enlace_secop);
-	  		empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);
-	  		empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
->>>>>>> origin/master
 	  		resultado = Func.Ecrypted(resultado);
 	  		id_gestion = Func.Ecrypted(IdGestion);
 	  		
   			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,noticia:noticia,descripcion:descripcion,
   															avance_porcentaje:avance_porcentaje,id_sector:id_sector,id_centrog:id_centrog,responsable_nom:responsable_nom,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,responsable_nom_ext:responsable_nom_ext,
-<<<<<<< HEAD
   															responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,id_tipo_cto:id_tipo_cto,//nro_cto:nro_cto,
   															fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
   															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,//empleos_gen_indirecto:empleos_gen_indirecto,
-=======
-  															responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,id_tipo_cto:id_tipo_cto,
-  															//nro_cto:nro_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
-  															//fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,fecha_ini:fecha_ini,fecha_fin:fecha_fin,
-  															enlace_secop:enlace_secop,cod_meta:cod_meta,empleos_gen_directo:empleos_gen_directo,empleos_gen_indirecto:empleos_gen_indirecto,
->>>>>>> origin/master
   															id_producto:id_producto,resultado:resultado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){

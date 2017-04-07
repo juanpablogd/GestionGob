@@ -31,11 +31,7 @@ AppConfig.CargarGestion= function() {
 			console.log(moment().format('h:mm:ss:SSSS')+" Unica Gestión Ini");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);											//console.log(decrypted);
 			$.each(decrypted, function () {
-<<<<<<< HEAD
 				$.each(this, function (name1, value1) {		console.log(value1);	//console.log(name1 + '=' + value1); 
-=======
-				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
->>>>>>> origin/master
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
 						if(name=="enlace_secop"){
 							$("#"+name).html('<a target="_blank" href="'+value+'">'+value+'</a>');
@@ -66,15 +62,12 @@ AppConfig.CargarGestion= function() {
 			      		$("#responsable_ext-icon").removeClass("glyphicon-chevron-up");
 			      		$("#responsable_ext-icon").addClass("glyphicon-chevron-down");
 			      	}
-<<<<<<< HEAD
 			      	if(value1.enlace_secop.length==0 && (value1.fte_nacional=="$0" || value1.fte_nacional==null) && (value1.fte_depto=="$0" || value1.fte_depto==null)  && (value1.fte_mpio=="$0" || value1.fte_mpio==null) && (value1.fte_sgp=="$0" || value1.fte_sgp==null) && (value1.fte_regalias=="$0" || value1.fte_regalias==null) && (value1.fte_otros=="$0" || value1.fte_otros==null)){ console.log("Contrae Panel");
 			      		$("#contrato-span").addClass("panel-collapsed");
 			      		$("#contrato-panel-body").hide();
 			      		$("#contrato-icon").removeClass("glyphicon-chevron-up");
 			      		$("#contrato-icon").addClass("glyphicon-chevron-down");
 			      	}
-=======
->>>>>>> origin/master
 				}); //console.log("Cargaaaaaa");
 			});
 			$('#aniimated-thumbnials').lightGallery({

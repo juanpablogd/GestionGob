@@ -174,6 +174,10 @@ $( ".valor" ).each(function( index ) {	//console.log( index + ": " + $( this ).t
 	    numeral: true,
 	    numeralThousandsGroupStyle: 'thousand'
 	});
+<<<<<<< HEAD
+});
+=======
 });
 //console.log(Func.GetTipo());
 //if(Func.GetTipo()=="C") $("#opcion_listado").hide();
+>>>>>>> origin/master

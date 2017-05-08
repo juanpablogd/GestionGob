@@ -189,7 +189,6 @@ AppConfig.CargaMunicipios= function() {
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
-/*
 AppConfig.CargaSectores= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
   	AppConfig.socketDataAdmin.emit('GetListSector', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
@@ -199,7 +198,7 @@ AppConfig.CargaSectores= function() {
 		$('#id_sector').multiselect('dataprovider', AppConfig["ListadoSector"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
-};	*/
+};
 AppConfig.CargaSecretarias= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
 	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG());
@@ -252,7 +251,7 @@ AppConfig.CargaProductosPrensa= function() {
 };
 AppConfig.Inicial();
 AppConfig.CargaMunicipios();
-//AppConfig.CargaSectores();
+AppConfig.CargaSectores();
 AppConfig.CargaSecretarias();
 //AppConfig.CargaTipoContrato();
 AppConfig.CargaMetas();
@@ -321,14 +320,12 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
 	  			return;
 	  		}
-
-/*	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
+	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
 	  			$('#id_sector').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
-	  		}else */
-	  		if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
+	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
 	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
 	  			$('#id_centrog').nextAll('div').addClass("open");
@@ -390,7 +387,7 @@ $('#btn_guardar').click(function(){
 	  		noticia = Func.Ecrypted(noticia);
 	  		descripcion = Func.Ecrypted(descripcion);
 	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
-	  		//var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
+	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
 	  		var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
@@ -420,7 +417,7 @@ $('#btn_guardar').click(function(){
 	  		resultado = Func.Ecrypted(resultado);
 	  		
   			AppConfig.socketDataAdmin.emit('SetGestion', {	fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,noticia:noticia,descripcion:descripcion,
-  															avance_porcentaje:avance_porcentaje,id_centrog:id_centrog,responsable_nom:responsable_nom,//id_sector:id_sector,
+  															avance_porcentaje:avance_porcentaje,id_centrog:id_centrog,responsable_nom:responsable_nom,id_sector:id_sector,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,
   															//responsable_nom_ext:responsable_nom_ext,responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,nro_cto:nro_cto,
   															id_tipo_cto:id_tipo_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,

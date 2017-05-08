@@ -379,13 +379,12 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
 	  			return;
 	  		}
-/*	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
+	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"] == null){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
 	  			$('#id_sector').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
-	  		}else */
-	  		if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"]==null || AppConfig["id_centrog"].length<1){
+	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"]==null || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
 	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
 	  			$('#id_centrog').nextAll('div').addClass("open");
@@ -443,7 +442,7 @@ $('#btn_guardar').click(function(){
 	  		noticia = Func.Ecrypted(noticia);
 	  		descripcion = Func.Ecrypted(descripcion);
 	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
-	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
+	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);	console.log(id_sector);
 	  		var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
@@ -471,7 +470,7 @@ $('#btn_guardar').click(function(){
 	  		id_gestion = Func.Ecrypted(IdGestion);
 	  		
   			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,noticia:noticia,descripcion:descripcion,
-  															avance_porcentaje:avance_porcentaje,//id_sector:id_sector,
+  															avance_porcentaje:avance_porcentaje,id_sector:id_sector,
   															id_centrog:id_centrog,responsable_nom:responsable_nom,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,
   															//responsable_nom_ext:responsable_nom_ext,responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,

@@ -91,7 +91,7 @@ $(document).ready(function() {
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 	  	AppConfig.socketDataAdmin.emit('GetListadoGes',  {usrTipo : usrTipo, id_centrog : centroGestor}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log("message:" + message);
-			var decrypted = FuncDecrypted(message);											//console.log(decrypted);
+			var decrypted = FuncDecrypted(message);
 			if(Func.GetTipo()=="C"){
 				$("#TBList tr td,th").filter(':nth-child(9)').remove();
 				$("#TBList tr td,th").filter(':nth-child(9)').remove();

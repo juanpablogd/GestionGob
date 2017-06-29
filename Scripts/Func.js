@@ -1,5 +1,5 @@
 var Func={
-	Decrypted : function (message) {
+	Decrypted : function (message) { 
 		try {
 			var text=CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8);
 		}
@@ -20,7 +20,7 @@ var Func={
 		return ciphertext.toString();
 	},
 	DataLogin: function (){
-		var DatosUsuario=this.Decrypted(localStorage.dt);
+		var DatosUsuario=this.Decrypted(localStorage.dt); //console.log(DatosUsuario);
 		return	DatosUsuario;
 	},
 	GetNombre: function (){
@@ -93,6 +93,7 @@ var Func={
 		if(localStorage.dt){
 			return true;
 	    }else{
+	    	//var data=this.DataLogin(); console.log(data);
 	    	return false;
 	    }
 	},
@@ -174,10 +175,4 @@ $( ".valor" ).each(function( index ) {	//console.log( index + ": " + $( this ).t
 	    numeral: true,
 	    numeralThousandsGroupStyle: 'thousand'
 	});
-<<<<<<< HEAD
 });
-=======
-});
-//console.log(Func.GetTipo());
-//if(Func.GetTipo()=="C") $("#opcion_listado").hide();
->>>>>>> origin/master

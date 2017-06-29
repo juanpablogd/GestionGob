@@ -331,7 +331,7 @@ $('#btn_guardar').click(function(){
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
-	  		var fte_nacional = $("#fte_nacional").val().trim();
+	  		var fte_nacional = $("#fte_nacional").val().trim();		console.log(fte_nacional);
 	  		var fte_depto = $("#fte_depto").val().trim();
 	  		var fte_mpio = $("#fte_mpio").val().trim();
 	  		var fte_sgp = $("#fte_sgp").val().trim();
@@ -340,7 +340,7 @@ $('#btn_guardar').click(function(){
 	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();
 	  		//var nro_cto = $("#nro_cto").val().trim();	//var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);//var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
 	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
-	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
+	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();	console.log(pbeneficiadas);
 	  		var areaint = $("#areaint").val().trim();				//var pbeneficiadas = $("#pbeneficiadas").val().trim();//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
@@ -435,6 +435,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
+	  		$("#input-1").focus();
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 	  		fecha = Func.Ecrypted(fecha);	//console.log(AppConfig["codigo_mun"]);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
@@ -465,7 +466,7 @@ $('#btn_guardar').click(function(){
 	  		descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);
 	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));	//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
 	  		areaint = Func.Ecrypted(areaint);
-	  		pbeneficiadas = Func.Ecrypted(pbeneficiadas);				//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
+	  		pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));				//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
 	  		resultado = Func.Ecrypted(resultado);
 	  		id_gestion = Func.Ecrypted(IdGestion);
 	  		

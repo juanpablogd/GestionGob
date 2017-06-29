@@ -1,8 +1,27 @@
+
 var socket = io.connect(AppConfig.UrlSocket+'/web'); //console.log(AppConfig.UrlSocket);
 $(document).ready(function () {	console.log(Func.UsuarioLogueado());
 	 if(Func.UsuarioLogueado()){
 		window.location.href = '../Gestiones/index.html'; 	
-	 }
+	 }else{
+        var vid_usr = localStorage.id_usr; //console.log(aValue);
+
+        var modulo = $("#modulo").val();
+        var data= {id_usr: vid_usr,'mod': modulo, login: 'Ok'};
+        var DataAES = Func.Ecrypted(data);
+        socket.emit('LoginUsuario',DataAES,function(data){
+                var dat=Func.Decrypted(data); console.log(dat);
+                if (dat.length>0){
+                    localStorage.dt=data;
+                    bootbox.alert("Bienvenido, " + dat[0].nombre, function () {});
+                    window.location.assign(AppConfig.NextLogin);
+               }else{   console.log("Usuario no encontrado! ");
+                    localStorage.clear();
+                    bootbox.alert("Usuario no encontrado!", function () {});
+                }
+            }); 
+
+     }
  
     $("#ingresar").click(function () {
         if (!$("#usuario").val()) {

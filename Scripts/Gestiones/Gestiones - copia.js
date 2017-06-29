@@ -1,7 +1,4 @@
-$(document).ready(function() {	//https://datatables.net/examples/ajax/null_data_source.html     
-//https://stackoverflow.com/questions/31327933/how-add-more-then-one-button-in-each-row-in-jquery-datatables-and-how-to-apply-e
-//https://www.google.com.co/search?q=datatable+enable+function&oq=datatable+enable+function&aqs=chrome..69i57.10807j0j7&sourceid=chrome&ie=UTF-8#q=datatable+button+for+row
-//https://stackoverflow.com/questions/22471862/how-to-add-button-on-each-row-in-datatable 
+$(document).ready(function() {
 	var oTable;
 	var configTBL = {
 					"aLengthMenu": [[50, 10, 20, 100], [50, 10, 20, 100]],
@@ -30,7 +27,14 @@ $(document).ready(function() {	//https://datatables.net/examples/ajax/null_data_
 								}
 					},
 					"deferRender": true,
-					"aaSorting": [] 
+					"aaSorting": [],
+					"columnDefs": [ {
+			          "targets": -1,
+			          "data": null,
+			          "defaultContent": 
+			             '<button class="btn-view" type="button">View Posted Jobs</button>'
+			             + '<button class="btn-delete"  type="button">Delete</button>'
+			        } ]
 				};
 	var Eventos = function(){
 	  	$(".btn_add_visita").click(function(){		//console.log("Click");	console.log($(this).attr( 'val' ));
@@ -135,7 +139,18 @@ $(document).ready(function() {	//https://datatables.net/examples/ajax/null_data_
 		        } );
 		    } );
 		    console.log(moment().format('h:mm:ss:SSSS')+" Mun Gestiones FIN");	//console.log($.fn.dataTable.isDataTable( '#TBList' ));
-		  	Eventos();
+		  	//Eventos();
+			// Handle click on "View" button
+		     $('#TBList tbody').on('click', '.btn-view', function (e) {
+		        var data = oTable.row( $(this).parents('tr') ).data();
+        		alert( data[0] +"'s salary is: "+ data[ 8 ] );
+		     } );
+
+		     // Handle click on "Delete" button
+		     $('#TBList tbody').on('click', '.btn-delete', function (e) {
+		        var data = oTable.row( $(this).parents('tr') ).data();
+        		alert( data[0] +"'s salary is: "+ data[ 9 ] );
+		     } );
 		});
 	};
 	console.log("Carga Inicial de Gestiones!");

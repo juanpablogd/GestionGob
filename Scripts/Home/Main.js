@@ -48,9 +48,9 @@ $( document ).ready(function() {
 	
 	Config.CargaSecretarias= function() {	
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-		var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG());
+		var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	console.log(Func.GetTipo());	//console.log(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG());
 	  	AppConfig.socketDataAdmin.emit('GetListSecretaria', {id_centrog : id_centroges, tipo_usr : Func.Ecrypted(Func.GetTipo()) }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
-			console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");				//console.log("message:" + message);
+			console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);										//console.log(message);									
 			AppConfig["ListadoSecretaria"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
 			$('#id_centrog').multiselect('dataprovider', AppConfig["ListadoSecretaria"]);

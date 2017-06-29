@@ -238,7 +238,7 @@
 				</div>
 				<div class="form-group">
 	    			<label for="pbeneficiadas" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de personas beneficiadas por la intervención.">Número de personas beneficiadas  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    			<input type="number" class="form-control" id="pbeneficiadas">
+	    			<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="pbeneficiadas">
 	  			</div>
 	  			<div class="form-group">
 	    			<label for="areaint">Area intervenida:</label>
@@ -275,8 +275,8 @@
 	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
 	<script src="../../Resources/socket/socket.io.js"></script>				
 	<script src="../../Resources/bootbox/bootbox.js"></script>
-	<script src="../../Resources/Crypto/core-min.js"></script>
-	<script src="../../Resources/Crypto/aes.js"></script>
+	<script src="../../Resources/Crypto/crypto-js.js"></script>
+	<!--script src="../../Resources/Crypto/aes.js"></script-->
 	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
 	<script src="../../Resources/growl/bootstrap-growl.min.js"></script>
 	<script src="../../Resources/growl/Notificaciones.js"></script>

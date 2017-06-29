@@ -181,7 +181,7 @@ AppConfig.Inicial= function() {
 
 AppConfig.CargaMunicipios= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-  	AppConfig.socketDataAdmin.emit('GetListMpio', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+  	AppConfig.socketDataAdmin.emit('GetListMpioSimple', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["ListadoMpio"].features.length);
@@ -380,6 +380,7 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
+	  		$("#input-1").focus();
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 	  		fecha = Func.Ecrypted(fecha);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
@@ -411,7 +412,7 @@ $('#btn_guardar').click(function(){
 	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
 	  		enlace_secop = Func.Ecrypted(enlace_secop);
 	  		//empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);
-	  		pbeneficiadas = Func.Ecrypted(pbeneficiadas);
+	  		pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
 	  		
 	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
 	  		resultado = Func.Ecrypted(resultado);

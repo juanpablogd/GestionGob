@@ -161,8 +161,14 @@ var Func={
 		if (isNaN(x) || x < 0 || x > 100) {
 			return false;
 		} else return true; 
-	}	
-	
+	},
+	BuscaArray:function(arr, obj){
+		var vr = false;
+		for(var i=0; i<arr.length; i++) {
+		    if (arr[i] == obj) vr = true;
+		}
+		return vr;
+	}
 };
 
 var FuncDecrypted=function(message){	//console.log("FuncDecrypted INI: "+AppConfig.cl);

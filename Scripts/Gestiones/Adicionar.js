@@ -179,9 +179,14 @@ AppConfig.Inicial= function() {
 };
 
 
-AppConfig.CargaMunicipios= function() {	
+AppConfig.CargaMunicipios= function() {
+	var tipoMpio = 'GetListMpioSimple';
+	if(Func.BuscaArray(Func.GetCentrosG(),"1223")){	//BUSCA EL ICCU DENTRO DE LOS PERMISOS
+		$("#codigo_mun").attr("multiple", "multiple");
+		tipoMpio = 'GetListMpio';
+	}
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-  	AppConfig.socketDataAdmin.emit('GetListMpioSimple', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+  	AppConfig.socketDataAdmin.emit(tipoMpio, '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["ListadoMpio"].features.length);
@@ -201,7 +206,7 @@ AppConfig.CargaSectores= function() {
 };
 AppConfig.CargaSecretarias= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG());
+	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	console.log(Func.GetCentrosG());	//console.log(Func.GetCentrosG().join());
   	AppConfig.socketDataAdmin.emit('GetListSecretaria', {id_centrog : id_centroges, tipo_usr : Func.Ecrypted(Func.GetTipo()) }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									

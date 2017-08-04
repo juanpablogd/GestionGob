@@ -175,6 +175,7 @@ AppConfig.Inicial= function() {
 	});
 	
 	$('[data-toggle="tooltip"]').tooltip();
+	setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 0.5*000);
 	//console.log("ToolTip");
 };
 

@@ -325,7 +325,7 @@ $('#btn_guardar').click(function(){
 	  	console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
-	  		var noticia = $("#noticia").val().trim();	if(noticia.length > 255) noticia = noticia.substring(0,255);
+	  		//var noticia = $("#noticia").val().trim();	if(noticia.length > 255) noticia = noticia.substring(0,255);
 	  		var id_categoria = $("#id_categoria option:selected").val();
 	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
@@ -349,10 +349,10 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Debe ingresar una fecha");
 	  			setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 500);
 	  			return;
-	  		}else if(noticia==""){
+/*	  		}else if(noticia==""){
 	  			Func.MsjPeligro("Digite el nombre de la Noticia");
 	  			setTimeout(function() { $('#noticia').focus(); }, 500);
-	  			return;
+	  			return;		*/
 	  		}else if(descripcion==""){
 	  			Func.MsjPeligro("Digite una descripción");
 	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
@@ -440,7 +440,7 @@ $('#btn_guardar').click(function(){
 	  		fecha = Func.Ecrypted(fecha);	//console.log(AppConfig["codigo_mun"]);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
 	  		id_categoria = Func.Ecrypted(id_categoria);
-	  		noticia = Func.Ecrypted(noticia);
+	  		//noticia = Func.Ecrypted(noticia);
 	  		descripcion = Func.Ecrypted(descripcion);
 	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
 	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);	console.log(id_sector);
@@ -470,7 +470,8 @@ $('#btn_guardar').click(function(){
 	  		resultado = Func.Ecrypted(resultado);
 	  		id_gestion = Func.Ecrypted(IdGestion);
 	  		
-  			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,noticia:noticia,descripcion:descripcion,
+  			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,//noticia:noticia,
+  															descripcion:descripcion,
   															avance_porcentaje:avance_porcentaje,id_sector:id_sector,
   															id_centrog:id_centrog,responsable_nom:responsable_nom,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,

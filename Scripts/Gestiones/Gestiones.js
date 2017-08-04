@@ -60,14 +60,14 @@ $(document).ready(function() {
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');
-					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
-						if(name=="avance"){
-							if(value=="0") $('#f'+name1).css('color', 'red'); 
-						} else {
-							if(name=="id_gestion"){
-								$('#f'+name1).append("<td>"+value+"</td><td></td>");
-							}else $('#f'+name1).append("<td>"+value+"</td>");
+					$.each(value1, function (name, value) {	console.log(name + '=' + value);
+						if(name=="avance_porcentaje"){
+							if(value<100) $('#f'+name1).css('color', 'red'); 
 						}
+						if(name=="id_gestion"){
+							$('#f'+name1).append("<td>"+value+"</td><td></td>");
+						}else $('#f'+name1).append("<td>"+value+"</td>");
+						
 			      	});
 				}); //console.log("Cargaaaaaa");
 			});

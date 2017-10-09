@@ -61,7 +61,7 @@ $(document).ready(function() {
             }
         },
         series: [{
-            name: 'II trimestre',
+            name: '% de Avance ',
             data: [0],
             dataLabels: {
                 format: '<div style="text-align:center"><span style="font-size:25px;color:' +
@@ -74,12 +74,12 @@ $(document).ready(function() {
         }]
       })
     );
-	AppConfig.getColor=function(val){   //console.log(val);
+	AppConfig.getColor=function(val){   console.log(val);
         if(val>=0 && val<30){  //console.log(c.symbols[i].color);
           return "red";
         }else if(val>=30 && val<60){
         	return "yellow";
-        }else if(val>=100){
+        }else if(val>=60){
         	return "green";
         }
 	}
@@ -111,10 +111,21 @@ AppConfig.CargarGestion= function() {
 			console.log(moment().format('h:mm:ss:SSSS')+" Unica Gestión Ini");			//console.log("message:" + message);
 			var decrypted = FuncDecrypted(message);											//console.log(decrypted);
 			$.each(decrypted, function () {
-				$.each(this, function (name1, value1) {		console.log(value1);	//console.log(name1 + '=' + value1); 
+				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
 						if(name=="enlace_secop"){
 							$("#"+name).html('<a target="_blank" href="'+value+'">'+value+'</a>');
+						}else if(name=="avance_porcentaje"){	console.log(name + '=' + value);
+							AppConfig.gavance.update({
+							       series:{
+							          data:[
+							              {
+							                y: value,
+							                color: AppConfig.getColor(value)
+							              }
+							          ]
+							        }
+							      });
 						}else if(name=="url"){		//console.log(name + '=' + value);
 								var str = value;
 								if(str==null){	
@@ -123,7 +134,7 @@ AppConfig.CargarGestion= function() {
 									var str_array = str.split(',');
 									for(var i = 0; i < str_array.length; i++) {
 									   str = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");	console.log(str);
-									   var datafile = str.split('@');	console.log(datafile[1].substring(0, 5));
+									   var datafile = str.split('@');	//console.log(datafile[1].substring(0, 5));
 										if(datafile[1].substring(0, 5)=="image"){
 											$("#aniimated-thumbnials").append('<a href="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'"><img class="galeria" src="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'" /></a>');	
 										}else{
@@ -149,7 +160,7 @@ AppConfig.CargarGestion= function() {
 			      		$("#contrato-icon").addClass("glyphicon-chevron-down");
 			      	}
 				}); //console.log("Cargaaaaaa");
-			});
+			});	console.log("lightGallery");
 			$('#aniimated-thumbnials').lightGallery({
 			    thumbnail:true
 			});
@@ -157,9 +168,6 @@ AppConfig.CargarGestion= function() {
 		});
 };
 var Eventos = function(){
-	$('#aniimated-thumbnials').lightGallery({
-		thumbnail:true
-	});
 	$(".btn_eliminar_visita").click(function(){	console.log("Click ELiminar");
 		var vis = $(this).attr('v');				//console.log(fila);	//console.log();
 		var id = $(this).attr('val' );		//console.log(id_gestion);	//console.log($.fn.dataTable.isDataTable( oTable ));
@@ -185,7 +193,7 @@ AppConfig.CargarVisitas= function() {
 			$("#panel-visitas").html('');
 			if(decrypted.datos.length){
 				$.each(decrypted, function () {
-					$.each(this, function (name1, value1) {		//console.log(value1.id);
+					$.each(this, function (name1, value1) {		console.log(value1.id);
 						var eliminar;
 						if(Func.GetTipo()!="C"){
 							eliminar  = '<a  class="btn_eliminar_visita" val="'+value1.id+'" v="'+name1+'">Eliminar <i class="fa fa-trash" aria-hidden="true"></i></a>';
@@ -215,17 +223,8 @@ AppConfig.CargarVisitas= function() {
 							if(name == "fecha" ) $('#panel_heading_'+name1).html("Avance "+(name1+1)+":      "+value+"      "+eliminar);
 							if(name == "nombre_mun" ) $('#codigo_mun_vis_'+name1).html(value);
 							if(name == "descripcion" ) $('#descripcion_vis_'+name1).html(value);
-							if(name == "avance_porcen" ){	//$('#avance_porcen_'+name1).html(value);
-								AppConfig.gavance.update({
-								       series:{
-								          data:[
-								              {
-								                y: value,
-								                color: AppConfig.getColor(value)
-								              }
-								          ]
-								        }
-								      });
+							if(name == "avance_porcen" ){	//console.log(value);	//
+								$('#avance_porcen_'+name1).html(value);
 							} 
 							if(name == "valor" ) $('#valor_'+name1).html(value);
 							if(name == "und" ) $('#und_'+name1).html(value);

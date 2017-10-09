@@ -4,6 +4,86 @@ $(document).ready(function() {
 	console.log(IdGestion);
 	if(IdGestion == "")	window.location.href = 'index.html';
 
+	AppConfig.graficaOpciones = {
+	          chart: {
+	              type: 'solidgauge'
+	          },
+	          title: null,
+	          pane: {
+	              center: ['50%', '85%'],
+	              size: '140%',
+	              startAngle: -90,
+	              endAngle: 90,
+	              background: {
+	                  backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+	                  innerRadius: '60%',
+	                  outerRadius: '100%',
+	                  shape: 'arc'
+	              }
+	          },
+	          tooltip: {
+	              enabled: false
+	          },
+	    // the value axis
+	    yAxis: {
+	        lineWidth: 0,
+	        minorTickInterval: null,
+	        tickAmount: 2,
+	        title: {
+	            y: -70
+	        },
+	        labels: {
+	            y: 16
+	        }
+    	},credits: {
+	              text: '',
+	              href: '#'
+	          },
+	          plotOptions: {
+	              solidgauge: {
+	                  dataLabels: {
+	                      y: 5,
+	                      borderWidth: 0,
+	                      useHTML: true
+	                  }
+	              }
+	          }
+	    
+    };
+   	AppConfig.gavance = Highcharts.chart('container-porcentaje',Highcharts.merge( 
+      AppConfig.graficaOpciones,{
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: '% de Avance',
+                y: 10
+            }
+        },
+        series: [{
+            name: 'II trimestre',
+            data: [0],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">%</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' % '
+            }
+        }]
+      })
+    );
+	AppConfig.getColor=function(val){   //console.log(val);
+        if(val>=0 && val<30){  //console.log(c.symbols[i].color);
+          return "red";
+        }else if(val>=30 && val<60){
+        	return "yellow";
+        }else if(val>=100){
+        	return "green";
+        }
+	}
+
 AppConfig.SetNombreGestion= function() {
 	var NomGestion = Func.GetNomGestion();
 	$("#nom_gestion").text(NomGestion);
@@ -135,7 +215,18 @@ AppConfig.CargarVisitas= function() {
 							if(name == "fecha" ) $('#panel_heading_'+name1).html("Avance "+(name1+1)+":      "+value+"      "+eliminar);
 							if(name == "nombre_mun" ) $('#codigo_mun_vis_'+name1).html(value);
 							if(name == "descripcion" ) $('#descripcion_vis_'+name1).html(value);
-							if(name == "avance_porcen" ) $('#avance_porcen_'+name1).html(value);
+							if(name == "avance_porcen" ){	//$('#avance_porcen_'+name1).html(value);
+								AppConfig.gavance.update({
+								       series:{
+								          data:[
+								              {
+								                y: value,
+								                color: AppConfig.getColor(value)
+								              }
+								          ]
+								        }
+								      });
+							} 
 							if(name == "valor" ) $('#valor_'+name1).html(value);
 							if(name == "und" ) $('#und_'+name1).html(value);
 							if(name == "url" ){

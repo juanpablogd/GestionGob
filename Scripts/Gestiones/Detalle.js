@@ -138,7 +138,7 @@ AppConfig.CargarGestion= function() {
 										if(datafile[1].substring(0, 5)=="image"){
 											$("#aniimated-thumbnials").append('<a href="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'"><img class="galeria" src="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'" /></a>');	
 										}else{
-											if($('#lista_archivos').is(':empty')) $("#lista_archivos").append('<br><label class="control-label">Archivos:</label>');
+											if($('#lista_archivos').is(':empty')) $("#lista_archivos").append('<br><label class="control-label">Galería: </label>');
 											$("#lista_archivos").append('<br><a target="_blank" href="http://saga.cundinamarca.gov.co/SIG/'+datafile[0]+'"><h4>'+datafile[0].replace(/^.*[\\\/]/, '').substring(8)+'</h4></a>');
 										}
 									}

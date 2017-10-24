@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>SAGA</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- CSS Resources -->
+  <link href="../../Resources/Animate/animate.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="../../Resources/FontAwesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
+  <link href="../../Resources/ol3/ol.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="../../Resources/jquery-datetextentry/jquery.datetextentry.css" type="text/css" rel="stylesheet"/>
+  <link href="../../Resources/lightGallery/dist/css/lightgallery.min.css" type="text/css" rel="stylesheet"/>
+  
+  <!-- CSS app -->
+  <link href="../../Content/Home/NavMap.css" rel="stylesheet">
+  <link href="../../Content/Home/ContentMap.css" rel="stylesheet">
+  <style>
+  	form {
+	    width: 90%;
+	    margin: 0 auto;
+	}
+	/* ANCHO DEL COMBO DE MUNICIPIO */
+	.btn-group>.btn:first-child {
+	    width: 100% !important;
+	}
+	.btn-group, .btn-group-vertical {
+		width: 100% !important;
+	}
+	/*********************************/
+	/* PANEL DESPLEGABLE */
+	.clickable{
+	    cursor: pointer !important;   
+	}
+	.panel-heading span {
+		margin-top: -20px !important;
+		font-size: 15px !important;
+	}
+	/*********************************/	
+	/****CAMPOS REQUERIDOS************/
+	.control-label.required:after {
+	  content:" *";color:red;font-size: 18px;
+	}
+	.galeria {
+	    max-width: 100px;
+	}
+	/*********************************/
+  </style>
+  
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar">&nbsp;</span>
+	        <span class="icon-bar">&nbsp;</span>
+	        <span class="icon-bar">&nbsp;</span>                        
+	      </button>
+	      <a  href="#">
+	      	<img src="../../Images/Home/logos_gobernacion.png" class="LogoMap"  >
+	      </a>
+	    </div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="../Home/">
+	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_listado">
+	        <li class="active"><a href="../Gestiones/">
+	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li class="dropdown">
+	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <i class="fa fa-user fa-fw">&nbsp;</i>  <i class="fa fa-caret-down">&nbsp;</i>
+	                </a>
+	            	<ul class="dropdown-menu dropdown-user">
+	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
+	                    </li>
+	                    <li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li>
+	                    <li class="divider">&nbsp;</li>
+	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
+	                    </li>
+	                </ul>
+	          </li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+  <form role="form" id="FrmAdicionar" >
+  	<div class="panel panel-primary">
+      <div class="panel-heading" id="nom_gestion">General</div>
+      <div class="panel-body">
+			
+			<div id="container-porcentaje" style="width: 300px; height: 200px; float: left"></div></br></br></br></br></br></br></br></br></br>
+
+			<div class="form-group">
+				<label for="fecha" class="control-label">Fecha:&nbsp;</label><label id="fecha" class="control-label">&nbsp;</label>
+			</div>
+			<!-- div class="form-group">
+				<label for="noticia" class="control-label">Noticia:&nbsp;</label><label id="noticia" class="control-label">&nbsp;</label>
+			</div -->
+			<div class="form-group">
+				<label for="descripcion" class="control-label">Descripción:&nbsp;</label><label id="descripcion" class="control-label">&nbsp;</label>
+			</div>
+		  	<div class="form-group">
+			    <label for="codigo_mun" class="control-label">Municipio:&nbsp;</label><label id="codigo_mun" class="control-label">&nbsp;</label>
+		  	</div>
+			<!--div class="form-group">
+				<label for="avance_porcentaje" class="control-label">% Porcentaje de avance:&nbsp;</label><label id="avance_porcentaje" class="control-label">&nbsp;</label>
+			</div -->
+			<div class="form-group">
+			  	<label for="nom_categoria" class="control-label">Categorización:&nbsp;</label><label id="nom_categoria" class="control-label">&nbsp;</label>
+			</div>
+			<div class="form-group">
+			    <label for="nom_sector" class="control-label">Sector:&nbsp;</label><label id="nom_sector" class="control-label">&nbsp;</label>
+			</div>
+      </div>
+    </div>
+	<div id="panel-archivos" class="panel panel-primary">
+      <div class="panel-heading">Galería Avance</div>
+      <div class="panel-body">
+			<div id="aniimated-thumbnials">&nbsp;</div>
+			<div id="lista_archivos"></div>
+      </div>
+    </div>
+	<!--  RESPONSABLE GOBERNACIÓN--> 
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Responsable Gobernación</h3>
+				<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+		</div>
+		<div class="panel-body" id="responsable-panel-body">
+			<div class="form-group">
+			    <label for="centro" class="control-label">Entidad:&nbsp;</label><label id="centro" class="control-label">&nbsp;</label>
+			</div>
+			<div class="form-group">
+		    	<label for="responsable_nom" class="control-label">Nombre contacto:&nbsp;</label><label id="responsable_nom" class="control-label">&nbsp;</label>
+			</div>			
+			<div class="form-group">
+		    	<label for="responsable_tel" class="control-label">Teléfono contacto:&nbsp;</label><label id="responsable_tel" class="control-label">T&nbsp;</label>
+			</div>
+			<div class="form-group">
+		    	<label for="responsable_email">Email contacto:&nbsp;</label><label id="responsable_email">&nbsp;</label>
+			</div>
+		</div>
+	</div>
+	<!--  CONTACTO EXTERNO --> 
+	<!--div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Contacto Externo</h3>
+				<span id="responsable_ext-span" class="pull-right clickable"><i id="responsable_ext-icon" class="glyphicon glyphicon-chevron-up">&nbsp;</i></span>
+		</div>
+		<div class="panel-body" id="responsable_ext-panel-body">
+			<div class="form-group">
+		    	<label for="responsable_nom_ext" class="control-label">Nombre contacto:&nbsp;</label><label id="responsable_nom_ext" class="control-label">&nbsp;</label>
+			</div>			
+			<div class="form-group">
+		    	<label for="responsable_tel_ext" class="control-label">Teléfono contacto:&nbsp;</label><label id="responsable_tel_ext" class="control-label">&nbsp;</label>
+			</div>
+			<div class="form-group">
+		    	<label for="responsable_email_ext">Email contacto:&nbsp;</label><label id="responsable_email_ext">&nbsp;</label>
+			</div>
+		</div>
+	</div -->
+	<!--  CONTRATACIÓN Y RECURSOS --> 
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Contratación y Recursos</h3>
+				<span id="contrato-span" class="pull-right clickable"><i id="contrato-icon" class="glyphicon glyphicon-chevron-up">&nbsp;</i></span>
+		</div>
+		<div class="panel-body" id="contrato-panel-body">
+			<div class="form-group">
+    			<label for="enlace_secop">Enlace Secop:&nbsp;</label><label id="enlace_secop">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="fte_nacional">Valor fuente nacional:&nbsp;</label><label id="fte_nacional">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="fte_depto">Valor fuente departamento:&nbsp;</label><label id="fte_depto">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="fte_mpio">Valor fuente municipio:&nbsp;</label><label id="fte_mpio">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="fte_sgp">Valor fuente Sistema General de Participaciones - SGP:&nbsp;</label><label id="fte_sgp">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="fte_regalias">Valor fuente regalias:&nbsp;</label><label id="fte_regalias">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="descripcion_fte_otros">Otro ¿Cúal?:&nbsp;</label><label id="descripcion_fte_otros">&nbsp;</label>
+  			</div>
+			<div class="form-group">
+    			<label for="fte_otros">Valor otra fuente:&nbsp;</label><label id="fte_otros">&nbsp;</label>
+  			</div>
+		</div>
+	</div>
+	<!--  PANEL SEGUIMIENTO --> 
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Seguimiento</h3>
+				<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+		</div>
+		<div class="panel-body"  id="seguimiento-panel-body">
+			<div class="form-group">
+			    <label for="meta">Sub Programa - Meta:&nbsp;</label><label id="meta">&nbsp;</label>
+			</div>
+			<div class="form-group">
+    			<label for="pbeneficiadas" class="control-label">Personas Beneficiadas:&nbsp; </label><label id="pbeneficiadas" class="control-label">&nbsp; </label>
+  			</div>
+			<div class="form-group">
+    			<label for="areaint" class="control-label">Area intervenida:&nbsp; </label><label id="areaint" class="control-label">&nbsp; </label>
+  			</div>
+			<!--div class="form-group">
+    			<label for="empleos_gen_indirecto" class="control-label">Empleos generados indirectamente:&nbsp; </label><label id="empleos_gen_indirecto" class="control-label">&nbsp; </label>
+  			</div-->
+			<div class="form-group">
+			    <label for="id_producto">Productos Prensa:&nbsp;</label><label id="id_producto">&nbsp;</label>
+			</div>
+			<div class="form-group">
+				<label for="resultado" class="control-label">Resultado:&nbsp;</label><label id="resultado" class="control-label">&nbsp;</label>
+			</div>
+		</div>
+	</div>
+	<div id="panel-visitas" class="panel panel-primary"></div>
+
+
+		
+</form>
+
+</body>
+	<!-- script Resources http://sachinchoolur.github.io/lightGallery/demos/-->
+	<script src="../../Resources/Numeral/numeral.js"></script>
+	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
+	<script src="../../Resources/socket/socket.io.js"></script>
+	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
+	<script src="../../Resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
+	<script src="../../Resources/highcharts/js/highcharts.js"></script>
+	<script src="../../Resources/highcharts/js/highcharts-more.js"></script>
+	<script src="../../Resources/highcharts/js/solid-gauge.js"></script>
+	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
+	<script src="../../Resources/socket/socket.io.js"></script>				
+	<script src="../../Resources/bootbox/bootbox.js"></script>
+	<script src="../../Resources/Crypto/core-min.js"></script>
+	<script src="../../Resources/Crypto/aes.js"></script>
+	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
+	<script src="../../Resources/growl/bootstrap-growl.min.js"></script>
+	<script src="../../Resources/growl/Notificaciones.js"></script>
+	<script src="../../Resources/fastclick/fastclick.min.js"></script>
+	<!-- script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script -->
+	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<script src="../../Resources/jquery-datetextentry/jquery.datetextentry.js"></script>
+	<script src="../../Resources/cleave-js/cleave.min.js"></script>
+	
+	 <script src="../../Resources/mousewheel/jquery.mousewheel.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lightgallery.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lg-thumbnail.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lg-fullscreen.min.js"></script>
+	
+	<!-- app Resources -->
+	<script src="../../Scripts/AppConfig.js"></script>
+	<script src="../../Scripts/Func.js"></script>
+	<script src="../../Scripts/Home/Navbar.js"></script>
+	<script src="../../Scripts/Gestiones/Detalle.js"></script>
+
+	
+</html>

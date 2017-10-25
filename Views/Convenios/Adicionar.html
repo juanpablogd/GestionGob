@@ -227,7 +227,7 @@
 			    </div>
 			    <div class="ro">
 			    	<div class="col-">
-						<table class="table">
+						<table class="table" id="tblFuentes">
 						    <thead>
 						      <tr>
 						        <th>Fuente</th>
@@ -235,23 +235,14 @@
 						        <th>ELiminar</th>
 						      </tr>
 						    </thead>
-						    <tbody>
-						      <tr>
-						        <td>Departamento</td>
-						        <td>200.000.000</td>
-						        <td><a href="#" class="btn btn-danger btn-sm" id="btn_del" onclick="AppConfig.eliminaFuente(1)">
-					  				<span class="glyphicon glyphicon-minus"></span>
-									</a>
-								</td>
-						      </tr>
-						    </tbody>
+						    <tbody></tbody>
 						  </table>
 			    	</div>
 			    </div>
 			    <div class="row">
 			    	<div class="col-sm-8"></div>
 			    	<div class="col-sm-4">
-			    		<label for="vrFte">Valor Total</label>
+			    		<label ">Valor Total: $ <label id="totalFte">0</label></label>
 			    	</div>
 			    </div>
 			</div>
@@ -266,19 +257,19 @@
 				    <div class="row">
 				    	<div class="col-sm-3">
 							<div class="checkbox">
-							  <label><input type="checkbox" value="">Modificación</label>
+							  <label><input type="checkbox" id="modificacion_con" value="">Modificación</label>
 							</div>
 						</div>
-						<div class="col-sm-3">
-			    			<label for="vrFte">Fecha de Terminación final</label>
-	    					<input type="text" class="form-control valor" id="vrFte">
+						<div class="col-sm-3" id="div_fec_terminacion" style="display: none">
+			    			<label for="fec_terminacion">Fecha de Terminación final</label>
+	    					<input type="text" class="form-control valor" id="fec_terminacion">
 						</div>
-						<div class="col-sm-3">
-			    			<label for="vrFte">Valor adición</label>
-	    					<input type="text" class="form-control valor" id="vrFte">
+						<div class="col-sm-3" id="div_vr_adicion" style="display: none">
+			    			<label for="vr_adicion">Valor adición</label>
+	    					<input type="text" class="form-control valor" id="vr_adicion">
 						</div>
-						<div class="col-sm-3">
-						  	<label for="vrFte">Valor Total con Adición</label>
+						<div class="col-sm-3" id="div_vrtotal" style="display: none">
+							<label ">Valor Total con Adición: $ <label id="vrtotal">0</label></label>
 						</div>
 				    </div>
 			</div>

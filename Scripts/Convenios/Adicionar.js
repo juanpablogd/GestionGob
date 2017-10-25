@@ -25,15 +25,15 @@ AppConfig.Inicial= function() {
             includeSelectAllOption: true,
             enableCaseInsensitiveFiltering: true,
             onChange: function(option, checked, select) {	//	console.log("onChange");
-            	AppConfig['ListadoFuentes'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
             	//AppConfig.EstadoCentroGestor();
             },
             onSelectAll: function(checked) {				//	console.log("onSelectAll");
-            	AppConfig['ListadoFuentes'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
             	//AppConfig.EstadoCentroGestor();
 	        },
             onDeselectAll: function(checked) {				//	console.log("onDeselectAll");
-            	AppConfig['ListadoFuentes'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
             	//AppConfig.EstadoCentroGestor();
 	        }
 	});
@@ -120,6 +120,18 @@ AppConfig.Inicial= function() {
 	AppConfig["fuentes"] = {};
 };
 
+$('#modificacion_con').click(function() {
+    if($(this).is(':checked')) {	//        console.log("SI");
+        $("#div_fec_terminacion").show();
+        $("#div_vr_adicion").show();
+        $("#div_vrtotal").show();
+    } else {	//console.log("NO");
+        $("#div_fec_terminacion").hide();
+        $("#div_vr_adicion").hide();
+        $("#div_vrtotal").hide();
+    }
+});
+
 AppConfig.calculaFecha= function(fini,dias) {	//console.log(fini + " " + dias);
 	var new_date = moment(fini, "YYYY-MM-DD").add(dias,'days').format("YYYY-MM-DD");
 	return new_date;
@@ -153,11 +165,36 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
+AppConfig.getNombrefuente= function(value) {	//console.log(AppConfig["ListadoFuentes"].length);
+	var nomF = undefined;
+	for (var i = 0; i < AppConfig["ListadoFuentes"].length; i++){
+	  // look for the entry with a matching `code` value
+	  if (AppConfig["ListadoFuentes"][i].value == value){
+	    // we found it
+	    nomF = AppConfig["ListadoFuentes"][i].label;
+	    break;
+	  }
+	}
+	return nomF;
+}
 
-AppConfig.cargatblFuente= function() {	//console.log(AppConfig["fuentes"]);
-	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {
-	    console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
+AppConfig.cargatablaFuente= function() {	//console.log(AppConfig["ListadoFuentes"]);
+	$("#tblFuentes tbody").html('');
+	AppConfig["sumafuentes"] = 0;
+	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {	console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
+		var nombref = AppConfig.getNombrefuente(key);
+	    $("#tblFuentes tbody").append('<tr>'+
+	    								'<td>'+nombref+'</td>'+
+						        		'<td>'+AppConfig["fuentes"][key]+'</td>'+
+								        '<td>'+
+								        	'<a href="#" class="btn btn-danger btn-sm" id="btn_del" onclick="AppConfig.eliminaFuente('+key+')">'+
+							  					'<span class="glyphicon glyphicon-minus"></span>'+
+											'</a>'+
+										'</td>'+
+								      '</tr>');
+	    AppConfig["sumafuentes"] += numeral().unformat(AppConfig["fuentes"][key]);
 	});
+	$("#totalFte").html(numeral(AppConfig["sumafuentes"]).format('0,0'));
 };
 
 AppConfig.eliminaFuente= function(id) {	//console.log(AppConfig["fuentes"]);
@@ -168,6 +205,7 @@ AppConfig.eliminaFuente= function(id) {	//console.log(AppConfig["fuentes"]);
 	    }
 	});
 	console.log(JSON.stringify(AppConfig["fuentes"]));
+	AppConfig.cargatablaFuente();
 };
 
 AppConfig.Inicial();
@@ -175,13 +213,24 @@ AppConfig.CargaFuentes();
 AppConfig.CargaMetas();
 
 $("#btn_add").click(function(){
-	var id_fuente
-	console.log($('#idFte').val()  + " " + $('#vrFte').val());
+	var idFuente,vrFuente;
+	console.log($('#idFte').val()  + " -*- " + $('#vrFte').val());
 	idFuente=$('#idFte').val();
-	AppConfig["fuentes"][idFuente] = $('#vrFte').val();
-	console.log(JSON.stringify(AppConfig["fuentes"]));
+	vrFuente=$('#vrFte').val();
+	if (idFuente == ""){	//if (idFuente == "" || idFuente == null){
+		Func.MsjPeligro("Debe seleccionar una Fuente");
+		setTimeout(function() { $('#idFte').nextAll('div').find('.multiselect-search').focus();}, 300);
+		return;
+	} else if (vrFuente == "" || vrFuente == null){
+		Func.MsjPeligro("Escriba el Valor de la Fuente por favor!");
+		setTimeout(function() { $('#vrFte').focus();}, 300);
+	} else{
+		AppConfig["fuentes"][idFuente] = $('#vrFte').val();
+		console.log(JSON.stringify(AppConfig["fuentes"]));
+		AppConfig.cargatablaFuente();
+		$('#vrFte').val('');
+	}
 });
-
 
 $('#btn_guardar').click(function(){
 	bootbox.confirm("Seguro que desea Guardar?", function(result) {

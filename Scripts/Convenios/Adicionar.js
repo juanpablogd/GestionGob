@@ -166,7 +166,8 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	});
 };
 AppConfig.getNombrefuente= function(value) {	//console.log(AppConfig["ListadoFuentes"].length);
-	var nomF = undefined;
+	var nomF = undefined;	//console.log(AppConfig["ListadoFuentes"]);
+	if (AppConfig["ListadoFuentes"]===undefined) return nomF;
 	for (var i = 0; i < AppConfig["ListadoFuentes"].length; i++){
 	  // look for the entry with a matching `code` value
 	  if (AppConfig["ListadoFuentes"][i].value == value){
@@ -183,6 +184,7 @@ AppConfig.cargatablaFuente= function() {	//console.log(AppConfig["ListadoFuentes
 	AppConfig["sumafuentes"] = 0;
 	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {	console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
 		var nombref = AppConfig.getNombrefuente(key);
+		if(nombref===undefined) return false;	
 	    $("#tblFuentes tbody").append('<tr>'+
 	    								'<td>'+nombref+'</td>'+
 						        		'<td>'+AppConfig["fuentes"][key]+'</td>'+
@@ -195,6 +197,7 @@ AppConfig.cargatablaFuente= function() {	//console.log(AppConfig["ListadoFuentes
 	    AppConfig["sumafuentes"] += numeral().unformat(AppConfig["fuentes"][key]);
 	});
 	$("#totalFte").html(numeral(AppConfig["sumafuentes"]).format('0,0'));
+	setTimeout(function() { $('#idFte').focus();}, 100);
 };
 
 AppConfig.eliminaFuente= function(id) {	//console.log(AppConfig["fuentes"]);

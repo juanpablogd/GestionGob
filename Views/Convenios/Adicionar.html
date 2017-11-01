@@ -126,12 +126,12 @@
 				    <div class="row">
 				    	<div class="col-sm-4">
 						  <label class="form-check-label">
-						    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked="checked"> Convenio/Contrato Marco &nbsp;
+						    <input class="form-check-input" type="radio" name="tipoConvenio" id="convenioMarco" value="1" checked="checked"> Convenio/Contrato Marco &nbsp;
 						  </label> 
 						</div>
 						<div class="col-sm-4">
 						  <label class="form-check-label">
-						    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Convenio/Contrato Derivado
+						    <input class="form-check-input" type="radio" name="tipoConvenio" id="convenioDerivado" value="2"> Convenio/Contrato Derivado
 						  </label>
 						</div>
 						<div class="col-sm-4">&nbsp;</div>
@@ -154,8 +154,8 @@
 				    </div>
 					<div class="row">
 						<div class="col-sm-12">
-							<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Objeto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-				  			<textarea class="form-control" rows="3" maxlength="512" id="descripcion">&nbsp;</textarea>
+							<label for="objeto" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Objeto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				  			<textarea class="form-control" rows="3" maxlength="512" id="objeto">&nbsp;</textarea>
 				  		</div>
 					</div>
 				    <div class="row">
@@ -202,16 +202,16 @@
 				    </div>
 			</div>
 		</div>
-		<!--  PANEL FINANCIERO --> 
+		<!--  PANEL FINANCIERO -->
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">Información Económica</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
-			<div class="panel-body"  id="seguimiento-panel-body">
+			<div class="panel-body" id="seguimiento-panel-body">
 			    <div class="row">
 			    	<div class="col-sm-7">
-		    			<label for="idFte" data-toggle="tooltip" title="Fuente del recurso (Cundinamarca, Nación, Regalías, etc)"> Fuente <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		    			<label for="idFte" class="control-label required" data-toggle="tooltip" title="Fuente del recurso (Cundinamarca, Nación, Regalías, etc)"> Fuente <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		    			<select id="idFte" >&nbsp;</select>
 					</div>
 					<div class="col-sm-4">
@@ -276,8 +276,8 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-12">
-				<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Observación <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	  			<textarea class="form-control" rows="3" maxlength="512" id="descripcion">&nbsp;</textarea>
+				<label for="observacion" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Observación <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	  			<textarea class="form-control" rows="3" maxlength="512" id="observacion">&nbsp;</textarea>
 	  		</div>
 		</div>
 		<div class="row">

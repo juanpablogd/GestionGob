@@ -16,6 +16,10 @@ AppConfig.Inicial= function() {
 			$this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
 		}
 	});
+
+	$("#vr_adicion").bind('input',function() {
+		AppConfig.sumaTotales();
+	});
 	
 	/* SELECT - CENTRO GESTOR */
 	$('#idFte').multiselect({
@@ -108,6 +112,10 @@ AppConfig.Inicial= function() {
 	    	}
 	    }
 	});
+	$('#fec_terminacion').datetextentry({
+	    min_date         : function() { return $("#fec_proy_finalizacion").html(); },
+	    min_date_message : 'Por favor seleccione una fecha mayor a la fecha de finalinación',
+	});
 	$("#plazo_dias").on('input',function(e){						//console.log("cambio");
         var pd = numeral().unformat($("#plazo_dias").val().trim());	//console.log(pd);
         if(pd>0 && pd != "") { //console.log(pd);
@@ -129,7 +137,9 @@ $('#modificacion_con').click(function() {
         $("#div_fec_terminacion").hide();
         $("#div_vr_adicion").hide();
         $("#div_vrtotal").hide();
+        $("#vr_adicion").val(0);
     }
+    AppConfig.sumaTotales();
 });
 
 AppConfig.calculaFecha= function(fini,dias) {	//console.log(fini + " " + dias);
@@ -179,10 +189,19 @@ AppConfig.getNombrefuente= function(value) {	//console.log(AppConfig["ListadoFue
 	return nomF;
 }
 
+AppConfig.sumaTotales= function() {
+	AppConfig["sumafuentes"] = 0;
+	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {	//console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
+		AppConfig["sumafuentes"] += numeral().unformat(AppConfig["fuentes"][key]);
+	});		
+	$("#totalFte").html(numeral(AppConfig["sumafuentes"]).format('0,0'));
+	var vr_adicion = numeral().unformat($("#vr_adicion").val());	//console.log(AppConfig["fuentes"]);			
+	$("#vrtotal").html(numeral(AppConfig["sumafuentes"]+vr_adicion).format('0,0'));
+}
+
 AppConfig.cargatablaFuente= function() {	//console.log(AppConfig["ListadoFuentes"]);
 	$("#tblFuentes tbody").html('');
-	AppConfig["sumafuentes"] = 0;
-	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {	console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
+	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {	//console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
 		var nombref = AppConfig.getNombrefuente(key);
 		if(nombref===undefined) return false;	
 	    $("#tblFuentes tbody").append('<tr>'+
@@ -194,9 +213,8 @@ AppConfig.cargatablaFuente= function() {	//console.log(AppConfig["ListadoFuentes
 											'</a>'+
 										'</td>'+
 								      '</tr>');
-	    AppConfig["sumafuentes"] += numeral().unformat(AppConfig["fuentes"][key]);
 	});
-	$("#totalFte").html(numeral(AppConfig["sumafuentes"]).format('0,0'));
+	AppConfig.sumaTotales();
 	setTimeout(function() { $('#idFte').focus();}, 100);
 };
 
@@ -216,8 +234,7 @@ AppConfig.CargaFuentes();
 AppConfig.CargaMetas();
 
 $("#btn_add").click(function(){
-	var idFuente,vrFuente;
-	console.log($('#idFte').val()  + " -*- " + $('#vrFte').val());
+	var idFuente,vrFuente;	//console.log($('#idFte').val()  + " -*- " + $('#vrFte').val());
 	idFuente=$('#idFte').val();
 	vrFuente=$('#vrFte').val();
 	if (idFuente == ""){	//if (idFuente == "" || idFuente == null){
@@ -237,174 +254,119 @@ $("#btn_add").click(function(){
 
 $('#btn_guardar').click(function(){
 	bootbox.confirm("Seguro que desea Guardar?", function(result) {
-	  	console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
-	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
-	  		//var noticia = $("#noticia").val().trim();	if(noticia.length > 255) noticia = noticia.substring(0,255);
-	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
-	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
-	  		var id_categoria = $("#id_categoria option:selected").val();
-	  		var responsable_nom = $("#responsable_nom").val().trim();
-	  		var responsable_tel = $("#responsable_tel").val().trim();
-	  		//var nro_cto = $("#nro_cto").val().trim();	
-	  		var fte_nacional = $("#fte_nacional").val().trim();
-	  		var fte_depto = $("#fte_depto").val().trim();
-	  		var fte_mpio = $("#fte_mpio").val().trim();
-	  		var fte_sgp = $("#fte_sgp").val().trim();
-	  		var fte_regalias = $("#fte_regalias").val().trim();
-	  		var fte_otros = $("#fte_otros").val().trim();	//console.log(fte_otros);
-	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();
-	  		//var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);//var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
-	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
-	  		//var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
-	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
-	  		var areaint = $("#areaint").val().trim();
-	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
-	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
-	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
-	  		
-	  		if(fecha == ""){
-	  			Func.MsjPeligro("Debe ingresar una fecha");
-	  			setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 500);
+	  		console.log("Confirm result: "+result);
+	  		// ------ ESTANDARIZACIÓN DE VALORES ------
+			var tipoConvenio = $("input[name='tipoConvenio']:checked").val();	console.log(tipoConvenio);
+			console.log(AppConfig["cod_meta"]);
+			var nro_con = $("#nro_con").val().trim();			console.log(nro_con);
+			var enlace_secop = $("#enlace_secop").val().trim();	console.log(enlace_secop);
+			var objeto = $("#objeto").val().trim();				console.log(objeto);
+			var nom_tercero = $("#nom_tercero").val().trim();	console.log(nom_tercero);
+			var id_tercero = $("#id_tercero").val().trim();		console.log(id_tercero);
+			var nom_supervisor = $("#nom_supervisor").val().trim();		console.log(nom_supervisor);
+			var nom_interventor = $("#nom_interventor").val().trim();	console.log(nom_interventor);
+			var vr_interventoria = numeral().unformat($("#vr_interventoria").val().trim());	console.log(vr_interventoria);
+			var fec_suscripcion = $("#fec_suscripcion").val().trim();	console.log(fec_suscripcion);
+			var fec_inicio = $("#fec_inicio").val().trim();	console.log(fec_inicio);
+			var plazo_dias = $("#plazo_dias").val().trim();	console.log(plazo_dias);
+			var fec_proy_finalizacion = $("#fec_proy_finalizacion").val().trim();	console.log(fec_proy_finalizacion);
+			var totalFte = numeral().unformat($("#totalFte").html().trim());	console.log(totalFte);
+			console.log(AppConfig["fuentes"]);
+			var modificacion_con = $('#modificacion_con').is(':checked');	console.log(modificacion_con);
+			var fec_terminacion = $("#fec_terminacion").val();					console.log(fec_terminacion);
+			var vr_adicion = numeral().unformat($("#vr_adicion").val());						console.log(vr_adicion);
+			var vrtotal = numeral().unformat($("#vrtotal").html());								console.log(vrtotal);
+			var observacion = $("#observacion").val().trim();								console.log(observacion);
+
+			// ------ VALIDACIÓN ------
+			if(AppConfig["cod_meta"]===undefined || AppConfig["cod_meta"].length<1){
+				$('#seguimiento-panel-body').show();
+	  			Func.MsjPeligro("Debe seleccionar al menos una meta");
+	  			$('#cod_meta').nextAll('div').addClass("open");
+	  			setTimeout(function() { $('#cod_meta').nextAll('div').find('.multiselect-search').focus();}, 400);
 	  			return;
-/*	  		}else if(noticia==""){
-	  			Func.MsjPeligro("Digite el nombre de la Noticia");
-	  			setTimeout(function() { $('#noticia').focus(); }, 500);
-	  			return;		*/
-	  		}else if(descripcion==""){
-	  			Func.MsjPeligro("Digite una descripción");
-	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
+	  		}else if(nro_con==""){
+	  			Func.MsjPeligro("Digite el N° de convenio o contrato");
+	  			setTimeout(function() { $('#nro_con').focus(); }, 400);
 	  			return;	  			
-	  		}else if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"].length<1){
-	  			Func.MsjPeligro("Debe seleccionar al menos un Municipio");
-	  			$('#codigo_mun').nextAll('div').addClass("open");
-	  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
-	  			return;
-	  		}
-	  		if(avance_porcentaje==""){
-	  			Func.MsjPeligro("Digite un porcentaje de avance");
-	  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
+	  		}else if(objeto==""){
+	  			Func.MsjPeligro("Digite el Objeto convenio o contrato");
+	  			setTimeout(function() { $('#objeto').focus(); }, 400);
 	  			return;	  			
-	  		}else{
-	  			if(Func.ValidaPorcentaje(avance_porcentaje)==false){
-		  			Func.MsjPeligro("Digite un porcentaje de avance VALIDO");
-		  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
-		  			return;	
-	  			}
-	  		}
-	  		if(id_categoria == ""){
-	  			Func.MsjPeligro("Debe seleccionar una Categoría");
-	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
+	  		}else if(nom_tercero==""){
+	  			Func.MsjPeligro("Digite el Nombre del Tercero o Ejecutor del convenio o contrato");
+	  			setTimeout(function() { $('#nom_tercero').focus(); }, 400);
+	  			return;	  			
+	  		}else if(nom_supervisor==""){
+	  			Func.MsjPeligro("Digite el Nombre del Supervisor del convenio o contrato");
+	  			setTimeout(function() { $('#nom_supervisor').focus(); }, 400);
+	  			return;	  			
+	  		}else if(fec_suscripcion==""){
+	  			Func.MsjPeligro("Digite la fecha del convenio o contrato");
+	  			setTimeout(function() { $('#fec_suscripcion').nextAll('span').find('.jq-dte-day').focus(); }, 400);
 	  			return;
-	  		}
-	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
-	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
-	  			$('#id_sector').nextAll('div').addClass("open");
-	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  		}else if(totalFte=="0" || totalFte==""){
+	  			Func.MsjPeligro("Debe ingresar al menos una fuente de Recurso");
+	  			setTimeout(function() { $('#vrFte').focus(); }, 400);
 	  			return;
-	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
-	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
-	  			$('#id_centrog').nextAll('div').addClass("open");
-	  			setTimeout(function() { $('#id_centrog').nextAll('div').find('.multiselect-search').focus();}, 500);
-	  			return;
-	  		}else if(responsable_nom==""){
-	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Digite el nombre del responsable");
-	  			setTimeout(function() { $('#responsable_nom').focus(); }, 500);
-	  			return;
-	  		}else if(responsable_tel==""){
-	  			$('#responsable-panel-body').show();
-	  			Func.MsjPeligro("Digite el teléfono des responsable");
-	  			setTimeout(function() { $('#responsable_tel').focus(); }, 500);
-	  			return;
-	  		}else if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
-				if(AppConfig["cod_meta"]===undefined || AppConfig["cod_meta"].length<1){
-					$('#seguimiento-panel-body').show();
-		  			Func.MsjPeligro("Debe seleccionar al menos una meta");
-		  			$('#cod_meta').nextAll('div').addClass("open");
-		  			setTimeout(function() { $('#cod_meta').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  		}else if (modificacion_con){
+	  			if(fec_terminacion==""){
+		  			Func.MsjPeligro("Digite la fecha de Terminación del convenio o contrato");
+		  			setTimeout(function() { $('#fec_terminacion').nextAll('span').find('.jq-dte-day').focus(); }, 400);
 		  			return;
-		  		}// FIN INFO CONTRACTUAL
-	  		}
-			if(enlace_secop!=""){						//console.log("enlace_secop NO VACIO");
-					if(Func.ValidaURL(enlace_secop)==false){ //console.log("enlace_secop con INFO NO VALIDO");
-		  				$('#contractual-panel-body').show();
-			  			Func.MsjPeligro("Ingrese una URL valida");
-			  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
-			  			return;
-					}	
-			}
-	  		if(pbeneficiadas==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
-	  			setTimeout(function() { $('#pbeneficiadas').focus(); }, 500);
+		  		}else if(vr_adicion==""){
+		  			Func.MsjPeligro("Digite la valor adicionado del convenio o contrato");
+		  			setTimeout(function() { $('#vr_adicion').focus(); }, 400);
+		  			return;
+		  		}
+	  		}else if(observacion==""){
+	  			Func.MsjPeligro("Debe ingresar una Observación");
+	  			setTimeout(function() { $('#observacion').focus(); }, 400);
 	  			return;
-/*  			}else if(empleos_gen_indirecto==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
-	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
-	  			return;		*/
-  			}else if(resultado==""){
-		  				$('#seguimiento-panel-body').show();
-			  			Func.MsjPeligro("Describa el resultado de la gestión");
-			  			setTimeout(function() { $('#resultado').focus();}, 500);
-			  			return;
 	  		}
+/*	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
 	  		if(NumArchivos==0){
 	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
 	  			setTimeout(function() { $('#input-1').focus(); }, 500);
 	  			return;
-	  		}
+	  		}	*/
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		$("#input-1").focus();
+//	  		return false;
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
-	  		fecha = Func.Ecrypted(fecha);
-	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
-	  		id_categoria = Func.Ecrypted(id_categoria);
-	  		//noticia = Func.Ecrypted(noticia);
-	  		descripcion = Func.Ecrypted(descripcion);
-	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
-	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
-	  		var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
-	  		responsable_nom = Func.Ecrypted(responsable_nom);
-	  		responsable_tel = Func.Ecrypted(responsable_tel);
-	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
-	  		//responsable_nom_ext = Func.Ecrypted($("#responsable_nom_ext").val().trim()); //OPCIONAL
-	  		//responsable_tel_ext = Func.Ecrypted($("#responsable_tel_ext").val().trim()); //OPCIONAL
-	  		//responsable_email_ext = Func.Ecrypted($("#responsable_email_ext").val().trim()); //OPCIONAL
-	  		areaint = Func.Ecrypted($("#areaint").val().trim()); //OPCIONAL
+
+			tipoConvenio = Func.Ecrypted(tipoConvenio);
+			if(AppConfig["cod_meta"]===undefined) AppConfig["cod_meta"]=""; var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
+			nro_con = Func.Ecrypted(nro_con);
+			enlace_secop = Func.Ecrypted(enlace_secop);
+			objeto = Func.Ecrypted(objeto);
+			nom_tercero = Func.Ecrypted(nom_tercero);
+			id_tercero = Func.Ecrypted(id_tercero);
+			nom_supervisor = Func.Ecrypted(nom_supervisor);
+			nom_interventor = Func.Ecrypted(nom_interventor);
+			vr_interventoria = Func.Ecrypted(vr_interventoria);
+			fec_suscripcion = Func.Ecrypted(fec_suscripcion);
+			fec_inicio = Func.Ecrypted(fec_inicio);
+			plazo_dias = Func.Ecrypted(plazo_dias);
+			fec_proy_finalizacion = Func.Ecrypted(fec_proy_finalizacion);
+			totalFte = Func.Ecrypted(totalFte);
+			if(AppConfig["fuentes"]===undefined) AppConfig["fuentes"]=""; var id_fuente = Func.Ecrypted(AppConfig["fuentes"]);
+			modificacion_con = Func.Ecrypted(modificacion_con);
+			fec_terminacion = Func.Ecrypted(fec_terminacion);
+			vr_adicion = Func.Ecrypted(vr_adicion);
+			vrtotal = Func.Ecrypted(vrtotal);
+			observacion = Func.Ecrypted(observacion);
 	  		
-	  		
-	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
-	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
-	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
-	  		//nro_cto = Func.Ecrypted(nro_cto);
-	  		fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));
-	  		fte_depto = Func.Ecrypted(numeral().unformat(fte_depto));
-	  		fte_mpio = Func.Ecrypted(numeral().unformat(fte_mpio));
-	  		fte_sgp = Func.Ecrypted(numeral().unformat(fte_sgp));
-	  		fte_regalias = Func.Ecrypted(numeral().unformat(fte_regalias));
-	  		descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);
-	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
-	  		enlace_secop = Func.Ecrypted(enlace_secop);
-	  		//empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);
-	  		pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
-	  		
-	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
-	  		resultado = Func.Ecrypted(resultado);
-	  		
-  			AppConfig.socketDataAdmin.emit('SetGestion', {	fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,//noticia:noticia,
-  															descripcion:descripcion,
-  															avance_porcentaje:avance_porcentaje,id_centrog:id_centrog,responsable_nom:responsable_nom,id_sector:id_sector,
-  															responsable_tel:responsable_tel,responsable_email:responsable_email,
-  															//responsable_nom_ext:responsable_nom_ext,responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,nro_cto:nro_cto,
-  															id_tipo_cto:id_tipo_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
-  															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
-  															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,//empleos_gen_indirecto:empleos_gen_indirecto,
-  															id_producto:id_producto,resultado:resultado
-			 }, function(message){	//console.log(message);
-			 		if($.isNumeric(message)){
+  			AppConfig.socketDataAdmin.emit('setConvenio', {	tipoConvenio:tipoConvenio,cod_meta:cod_meta,nro_con:nro_con,//noticia:noticia,
+  															enlace_secop:enlace_secop,
+  															objeto:objeto,nom_tercero:nom_tercero,id_tercero:id_tercero,nom_supervisor:nom_supervisor,
+  															nom_interventor:nom_interventor,vr_interventoria:vr_interventoria,
+  															fec_suscripcion:fec_suscripcion,fec_inicio:fec_inicio,plazo_dias:plazo_dias,fec_proy_finalizacion:fec_proy_finalizacion,
+  															totalFte:totalFte,id_fuente:id_fuente,modificacion_con:modificacion_con,fec_terminacion:fec_terminacion,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
+  															vr_adicion:vr_adicion,vrtotal:vrtotal,observacion:observacion
+			 }, function(message){	console.log(message);
+/*			 		if($.isNumeric(message)){
 			 			if(NumArchivos>0){
 			 				console.log("Adjuntos: "+NumArchivos);
 							AppConfig["id_gestion"] = message;	//console.log(AppConfig["IdVisita"]);
@@ -416,7 +378,7 @@ $('#btn_guardar').click(function(){
 			 			}
 			 		}else{
 			 			Func.MsjPeligro("No se pudo Guardar el registro");
-			 		}
+			 		}	*/
 			});
 	  		
 	  		

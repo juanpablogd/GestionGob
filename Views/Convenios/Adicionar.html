@@ -136,9 +136,15 @@
 						</div>
 						<div class="col-sm-4">&nbsp;</div>
 				    </div>
+				    <div class="row" id="div_cmarco" style="display: none">
+				    	<div class="col-sm-12">
+			    			<label for="sel_id_con_derivado" class="control-label required" data-toggle="tooltip" title="Seleccione el convenio Marco al que pertenece"> Convenio Marco <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<select id="sel_id_con_derivado" >&nbsp;</select>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12">
-						    <label for="cod_meta" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;
+						    <label for="cod_meta" class="control-label required" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;
 							<select id="cod_meta" multiple="multiple">&nbsp;</select>
 						</div>
 					</div>
@@ -147,7 +153,7 @@
 			    			<label for="nro_con" class="control-label required" data-toggle="tooltip" title="N° de convenio o contrato">N° convenio / Contrato <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			    			<input type="text" class="form-control " id="nro_con">
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-8" id="div_secop">
 			    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			    			<input type="text" class="form-control" id="enlace_secop">
 						</div>
@@ -278,6 +284,12 @@
 			<div class="col-sm-12">
 				<label for="observacion" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Observación <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 	  			<textarea class="form-control" rows="3" maxlength="512" id="observacion">&nbsp;</textarea>
+	  		</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12" id="div_archivos" style="display: none">
+				<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
 	  		</div>
 		</div>
 		<div class="row">

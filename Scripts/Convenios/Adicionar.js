@@ -58,6 +58,36 @@ AppConfig.Inicial= function() {
             	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
 	        }
 	});
+	/* SELECT - SUBPROGRAMA / META*/
+	$('#sel_id_con_derivado').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_con_marco'] = $('#sel_id_con_derivado option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_con_marco'] = $('#sel_id_con_derivado option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_con_marco'] = $('#sel_id_con_derivado option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+	        }
+	});
+
+	$("input[name='tipoConvenio']").change(function(){
+		var tipoConvenio = $(this).val();
+		if(tipoConvenio=="2"){
+			$("#div_cmarco").show();
+			$("#div_secop").hide();
+			$("#div_archivos").show();
+		}else {
+			$("#div_cmarco").hide();
+			$("#div_secop").show();
+			$("#div_archivos").hide();
+		}
+
+	});
 
 	$( "#id_categoria" ).change(function() {
 		var id_cat = $( this ).val();
@@ -76,9 +106,8 @@ AppConfig.Inicial= function() {
 		$('.kv-file-upload.btn.btn-xs.btn-default').hide();
 	});
 	
-	$('#input-1').on('filebatchuploadcomplete', function(event, files, extra) {
-	    //console.log('File batch upload complete');
-	 	bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+	$('#input-1').on('filebatchuploadcomplete', function(event, files, extra) {	    //console.log('File batch upload complete');
+	 	bootbox.alert("EL convenio se ha guardado exitosamente!!!", function() {
 			window.location.href = 'index.html';
 		});
 	});
@@ -94,7 +123,7 @@ AppConfig.Inicial= function() {
     	maxFileSize: AppConfig.tamanoArchivo,
 	    uploadExtraData: function (previewId, index) {
 			    var data = {
-				        id_gestion: AppConfig["id_gestion"]
+				        id_convenio: AppConfig["id_convenio"]
 				   };
 				console.log(data);
 			    return data;
@@ -158,7 +187,6 @@ AppConfig.CargaFuentes= function() {
 	});
 };
 
-
 AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
 	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
@@ -175,6 +203,20 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
+
+AppConfig.cargaComarco= function() {	//console.log(AppConfig['id_centrog']);
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
+	//AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+  	AppConfig.socketDataAdmin.emit('getlistConmarco', '', function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Convenio Marco");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["listadoMarco"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
+		$('#sel_id_con_derivado').multiselect('dataprovider', AppConfig["listadoMarco"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+
 AppConfig.getNombrefuente= function(value) {	//console.log(AppConfig["ListadoFuentes"].length);
 	var nomF = undefined;	//console.log(AppConfig["ListadoFuentes"]);
 	if (AppConfig["ListadoFuentes"]===undefined) return nomF;
@@ -232,6 +274,7 @@ AppConfig.eliminaFuente= function(id) {	//console.log(AppConfig["fuentes"]);
 AppConfig.Inicial();
 AppConfig.CargaFuentes();
 AppConfig.CargaMetas();
+AppConfig.cargaComarco();
 
 $("#btn_add").click(function(){
 	var idFuente,vrFuente;	//console.log($('#idFte').val()  + " -*- " + $('#vrFte').val());
@@ -258,6 +301,7 @@ $('#btn_guardar').click(function(){
 	  		console.log("Confirm result: "+result);
 	  		// ------ ESTANDARIZACIÓN DE VALORES ------
 			var tipoConvenio = $("input[name='tipoConvenio']:checked").val();	console.log(tipoConvenio);
+			console.log(AppConfig["id_con_marco"]);
 			console.log(AppConfig["cod_meta"]);
 			var nro_con = $("#nro_con").val().trim();			console.log(nro_con);
 			var enlace_secop = $("#enlace_secop").val().trim();	console.log(enlace_secop);
@@ -278,8 +322,17 @@ $('#btn_guardar').click(function(){
 			var vr_adicion = numeral().unformat($("#vr_adicion").val());						console.log(vr_adicion);
 			var vrtotal = numeral().unformat($("#vrtotal").html());								console.log(vrtotal);
 			var observacion = $("#observacion").val().trim();								console.log(observacion);
+			var numArchivos = $('#input-1').fileinput('getFileStack').length;		console.log(numArchivos);
 
 			// ------ VALIDACIÓN ------
+			if(tipoConvenio == 2){
+				if(AppConfig["id_con_marco"]===undefined || AppConfig["id_con_marco"].length<1){
+		  			Func.MsjPeligro("Debe seleccionar al menos un convenio Marco");
+		  			$('#sel_id_con_derivado').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#sel_id_con_derivado').nextAll('div').find('.multiselect-search').focus();}, 400);
+		  			return;
+				}
+			}
 			if(AppConfig["cod_meta"]===undefined || AppConfig["cod_meta"].length<1){
 				$('#seguimiento-panel-body').show();
 	  			Func.MsjPeligro("Debe seleccionar al menos una meta");
@@ -308,7 +361,9 @@ $('#btn_guardar').click(function(){
 	  			return;
 	  		}else if(totalFte=="0" || totalFte==""){
 	  			Func.MsjPeligro("Debe ingresar al menos una fuente de Recurso");
-	  			setTimeout(function() { $('#vrFte').focus(); }, 400);
+		  			$('#idFte').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#idFte').nextAll('div').find('.multiselect-search').focus();}, 400);
+	  			//setTimeout(function() { $('#vrFte').focus(); }, 400);
 	  			return;
 	  		}else if (modificacion_con){
 	  			if(fec_terminacion==""){
@@ -325,18 +380,20 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#observacion').focus(); }, 400);
 	  			return;
 	  		}
-/*	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
-	  		if(NumArchivos==0){
-	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
-	  			setTimeout(function() { $('#input-1').focus(); }, 500);
-	  			return;
-	  		}	*/
+	  		if(tipoConvenio == 2){
+		  		if(numArchivos==0){
+		  			Func.MsjPeligro("Debe seleccionar al menos un Archivo Valido");
+		  			setTimeout(function() { $('#input-1').focus(); }, 500);
+		  			return;
+		  		}
+		  	}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		$("#input-1").focus();
-//	  		return false;
+
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 
 			tipoConvenio = Func.Ecrypted(tipoConvenio);
+			if(AppConfig["id_con_marco"]===undefined) AppConfig["id_con_marco"]=""; var id_con_marco = Func.Ecrypted(AppConfig["id_con_marco"]);
 			if(AppConfig["cod_meta"]===undefined) AppConfig["cod_meta"]=""; var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
 			nro_con = Func.Ecrypted(nro_con);
 			enlace_secop = Func.Ecrypted(enlace_secop);
@@ -358,7 +415,7 @@ $('#btn_guardar').click(function(){
 			vrtotal = Func.Ecrypted(vrtotal);
 			observacion = Func.Ecrypted(observacion);
 	  		
-  			AppConfig.socketDataAdmin.emit('setConvenio', {	tipoConvenio:tipoConvenio,cod_meta:cod_meta,nro_con:nro_con,//noticia:noticia,
+  			AppConfig.socketDataAdmin.emit('setConvenio', {	tipoConvenio:tipoConvenio,id_con_marco:id_con_marco,cod_meta:cod_meta,nro_con:nro_con,//noticia:noticia,
   															enlace_secop:enlace_secop,
   															objeto:objeto,nom_tercero:nom_tercero,id_tercero:id_tercero,nom_supervisor:nom_supervisor,
   															nom_interventor:nom_interventor,vr_interventoria:vr_interventoria,
@@ -366,20 +423,19 @@ $('#btn_guardar').click(function(){
   															totalFte:totalFte,id_fuente:id_fuente,modificacion_con:modificacion_con,fec_terminacion:fec_terminacion,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
   															vr_adicion:vr_adicion,vrtotal:vrtotal,observacion:observacion
 			 }, function(message){	console.log(message);
-/*			 		if($.isNumeric(message)){
-			 			if(NumArchivos>0){
-			 				console.log("Adjuntos: "+NumArchivos);
-							AppConfig["id_gestion"] = message;	//console.log(AppConfig["IdVisita"]);
+			 		if($.isNumeric(message)){
+			 			if(numArchivos>0){	console.log("Adjuntos: "+numArchivos);
+							AppConfig["id_convenio"] = message;		console.log(AppConfig["id_convenio"]);
 				 			$('#input-1').fileinput('upload');
 			 			}else{
-				 			bootbox.alert("La Gestión se ha guardado exitosamente!!!", function() {
+				 			bootbox.alert("El convenio se ha registrado Exitosamente!!!", function() {
 				 				window.location.href = 'index.html';
 				 			});			 				
 			 			}
 			 		}else{
-			 			Func.MsjPeligro("No se pudo Guardar el registro");
-			 		}	*/
-			});
+			 			Func.MsjPeligro("No se pudo almacenar el Convenio");
+			 		} 
+			});	
 	  		
 	  		
 	  	}

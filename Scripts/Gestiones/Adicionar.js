@@ -290,7 +290,7 @@ $('#btn_guardar').click(function(){
 	  		var areaint = $("#areaint").val().trim();
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
-	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	
+	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;
 	  		
 	  		if(fecha == ""){
 	  			Func.MsjPeligro("Debe ingresar una fecha");

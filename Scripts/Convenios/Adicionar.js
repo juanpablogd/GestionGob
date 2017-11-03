@@ -80,11 +80,11 @@ AppConfig.Inicial= function() {
 		if(tipoConvenio=="2"){
 			$("#div_cmarco").show();
 			$("#div_secop").hide();
-			$("#div_archivos").show();
+			//$("#div_archivos").show();
 		}else {
 			$("#div_cmarco").hide();
 			$("#div_secop").show();
-			$("#div_archivos").hide();
+			//$("#div_archivos").hide();
 		}
 
 	});
@@ -134,6 +134,8 @@ AppConfig.Inicial= function() {
 	//INICIALIZA FECHA
 	$('#fec_suscripcion').datetextentry();
 	$('#fec_inicio').datetextentry({
+	   	min_date         : function() { return $("#fec_suscripcion").val(); },
+	    min_date_message : 'Por favor seleccione una fecha mayor a la fecha de Suscripción',
 	    on_change : function(date_str) {		//console.log(date_str);
 	    	var dias = $("#plazo_dias").val();	//console.log(dias);
 	    	if (dias != "" && date_str != ""){
@@ -143,7 +145,7 @@ AppConfig.Inicial= function() {
 	});
 	$('#fec_terminacion').datetextentry({
 	    min_date         : function() { return $("#fec_proy_finalizacion").html(); },
-	    min_date_message : 'Por favor seleccione una fecha mayor a la fecha de finalinación',
+	    min_date_message : 'Por favor seleccione una fecha mayor a la fecha de finalización',
 	});
 	$("#plazo_dias").on('input',function(e){						//console.log("cambio");
         var pd = numeral().unformat($("#plazo_dias").val().trim());	//console.log(pd);
@@ -380,13 +382,13 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#observacion').focus(); }, 400);
 	  			return;
 	  		}
-	  		if(tipoConvenio == 2){
+	  		//if(tipoConvenio == 2){
 		  		if(numArchivos==0){
 		  			Func.MsjPeligro("Debe seleccionar al menos un Archivo Valido");
 		  			setTimeout(function() { $('#input-1').focus(); }, 500);
 		  			return;
 		  		}
-		  	}
+		  	//}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		$("#input-1").focus();
 

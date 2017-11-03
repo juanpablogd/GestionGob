@@ -121,6 +121,20 @@ var Func={
   		var NomGestion = this.Decrypted(localStorage.n); //console.log(NomGestion);
   		return NomGestion;
   	},
+  	setIdconvenio:function(idConvenio){	//console.log(this.Ecrypted(idConvenio));
+  		localStorage.setItem("tc", this.Ecrypted(idConvenio));
+  	},
+  	getIdconvenio:function(){
+  		var idConvenio = this.Decrypted(localStorage.tc);	//console.log(idConvenio);
+  		return idConvenio;
+  	},
+  	setNomconvenio:function(nomConvenio){	//console.log(this.Ecrypted(nomConvenio));
+  		localStorage.setItem("nc", this.Ecrypted(nomConvenio));
+  	},
+  	getNomconvenio:function(){
+  		var nomConvenio = this.Decrypted(localStorage.nc);	//console.log(nomConvenio);
+  		return nomConvenio;
+  	},
 	MsjPeligro:function(msj){
 		$.notify({
 			// options

@@ -4,7 +4,7 @@ $(document).ready(function() {
 	if(Func.GetTipo()=="C"){
 		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a>';
 	} else{
-		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_add_visita" data-toggle="tooltip" title="Adicionar avance"><i class="fa fa-plus-square" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Gestión"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Gestión"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Convenio / Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Convenio / Contrato"><i class="fa fa-trash" aria-hidden="true"></i></a>';
 	}
 	var columnDefs = [ 
 		{
@@ -13,7 +13,7 @@ $(document).ready(function() {
           "defaultContent": txtCol
         },
         {
-          	"targets": [ 7 ],
+          	"targets": [ 5 ],
             "visible": false,
             "searchable": false
         }
@@ -46,7 +46,7 @@ $(document).ready(function() {
 		},
 		"columnDefs": columnDefs
 	};
-	var CargarGestiones = function(usrTipo,centroGestor) {	//OPTIMIZAR CARGA	http://jsfiddle.net/V2Kdz/
+	var CargarConvenios = function() {	//OPTIMIZAR CARGA	http://jsfiddle.net/V2Kdz/
 		$('#TBList tbody > tr').remove(); //console.log($('#TBList tr').length);	//console.log($('#TBody').length);
 		 $('#TBList tfoot th').each( function () {
 	        var title = $(this).text();
@@ -54,17 +54,14 @@ $(document).ready(function() {
 	    } );
 		
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-	  	AppConfig.socketDataAdmin.emit('GetListadoGes',  {usrTipo : usrTipo, id_centrog : centroGestor}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+	  	AppConfig.socketDataAdmin.emit('getlistadoConvenio',  null , function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log(message);
-			var decrypted = FuncDecrypted(message);		//console.log(decrypted);
+			var decrypted = FuncDecrypted(message);		console.log(decrypted);
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');
 					$.each(value1, function (name, value) {		//console.log(name + '=' + value);
-						if(name=="avance_porcentaje"){
-							if(value<100) $('#f'+name1).css('color', 'red'); 
-						}
-						if(name=="id_gestion"){
+						if(name=="id"){
 							$('#f'+name1).append("<td>"+value+"</td><td></td>");
 						}else $('#f'+name1).append("<td>"+value+"</td>");
 						
@@ -72,6 +69,7 @@ $(document).ready(function() {
 				}); //console.log("Cargaaaaaa");
 			});
 			oTable = $('#TBList').DataTable(configTBL);
+			
 			// Aplicar Busqueda x Columnas
 		    oTable.columns().every( function () {
 		        var that = this;
@@ -84,38 +82,32 @@ $(document).ready(function() {
 		        } );
 		    } );
 		    $('#TBList tbody').on( 'click', 'a', function () {	//console.log($(this).attr("class"));
-		        var data = oTable.row( $(this).parents('tr') ).data(); //console.log(data);
+		        var data = oTable.row( $(this).parents('tr') ).data();	//console.log(data);
 		        var tipo = $(this).attr("class");
 		        if(tipo=="btn_detalle"){
-			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[7]);
-			  		setTimeout(function(){
+			  		Func.setIdconvenio(data[5]);
+			  		Func.setNomconvenio(data[1]);
+/*			  		setTimeout(function(){
 			  			window.open(
 						  'Detalle.html',
 						  '_blank' // <- This is what makes it open in a new window.
 						);
-					}, 50);
-		        }else if(tipo=="btn_add_visita"){
-			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[7]);
-			  		setTimeout(function(){
-				    	window.location.href = 'AdicionarVisita.html';
-					}, 50);
+					}, 50);	*/
 		        }else if(tipo=="btn_editar"){
-			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[7]);
-			  		setTimeout(function(){
+			  		Func.setIdconvenio(data[5]);
+			  		Func.setNomconvenio(data[1]);
+/*			  		setTimeout(function(){
 			  			window.open(
 						  'Editar.html',
 						  '_blank' // <- This is what makes it open in a new window.
 						); 
-					}, 50);
+					}, 50); */
 		        }else if(tipo=="btn_eliminar"){
 					var fila = data["DT_RowId"];				//console.log(fila);	console.log($(this)[0]);
-					bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> la gestión: '+data[2], function(result) {
+					bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> el Convenio: '+data[2], function(result) {
 					  	if(result){
 				  			AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	 //console.log("Cliente:"+AppConfig.socketDataAdmin.io.engine.id);		
-						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[7] }, function(message){			
+						  	AppConfig.socketDataAdmin.emit('deleteConvenio', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_convenio : data[5], tipo : data[4] }, function(message){			
 						  		console.log(message);
 						  		if(message=="Ok"){	
 						  			oTable.row('#'+fila).remove().draw( false );	console.log('Removido');
@@ -129,8 +121,8 @@ $(document).ready(function() {
 		  	$('[data-toggle="tooltip"]').tooltip(); 
 		});
 	};
-	console.log("Carga Inicial de Gestiones!");
-	CargarGestiones(Func.GetTipo(),Func.GetCentrosG().join());
+	console.log("Carga Inicial de Convenios!");
+	CargarConvenios();
 	if(Func.GetTipo()=="C"){
 		$("#div_add").hide();
 	}

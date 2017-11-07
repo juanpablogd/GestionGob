@@ -53,9 +53,24 @@
 	/*********************************/	
 	/****CAMPOS REQUERIDOS************/
 	.control-label.required:after {
-	  content:" *";color:red;font-size: 18px;
+	  content:" *";color:red;
 	}
 	/*********************************/
+	.row {
+		margin-top: 15px !important;
+	}
+	.jq-dte-day{
+		width: 55px;
+	}
+	.jq-dte-month{
+		width: 55px;
+	}
+	.jq-dte-year{
+		width: 70px;
+	}
+	.jq-dte-errorbox{
+		z-index: 100 !important;
+	}
   </style>
   
 </head>
@@ -81,6 +96,10 @@
 	        <li class="active"><a href="../Gestiones/">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_convenios">
+	        <li class="active"><a href="../Convenios">
+	        	<i class="fa fa-align-justify" aria-hidden="true">&nbsp;</i> Convenio/Contrato </a></li>
+	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
 	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -100,178 +119,190 @@
 	    </div>
 	  </div>
 	</nav>
-	<div style="text-align: center;"><label id="nom_gestion" >&nbsp;</label></div>
-  <form role="form" id="FrmAdicionar">
-		<div class="form-group">
-			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<input type="date" class="form-control" id="fecha">
-		</div>
-		<!-- div class="form-group">
-			<label for="noticia" class="control-label required" data-toggle="tooltip" title="Describir de manera Resumida la Nombre de la Noticia">Noticia <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-  			<textarea class="form-control" rows="2" id="noticia" maxlength="255">&nbsp;</textarea>
-		</div -->
-		<div class="form-group">
-			<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-  			<textarea class="form-control" rows="5" maxlength="512" id="descripcion">&nbsp;</textarea>
-		</div>
-	  	<div class="form-group">
-		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<select id="codigo_mun">&nbsp;</select>
-	  	</div>
-		<div class="form-group">
-			<label for="avance_porcentaje" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención u obra (0-100%)">% Porcentaje de avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<input type="number" class="form-control" id="avance_porcentaje">
-		</div>
-		<div class="form-group">
-		  	<label for="id_categoria" class="control-label required"  data-toggle="tooltip" title="Clasificación de la intervención, proyecto ó gestión">Categorización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-		  	<select class="form-control" id="id_categoria" >
-		  		<option value="" selected=""> -- Seleccione -- </option>
-		    	<option value="1">Hechos concretos</option>
-		    	<option value="2">Gobernación a la finca</option>
-		    	<option value="3">Misión salud</option>
-		    	<option value="4">Misión educación</option>
-		    	<option value="5">Otro</option>
-			</select>
-		</div>
-		<div class="form-group">
-		    <label for="id_sector" class="control-label required" data-toggle="tooltip" title="Sector(es) económico al que beneficia">Sector </label>
-			<select id="id_sector" multiple="multiple">&nbsp;</select>
-		</div>
-		
-		<!--  RESPONSABLE --> 
+<form role="form" id="FrmAdicionar" >
+		<!--  PANEL GENERAL --> 
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Responsable Gobernación</h3>
-					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-			</div>
-			<div class="panel-body" id="responsable-panel-body">
-				<div class="form-group">
-				    <label for="id_centrog" class="control-label required" data-toggle="tooltip" title="Entidad(es) que intervienen, pueden ser del sector central (secretarías) o desentralizadas">Entidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<select id="id_centrog" multiple="multiple">&nbsp;</select>
-				</div>
-				<div class="form-group">
-			    	<label for="responsable_nom" class="control-label required" data-toggle="tooltip" title="Nombre de la persona de la gobernación que lidera el proyecto, puede ser el Secretario, Director o Funcionario">Nombre contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<input type="text" class="form-control" id="responsable_nom">
-				</div>			
-				<div class="form-group">
-			    	<label for="responsable_tel" class="control-label required" data-toggle="tooltip" title="Teléfono(s) Fijo y/o celular de la persona de la gobernación que lidera el proyecto.">Teléfono contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<input type="text" class="form-control" id="responsable_tel">
-				</div>
-				<div class="form-group">
-			    	<label for="responsable_email"  data-toggle="tooltip" title="Correo electrónico de la persona de la gobernación que lidera el proyecto.">Email contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<input type="text" class="form-control" id="responsable_email">
-				</div>
-			</div>
-		</div>
-		<!--  CONTACTO EXTERNO --> 
-		<!-- div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Contacto Externo</h3>
-					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-			</div>
-			<div class="panel-body" id="responsable-panel-body">
-				<div class="form-group">
-			    	<label for="responsable_nom_ext" class="control-label" data-toggle="tooltip" title="Nombre del contacto externo, puede ser un Cundinamarques o contratista, con el fin de realizar seguimiento">Nombre contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<input type="text" class="form-control" id="responsable_nom_ext">
-				</div>			
-				<div class="form-group">
-			    	<label for="responsable_tel_ext" class="control-label" data-toggle="tooltip" title="Teléfono(s) Fijo y/o celular del contacto externo">Teléfono contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<input type="text" class="form-control" id="responsable_tel_ext">
-				</div>
-				<div class="form-group">
-			    	<label for="responsable_email_ext" data-toggle="tooltip" title="Correo electrónico del contacto externo.">Email contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<input type="text" class="form-control" id="responsable_email_ext">
-				</div>
-			</div>
-		</div -->
-
-		<!--  PANEL CONTRACTUAL --> 
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Contractual</h3>
-					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-			</div>
-			<div class="panel-body" id="contractual-panel-body">
-				<div class="form-group">
-	    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    			<input type="text" class="form-control" id="enlace_secop">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_nacional">Valor fuente nacional:</label>
-	    			<input type="text" class="form-control valor" id="fte_nacional">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_depto">Valor fuente departamento:</label>
-	    			<input type="text" class="form-control valor" id="fte_depto">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="fte_mpio">Valor fuente municipio:</label>
-	    			<input type="text" class="form-control valor" id="fte_mpio">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_sgp">Valor fuente Sistema General de Participaciones - SGP</label>
-	    			<input type="text" class="form-control valor" id="fte_sgp">
-	  			</div>
-				<div class="form-group">
-	    			<label for="fte_regalias">Valor fuente regalias:</label>
-	    			<input type="text" class="form-control valor" id="fte_regalias">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="descripcion_fte_otros">Otro ¿Cúal?:</label>
-	    			<input type="text" class="form-control" id="descripcion_fte_otros">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="fte_otros">Valor fuente otros:</label>
-	    			<input type="text" class="form-control valor" id="fte_otros">
-	  			</div>
-			</div>
-		
-		</div>
-		
-		<!--  PANEL SEGUIMIENTO --> 
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Seguimiento</h3>
+				<h3 class="panel-title">Información General</h3><h5><label id="nomConvenio" >&nbsp;</label></h5>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
 			<div class="panel-body"  id="seguimiento-panel-body">
-				<div class="form-group">
-				    <label for="cod_meta" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;<!-- span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span -->
-					<select id="cod_meta" multiple="multiple">&nbsp;</select>
-				</div>
-				<div class="form-group">
-	    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    			<input type="text" class="form-control" id="enlace_secop">
-	  			</div>
-				<div class="form-group">
-	    			<label for="pbeneficiadas" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de personas beneficiadas por la intervención.">Número de personas beneficiadas  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    			<input type="text" class="form-control valor"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="pbeneficiadas">
-	  			</div>
-	  			<div class="form-group">
-	    			<label for="areaint">Area intervenida:</label>
-	    			<input type="text" class="form-control" id="areaint">
-	  			</div>
-				<!-- div class="form-group">
-	    			<label for="empleos_gen_indirecto" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de empleos que se generan Indirectamente por la intervención.">Empleos generados indirectamente  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    			<input type="number" class="form-control" id="empleos_gen_indirecto">
-	  			</div -->
-				<div class="form-group">
-				    <label for="id_producto" data-toggle="tooltip" title="Señalar los productos que la Secretaría de Prensa realizó respecto a la intervención.">Productos Prensa <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-					<select id="id_producto" multiple="multiple">&nbsp;</select>
-				</div>
-				<div class="form-group">
-					<label for="resultado" class="control-label required" data-toggle="tooltip" title="Describir detalladamente el resultado de la intervención.">Resultado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-		  			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
-				</div>
+				    <div class="row">
+				    	<div class="col-sm-4">
+						  <label class="form-check-label">
+						    <input class="form-check-input" type="radio" name="tipoConvenio" id="convenioMarco" value="1" checked="checked"> Convenio/Contrato Marco &nbsp;
+						  </label> 
+						</div>
+						<div class="col-sm-4">
+						  <label class="form-check-label">
+						    <input class="form-check-input" type="radio" name="tipoConvenio" id="convenioDerivado" value="2"> Convenio/Contrato Derivado
+						  </label>
+						</div>
+						<div class="col-sm-4">&nbsp;</div>
+				    </div>
+				    <div class="row" id="div_cmarco" style="display: none">
+				    	<div class="col-sm-12">
+			    			<label for="sel_id_con_derivado" class="control-label required" data-toggle="tooltip" title="Seleccione el convenio Marco al que pertenece"> Convenio Marco <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<select id="sel_id_con_derivado" >&nbsp;</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+						    <label for="cod_meta" class="control-label required" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;
+							<select id="cod_meta" multiple="multiple">&nbsp;</select>
+						</div>
+					</div>
+				    <div class="row">
+				    	<div class="col-sm-4">
+			    			<label for="nro_con" class="control-label required" data-toggle="tooltip" title="N° de convenio o contrato">N° convenio / Contrato <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control " id="nro_con">
+						</div>
+						<div class="col-sm-8" id="div_secop">
+			    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control" id="enlace_secop">
+						</div>
+				    </div>
+					<div class="row">
+						<div class="col-sm-12">
+							<label for="objeto" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Objeto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				  			<textarea class="form-control" rows="3" maxlength="512" id="objeto">&nbsp;</textarea>
+				  		</div>
+					</div>
+				    <div class="row">
+				    	<div class="col-sm-8">
+			    			<label for="nom_tercero" class="control-label required" data-toggle="tooltip" title="Nombre del tercero que ejecuta el convenio o contrato">Tercero <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control" id="nom_tercero">
+						</div>
+						<div class="col-sm-4">
+			    			<label for="id_tercero" data-toggle="tooltip" title="N° de Cédula o NIT del tercero">Identificación <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control" id="id_tercero">
+						</div>
+				    </div>
+				    <div class="row">
+				    	<div class="col-sm-4">
+			    			<label for="nom_supervisor" class="control-label required" data-toggle="tooltip" title="Nombre del supervisor del convenio o contrato">Nombre Supervisor <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control" id="nom_supervisor">
+						</div>
+						<div class="col-sm-4">
+			    			<label for="nom_interventor" data-toggle="tooltip" title="Nombre del Interventor del convenio o contrato en caso tal de existir">Nombre Interventor <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control" id="nom_interventor">
+						</div>
+						<div class="col-sm-4">
+			    			<label for="vr_interventoria" data-toggle="tooltip" title="Valor económico del convenio o contrato en caso tal de existir">Valor Interventoría <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control valor" id="vr_interventoria">
+						</div>
+				    </div>
+				    <div class="row">
+				    	<div class="col-sm-3">
+			    			<label for="fec_suscripcion" class="control-label required" data-toggle="tooltip" title="Fecha de suscripción del convenio o contrato">Fecha suscripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="date" class="form-control" id="fec_suscripcion">
+						</div>
+						<div class="col-sm-3">
+			    			<label for="fec_inicio" data-toggle="tooltip" title="Fecha de inicio de ejecución del convenio o contrato">Fecha inicio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control" id="fec_inicio">
+						</div>
+				    	<div class="col-sm-3">
+			    			<label for="plazo_dias" data-toggle="tooltip" title="N° de días de plazo de ejecución">Plazo ejecución (Días) <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<input type="text" class="form-control valor" id="plazo_dias">
+						</div>
+						<div class="col-sm-3">
+			    			<label for="enlace_secop" data-toggle="tooltip" title="Es el resultado de la fecha inicial más los días de plazo de ejecución">Fecha finalización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    			<label id="fec_proy_finalizacion"></label>
+						</div>
+				    </div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
+		<!--  PANEL FINANCIERO -->
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Información Económica</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body" id="seguimiento-panel-body">
+			    <div class="row">
+			    	<div class="col-sm-7">
+		    			<label for="idFte" class="control-label required" data-toggle="tooltip" title="Fuente del recurso (Cundinamarca, Nación, Regalías, etc)"> Fuente <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		    			<select id="idFte" >&nbsp;</select>
+					</div>
+					<div class="col-sm-4">
+		    			<label for="vrFte">Valor fuente:</label>
+    					<input type="text" class="form-control valor" id="vrFte">
+					</div>
+					<div class="col-sm-1">
+						<label for="btn_add">Agregar</label>
+					  	<a href="#" class="btn btn-success btn-md" id="btn_add">
+					  		<span class="glyphicon glyphicon-plus"></span>
+						</a>
+					</div>
+			    </div>
+			    <div class="ro">
+			    	<div class="col-">
+						<table class="table" id="tblFuentes">
+						    <thead>
+						      <tr>
+						        <th>Fuente</th>
+						        <th>Valor</th>
+						        <th>ELiminar</th>
+						      </tr>
+						    </thead>
+						    <tbody></tbody>
+						  </table>
+			    	</div>
+			    </div>
+			    <div class="row">
+			    	<div class="col-sm-8"></div>
+			    	<div class="col-sm-4">
+			    		<label ">Valor Total: $ <label id="totalFte">0</label></label>
+			    	</div>
+			    </div>
+			</div>
 		</div>
-	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
-	  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
-		</a>
+		<!--  PANEL MODIFICACIÓN --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Información modificación</h3><label id="nomConvenio" >&nbsp;</label>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body"  id="seguimiento-panel-body">
+				    <div class="row">
+				    	<div class="col-sm-3">
+							<div class="checkbox">
+							  <label><input type="checkbox" id="modificacion_con" value="">Modificación</label>
+							</div>
+						</div>
+						<div class="col-sm-3" id="div_fec_terminacion" style="display: none">
+			    			<label for="fec_terminacion">Fecha de Terminación final</label>
+	    					<input type="text" class="form-control valor" id="fec_terminacion">
+						</div>
+						<div class="col-sm-3" id="div_vr_adicion" style="display: none">
+			    			<label for="vr_adicion">Valor adición</label>
+	    					<input type="text" class="form-control valor" id="vr_adicion">
+						</div>
+						<div class="col-sm-3" id="div_vrtotal" style="display: none">
+							<label ">Valor Total con Adición: $ <label id="vrtotal">0</label></label>
+						</div>
+				    </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<label for="observacion" class="control-label required" data-toggle="tooltip" title="Escribir el Objeto del contrato o convenio">Observación <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	  			<textarea class="form-control" rows="3" maxlength="512" id="observacion">&nbsp;</textarea>
+	  		</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12" id="div_archivos" style="display: block;">
+				<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
+	  		</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+			  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
+			  		<span class="glyphicon glyphicon-save">&nbsp;</span> Actualizar
+				</a>
+	  		</div>
+		</div>
 	  
 </form>
 
@@ -281,6 +312,7 @@
 	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
 	<script src="../../Resources/socket/socket.io.js"></script>
 	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
+	<script src="../../Resources/tether/js/tether.min.js"></script>
 	<script src="../../Resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
 	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
@@ -299,12 +331,11 @@
 	<script src="../../Resources/bootstrap-fileinput/js/fileinput.min.js"></script>
 	<script src="../../Resources/bootstrap-fileinput/js/locales/es.js"></script>
 	
-	
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>
 	<script src="../../Scripts/Func.js"></script>
 	<script src="../../Scripts/Home/Navbar.js"></script>
-	<script src="../../Scripts/Gestiones/Editar.js"></script>
+	<script src="../../Scripts/Convenios/Editar.js"></script>
 
 	
 </html>

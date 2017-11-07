@@ -2,9 +2,9 @@ $(document).ready(function() {
 	var oTable;
 	var txtCol;
 	if(Func.GetTipo()=="C"){
-		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a>';
+		txtCol = '';	//<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a>
 	} else{
-		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Convenio / Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Convenio / Contrato"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+		txtCol = '<a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Convenio / Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Convenio / Contrato"><i class="fa fa-trash" aria-hidden="true"></i></a>';
 	}
 	var columnDefs = [ 
 		{
@@ -96,12 +96,12 @@ $(document).ready(function() {
 		        }else if(tipo=="btn_editar"){
 			  		Func.setIdconvenio(data[5]);
 			  		Func.setNomconvenio(data[1]);
-/*			  		setTimeout(function(){
+			  		setTimeout(function(){
 			  			window.open(
 						  'Editar.html',
 						  '_blank' // <- This is what makes it open in a new window.
 						); 
-					}, 50); */
+					}, 50);
 		        }else if(tipo=="btn_eliminar"){
 					var fila = data["DT_RowId"];				//console.log(fila);	console.log($(this)[0]);
 					bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> el Convenio: '+data[2], function(result) {

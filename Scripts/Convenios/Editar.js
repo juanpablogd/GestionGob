@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var initialPreview = [];
 	/* Valida Acceso */	
 	if(Func.GetTipo()=="C")	window.location.href = 'index.html';
 
@@ -119,9 +120,17 @@ AppConfig.Inicial= function() {
 			window.location.href = 'index.html';
 		});
 	});
-
+	$('#input-1').on('filepredelete', function(event, id, index) {	console.log('filepredelete: id = ' + id + ', index = ' + index);
+		console.log(initialPreview);
+		Object.keys(initialPreview).forEach(function(key2, index2) {	console.log(index2 + ": "+ key2 +" - "+ initialPreview[key2]);
+		    if(initialPreview[key2] == "http://saga.cundinamarca.gov.co/SIG/"+id) { console.log("ELimina dato del array");
+		    	initialPreview.splice(index2, 1);
+		    }
+		});
+		console.log(initialPreview);
+	});
   	//SELECCIONA
-  	var initialPreview = [];		//console.log(AppConfig["url"]);
+  			//console.log(AppConfig["url"]);
   	if(AppConfig["url"] != null ){	
   		var str_array = AppConfig["url"].split(', ');	//console.log(str_array);
   		var initialPreviewConfig = [];
@@ -147,9 +156,9 @@ AppConfig.Inicial= function() {
     	maxFileSize: AppConfig.tamanoArchivo,
     	initialPreview: initialPreview,
     	initialPreviewAsData: true,
+    	overwriteInitial: false,
     	initialPreviewConfig: initialPreviewConfig,
     	initialPreviewFileType: 'image',
-    	overwriteInitial: false,
     	deleteUrl: "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen_eliminar.php",
 	    uploadExtraData: function (previewId, index) {	console.log(idConvenio);
 			    var data = {
@@ -402,8 +411,8 @@ $('#btn_guardar').click(function(){
 			var vr_adicion = numeral().unformat($("#vr_adicion").val());						console.log(vr_adicion);
 			var vrtotal = numeral().unformat($("#vrtotal").html());								console.log(vrtotal);
 			var observacion = $("#observacion").val().trim();								console.log(observacion);
-			var numArchivos = $('#input-1').fileinput('getFileStack').length;		console.log($('#input-1').fileinput('getFileStack'));
-
+			var numArchivos = $('#input-1').fileinput('getFilesCount');		console.log(numArchivos);
+			var totalArchivos = numArchivos + initialPreview.length;
 			// ------ VALIDACIÓN ------
 			if(tipoConvenio == 2){
 				if(AppConfig["id_con_marco"]===undefined || AppConfig["id_con_marco"].length<1){
@@ -460,13 +469,11 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#observacion').focus(); }, 400);
 	  			return;
 	  		}
-	  		//if(tipoConvenio == 2){
-		  		if(numArchivos==0){
-		  			Func.MsjPeligro("Debe seleccionar al menos un Archivo Valido");
-		  			setTimeout(function() { $('#input-1').focus(); }, 500);
-		  			return;
-		  		}
-		  	//}
+	  		if(totalArchivos==0){
+	  			Func.MsjPeligro("Debe seleccionar al menos un Archivo Valido");
+	  			setTimeout(function() { $('#input-1').focus(); }, 500);
+	  			return;
+	  		}
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		$("#input-1").focus();
 

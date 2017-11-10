@@ -1,18 +1,27 @@
+/*
+WITH ft AS (
+	select id_convenio,string_agg(nom_fuente||': '||to_char(vr_fuente, 'FM$999,999,999,990'), '; '::text) AS fuentes 
+    from seguimientopdd.sa_t_convenio_fte f inner join seguimientopdd.sa_p_fuente pf on f.id_fuente = pf.id group by id_convenio
+), mt AS (
+	select id_convenio,string_agg(cod_meta, ', '::text) AS metas 
+    from seguimientopdd.sa_t_convenio_meta group by id_convenio
+)
+select tipoc,nro_con,objeto,secop_con, nom_tercero||' '||id_tercero tercero,nom_supervisor,nom_interventor,
+     fec_suscripcion,fec_inicio,plazo_dias,fec_proy_finalizacion,metas,modificacion_con,fec_terminacion
+     fuentes,to_char(vr_fuentes, 'FM$999,999,999,990') vr_fuentes,to_char(vr_adicion, 'FM$999,999,999,990') vr_adicion
+     ,to_char(vr_total, 'FM$999,999,999,990') vr_total,observacion
+from seguimientopdd.sa_t_convenio c inner join ft on c.id = ft.id_convenio
+	inner join mt on c.id = mt.id_convenio
+where c.id = 27
+*/
 $(document).ready(function() {
 	/* Valida Acceso */	
 	if(Func.GetTipo()=="C")	window.location.href = 'index.html';
 	
-//Func.MsjPeligro("adfasdf");
-/* AppConfig.EstadoCentroGestor= function() {
-	AppConfig['cod_meta'] = "";
-	if(AppConfig['id_centrog'].length){
-		AppConfig.CargaMetas();
-	}else{
-    	$("#MsjAlertaMetas").show();
-    	Func.MsjPeligro("Debe seleccionar al menos una secretaría para cargar las metas");
-	}
-}; */
 AppConfig.Inicial= function() {
+	if(Func.GetIdPerfil()==122){
+		$("#div_cmarco").show();
+	}
 	/* CODIGO DE PANEL DESPLEGABLE */
 	$(document).on('click', '.panel-heading span.clickable', function(e){
 	    var $this = $(this);
@@ -111,6 +120,23 @@ AppConfig.Inicial= function() {
 	        },
             onDeselectAll: function(checked) {
             	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
+	        }
+	});
+	/* SELECT - CONVENIO DERIVADO */
+	$('#sel_id_convenio').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_convenio'] = $('#sel_id_convenio option:selected').map(function(a, item){return item.value;}).get();	//console.log('onChange: '+AppConfig['id_convenio']);
+				AppConfig.getInfoConvenio();
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_convenio'] = $('#sel_id_convenio option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_convenio'] = $('#sel_id_convenio option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
 	        }
 	});
 	/* SELECT -  Productos de Prensa*/
@@ -217,17 +243,6 @@ AppConfig.CargaSecretarias= function() {
 	});
 };
 
-/* AppConfig.CargaTipoContrato= function() {	
-	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-  	AppConfig.socketDataAdmin.emit('GetListTipoContrato', '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
-		console.log(moment().format('h:mm:ss:SSSS')+" Listado Tipo de COntrato");				//console.log("message:" + message);
-		var decrypted = FuncDecrypted(message);										//console.log(message);									
-		AppConfig["ListadoTipoContrato"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
-		$('#id_tipo_cto').multiselect('dataprovider', AppConfig["ListadoTipoContrato"]);
-	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
-	});
-};	*/
-
 AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
 	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
@@ -244,6 +259,31 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
    
+};
+AppConfig.cargaConvenios= function() {	//console.log(AppConfig['id_centrog']);
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
+	//AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+  	AppConfig.socketDataAdmin.emit('getlistaConveniosParam', '', function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Convenio Marco");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["listadoConvenios"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
+		$('#sel_id_convenio').multiselect('dataprovider', AppConfig["listadoConvenios"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+AppConfig.getInfoConvenio= function() {	//console.log(AppConfig['id_convenio']);
+	if(AppConfig['id_convenio'][0] == "") return false;
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
+	//AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+  	AppConfig.socketDataAdmin.emit('getInfoConvenios', {id_convenio : AppConfig['id_convenio'] }, function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Solicita info Convenio");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										console.log(decrypted);									
+/*		AppConfig["listadoConvenios"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
+		$('#sel_id_convenio').multiselect('dataprovider', AppConfig["listadoConvenios"]);	*/
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
 };
 AppConfig.CargaProductosPrensa= function() {
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
@@ -262,6 +302,7 @@ AppConfig.CargaSecretarias();
 //AppConfig.CargaTipoContrato();
 AppConfig.CargaMetas();
 AppConfig.CargaProductosPrensa();
+AppConfig.cargaConvenios();
 
 
 $('#btn_guardar').click(function(){

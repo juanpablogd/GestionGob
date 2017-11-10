@@ -58,7 +58,7 @@ AppConfig.Inicial= function() {
             	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
 	        }
 	});
-	/* SELECT - SUBPROGRAMA / META*/
+	/* SELECT - CONVENIO DERIVADO */
 	$('#sel_id_con_derivado').multiselect({
             enableClickableOptGroups: true,
             enableCollapsibleOptGroups: true,
@@ -210,7 +210,7 @@ AppConfig.cargaComarco= function() {	//console.log(AppConfig['id_centrog']);
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
 	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
 	//AppConfig.socketDataAdmin.emit('GetListMeta', {id_centrog : id_centros }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
-  	AppConfig.socketDataAdmin.emit('getlistConmarco', '', function(message){
+  	AppConfig.socketDataAdmin.emit('getlistaConveniosParam', {tipo : 1}, function(message){
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Convenio Marco");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoMarco"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
@@ -316,7 +316,7 @@ $('#btn_guardar').click(function(){
 			var fec_suscripcion = $("#fec_suscripcion").val().trim();	console.log(fec_suscripcion);
 			var fec_inicio = $("#fec_inicio").val().trim();	console.log(fec_inicio);
 			var plazo_dias = $("#plazo_dias").val().trim();	console.log(plazo_dias);
-			var fec_proy_finalizacion = $("#fec_proy_finalizacion").val().trim();	console.log(fec_proy_finalizacion);
+			var fec_proy_finalizacion = $("#fec_proy_finalizacion").text().trim();	console.log(fec_proy_finalizacion);
 			var totalFte = numeral().unformat($("#totalFte").html().trim());	console.log(totalFte);
 			console.log(AppConfig["fuentes"]);
 			var modificacion_con = $('#modificacion_con').is(':checked');	console.log(modificacion_con);

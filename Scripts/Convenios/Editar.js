@@ -403,7 +403,7 @@ $('#btn_guardar').click(function(){
 			var fec_suscripcion = $("#fec_suscripcion").val().trim();	console.log(fec_suscripcion);
 			var fec_inicio = $("#fec_inicio").val().trim();	console.log(fec_inicio);
 			var plazo_dias = $("#plazo_dias").val().trim();	console.log(plazo_dias);
-			var fec_proy_finalizacion = $("#fec_proy_finalizacion").val().trim();	console.log(fec_proy_finalizacion);
+			var fec_proy_finalizacion = $("#fec_proy_finalizacion").text().trim();	console.log(fec_proy_finalizacion);
 			var totalFte = numeral().unformat($("#totalFte").html().trim());	console.log(totalFte);
 			console.log(AppConfig["fuentes"]);
 			var modificacion_con = $('#modificacion_con').is(':checked');	console.log(modificacion_con);

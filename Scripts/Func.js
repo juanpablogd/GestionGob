@@ -28,15 +28,16 @@ var Func={
 		return data[0].nombre;
 	},
 	GetIdPerfil: function (){	//jp 18
-		var data=this.DataLogin();
-		return data[0].id_perfil;
+		var data=this.DataLogin();	//console.log(data);
+		if(data) return data[0].id_perfil;
 	},
 	GetAdmin: function (){
 		var data=this.DataLogin();
+		if(!data) return false;
 		if(data[0].id_perfil_admin==24){
 	        return true;	
 	    }else{
-	    	return false;	
+	    	return false;
 	    }
 	},
 	GetTipo: function (){ //jp 24
@@ -89,7 +90,7 @@ var Func={
 	        }
 	    }
 	},
-	UsuarioLogueado: function(){
+	UsuarioLogueado: function(){	//console.log(localStorage.dt);
 		if(localStorage.dt){
 			return true;
 	    }else{
@@ -196,3 +197,6 @@ $( ".valor" ).each(function( index ) {	//console.log( index + ": " + $( this ).t
 	    numeralThousandsGroupStyle: 'thousand'
 	});
 });
+if(Func.UsuarioLogueado()){
+	if(Func.GetIdPerfil()!=122 && !Func.GetAdmin()) $("#opcion_convenios").hide();
+}

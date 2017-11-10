@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {	console.log(Func.GetIdPerfil());
 	var oTable;
 	var txtCol;
 	if(Func.GetTipo()=="C"){

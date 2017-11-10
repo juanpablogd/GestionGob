@@ -56,7 +56,7 @@ $(document).ready(function() {
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 	  	AppConfig.socketDataAdmin.emit('getlistadoConvenio',  null , function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log(message);
-			var decrypted = FuncDecrypted(message);		console.log(decrypted);
+			var decrypted = FuncDecrypted(message);		//console.log(decrypted);
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');

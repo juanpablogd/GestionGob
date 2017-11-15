@@ -138,10 +138,20 @@ AppConfig.Inicial= function() {
 			initialPreviewConfig[i]= {};
 		   	str = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");	//console.log(str);
 		   	var datafile = str.split('@');
+		   	var tipoTMP = datafile[1].split('/');		console.log(tipoTMP[1]);
+		   	var tipo;
+		   	if (tipoTMP[1] == 'jpeg' || tipoTMP[1] == 'jpg' || tipoTMP[1] == 'png' || tipoTMP[1] == 'bmp' || tipoTMP[1] == 'gif'){
+		   		tipo = 'image';
+		   	}else if (tipoTMP[1] == 'mp4') {
+		   		tipo = 'video';
+		   	} else{
+		   		tipo = tipoTMP[1]; 
+		   	}
 		   	initialPreview.push('http://saga.cundinamarca.gov.co/SIG/'+datafile[0]);
 		   	
 		   	initialPreviewConfig[i].url = "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen_eliminar.php?id_convenio="+idConvenio;
 		   	initialPreviewConfig[i].key = datafile[0];
+		   	initialPreviewConfig[i].type = tipo;
 		}	console.log(initialPreviewConfig);
   	}
 

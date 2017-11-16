@@ -420,10 +420,6 @@ AppConfig.cargaConvenios= function() {	//console.log(AppConfig['id_centrog']);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoConvenios"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		$('#sel_id_convenio').multiselect('dataprovider', AppConfig["listadoConvenios"]);
-		//SELECCIONA CONVENIO
-		console.log(AppConfig["id_convenio"]);
-		$('#sel_id_convenio').multiselect('select', AppConfig["id_convenio"]);
-		AppConfig.getuniConvenio_AddGestion(AppConfig["id_convenio"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -525,7 +521,7 @@ AppConfig.CargarGestion= function() {
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 	  	AppConfig.socketDataAdmin.emit('GetUnicaGes',  {id_gestion : IdGestion}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 
-			var decrypted = FuncDecrypted(message);											console.log(decrypted);
+			var decrypted = FuncDecrypted(message);											//console.log(decrypted);
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
@@ -536,12 +532,10 @@ AppConfig.CargarGestion= function() {
 			});
 
 			AppConfig.Inicial();
-			AppConfig.cargaConvenios();
-			AppConfig.cargaEstados()
 			AppConfig.CargaMunicipios();
 			AppConfig.CargaSectores();
-			AppConfig.cargaTipos();
 			AppConfig.CargaSecretarias();
+			//AppConfig.CargaTipoContrato();
 			AppConfig.CargaMetas();
 			AppConfig.CargaProductosPrensa();
 

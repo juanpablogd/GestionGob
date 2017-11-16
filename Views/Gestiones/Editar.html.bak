@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>SAGA</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- CSS Resources -->
+  <link href="../../Resources/Animate/animate.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
+  <link href="../../Resources/FontAwesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
+  <link href="../../Resources/ol3/ol.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" rel="stylesheet"/>
+  <link href="../../Resources/jquery-datetextentry/jquery.datetextentry.css" type="text/css" rel="stylesheet"/>
+  
+  <!-- CSS app -->
+  <link href="../../Content/Home/NavMap.css" rel="stylesheet">
+  <link href="../../Content/Home/ContentMap.css" rel="stylesheet">
+  <style>
+  	form {
+	    width: 90%;
+	    margin: 0 auto;
+	}
+	/* ANCHO DEL COMBO DE MUNICIPIO */
+	.btn-group>.btn:first-child {
+	    width: 100% !important;
+	}
+	.btn-group, .btn-group-vertical {
+		width: 100% !important;
+	}
+	/*********************************/
+	/* PANEL DESPLEGABLE */
+	.clickable{
+	    cursor: pointer !important;   
+	}
+	.panel-heading span {
+		margin-top: -20px !important;
+		font-size: 15px !important;
+	}
+	/*********************************/	
+	/****CAMPOS REQUERIDOS************/
+	.control-label.required:after {
+	  content:" *";color:red;font-size: 18px;
+	}
+	/*********************************/
+	.row {
+		margin-top: 15px !important;
+	}
+	.jq-dte-day{
+		width: 55px;
+	}
+	.jq-dte-month{
+		width: 55px;
+	}
+	.jq-dte-year{
+		width: 70px;
+	}
+	.jq-dte-errorbox{
+		z-index: 100 !important;
+	}
+	/* SEMAFORO */
+	.circulo {
+		background-color: #ccc;
+		display: block;
+		width: 60px;
+		height: 60px;
+		margin: 0 auto;
+		moz-border-radius: 75px;
+		-webkit-border-radius: 75px;
+		border-radius: 75px;
+		margin: 5px auto;
+	}
+	#rojo{
+		background-color: #ccc;
+	}
+	#amarillo{
+		background-color: #ccc;
+	}
+	#verde {
+		background-color: #ccc;
+	}
+	/* Semaforo en línea */
+	.whole {
+	  overflow: hidden;
+	  width: 100%; /* for good measure */
+	}
+	/* ****************************** */
+  </style>
+  
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar">&nbsp;</span>
+	        <span class="icon-bar">&nbsp;</span>
+	        <span class="icon-bar">&nbsp;</span>                        
+	      </button>
+	      <a  href="#">
+	      	<img src="../../Images/Home/logos_gobernacion.png" class="LogoMap"  >
+	      </a>
+	    </div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="../Home/">
+	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_listado">
+	        <li class="active"><a href="../Gestiones/">
+	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_convenios">
+	        <li class="active"><a href="../Convenios">
+	        	<i class="fa fa-align-justify" aria-hidden="true">&nbsp;</i> Convenio/Contrato </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li class="dropdown">
+	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <i class="fa fa-user fa-fw">&nbsp;</i>  <i class="fa fa-caret-down">&nbsp;</i>
+	                </a>
+	            	<ul class="dropdown-menu dropdown-user">
+	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
+	                    </li>
+	                    <!--li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
+	                    </li-->
+	                    <li class="divider">&nbsp;</li>
+	                    <li id="CerrarSession"><a ><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
+	                    </li>
+	                </ul>
+	          </li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<div style="text-align: center;"><label id="nom_gestion" >&nbsp;</label></div>
+  <form role="form" id="FrmAdicionar">
+		<div class="form-group">
+			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<input type="date" class="form-control" id="fecha">
+		</div>
+		<!-- div class="form-group">
+			<label for="noticia" class="control-label required" data-toggle="tooltip" title="Describir de manera Resumida la Nombre de la Noticia">Noticia <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+  			<textarea class="form-control" rows="2" id="noticia" maxlength="255">&nbsp;</textarea>
+		</div -->
+		<div class="form-group">
+			<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+  			<textarea class="form-control" rows="5" maxlength="512" id="descripcion">&nbsp;</textarea>
+		</div>
+	  	<div class="form-group">
+		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<select id="codigo_mun">&nbsp;</select>
+	  	</div>
+		<div class="form-group">
+			<label for="avance_porcentaje" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención u obra (0-100%)">% Porcentaje de avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<input type="number" class="form-control" id="avance_porcentaje">
+		</div>
+		<div class="form-group">
+		  	<label for="id_categoria" class="control-label required"  data-toggle="tooltip" title="Clasificación de la intervención, proyecto ó gestión">Categorización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		  	<select class="form-control" id="id_categoria" >
+		  		<option value="" selected=""> -- Seleccione -- </option>
+		    	<option value="1">Hechos concretos</option>
+		    	<option value="2">Gobernación a la finca</option>
+		    	<option value="3">Misión salud</option>
+		    	<option value="4">Misión educación</option>
+		    	<option value="5">Otro</option>
+			</select>
+		</div>
+		<div class="form-group">
+		    <label for="id_sector" class="control-label required" data-toggle="tooltip" title="Sector(es) económico al que beneficia">Sector </label>
+			<select id="id_sector" multiple="multiple">&nbsp;</select>
+		</div>
+		
+		<!--  RESPONSABLE --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Responsable Gobernación</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body" id="responsable-panel-body">
+				<div class="form-group">
+				    <label for="id_centrog" class="control-label required" data-toggle="tooltip" title="Entidad(es) que intervienen, pueden ser del sector central (secretarías) o desentralizadas">Entidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<select id="id_centrog" multiple="multiple">&nbsp;</select>
+				</div>
+				<div class="form-group">
+			    	<label for="responsable_nom" class="control-label required" data-toggle="tooltip" title="Nombre de la persona de la gobernación que lidera el proyecto, puede ser el Secretario, Director o Funcionario">Nombre contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control" id="responsable_nom">
+				</div>			
+				<div class="form-group">
+			    	<label for="responsable_tel" class="control-label required" data-toggle="tooltip" title="Teléfono(s) Fijo y/o celular de la persona de la gobernación que lidera el proyecto.">Teléfono contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control" id="responsable_tel">
+				</div>
+				<div class="form-group">
+			    	<label for="responsable_email"  data-toggle="tooltip" title="Correo electrónico de la persona de la gobernación que lidera el proyecto.">Email contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control" id="responsable_email">
+				</div>
+			</div>
+		</div>
+		<!--  CONTACTO EXTERNO --> 
+		<!-- div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Contacto Externo</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body" id="responsable-panel-body">
+				<div class="form-group">
+			    	<label for="responsable_nom_ext" class="control-label" data-toggle="tooltip" title="Nombre del contacto externo, puede ser un Cundinamarques o contratista, con el fin de realizar seguimiento">Nombre contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control" id="responsable_nom_ext">
+				</div>			
+				<div class="form-group">
+			    	<label for="responsable_tel_ext" class="control-label" data-toggle="tooltip" title="Teléfono(s) Fijo y/o celular del contacto externo">Teléfono contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control" id="responsable_tel_ext">
+				</div>
+				<div class="form-group">
+			    	<label for="responsable_email_ext" data-toggle="tooltip" title="Correo electrónico del contacto externo.">Email contacto <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control" id="responsable_email_ext">
+				</div>
+			</div>
+		</div -->
+
+		<!--  PANEL CONTRACTUAL --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Contractual</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body" id="contractual-panel-body">
+				<div class="form-group">
+	    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<input type="text" class="form-control" id="enlace_secop">
+	  			</div>
+				<div class="form-group">
+	    			<label for="fte_nacional">Valor fuente nacional:</label>
+	    			<input type="text" class="form-control valor" id="fte_nacional">
+	  			</div>
+				<div class="form-group">
+	    			<label for="fte_depto">Valor fuente departamento:</label>
+	    			<input type="text" class="form-control valor" id="fte_depto">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="fte_mpio">Valor fuente municipio:</label>
+	    			<input type="text" class="form-control valor" id="fte_mpio">
+	  			</div>
+				<div class="form-group">
+	    			<label for="fte_sgp">Valor fuente Sistema General de Participaciones - SGP</label>
+	    			<input type="text" class="form-control valor" id="fte_sgp">
+	  			</div>
+				<div class="form-group">
+	    			<label for="fte_regalias">Valor fuente regalias:</label>
+	    			<input type="text" class="form-control valor" id="fte_regalias">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="descripcion_fte_otros">Otro ¿Cúal?:</label>
+	    			<input type="text" class="form-control" id="descripcion_fte_otros">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="fte_otros">Valor fuente otros:</label>
+	    			<input type="text" class="form-control valor" id="fte_otros">
+	  			</div>
+			</div>
+		</div>
+		
+		<!--  PANEL SEGUIMIENTO --> 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Seguimiento</h3>
+					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+			</div>
+			<div class="panel-body"  id="seguimiento-panel-body">
+				<div class="form-group">
+				    <label for="cod_meta" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;<!-- span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span -->
+					<select id="cod_meta" multiple="multiple">&nbsp;</select>
+				</div>
+				<div class="form-group">
+	    			<label for="enlace_secop" data-toggle="tooltip" title="Dirección URL en la pagína del Secop del contrato en caso tal de existir">Enlace Secop <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<input type="text" class="form-control" id="enlace_secop">
+	  			</div>
+				<div class="form-group">
+	    			<label for="pbeneficiadas" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de personas beneficiadas por la intervención.">Número de personas beneficiadas  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<input type="text" class="form-control valor"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="pbeneficiadas">
+	  			</div>
+	  			<div class="form-group">
+	    			<label for="areaint">Area intervenida:</label>
+	    			<input type="text" class="form-control" id="areaint">
+	  			</div>
+				<!-- div class="form-group">
+	    			<label for="empleos_gen_indirecto" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de empleos que se generan Indirectamente por la intervención.">Empleos generados indirectamente  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<input type="number" class="form-control" id="empleos_gen_indirecto">
+	  			</div -->
+				<div class="form-group">
+				    <label for="id_producto" data-toggle="tooltip" title="Señalar los productos que la Secretaría de Prensa realizó respecto a la intervención.">Productos Prensa <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<select id="id_producto" multiple="multiple">&nbsp;</select>
+				</div>
+				<div class="form-group">
+					<label for="resultado" class="control-label required" data-toggle="tooltip" title="Describir detalladamente el resultado de la intervención.">Resultado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		  			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
+		</div>
+	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
+	  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
+		</a>
+	  
+</form>
+
+</body>
+	<!-- script Resources -->
+	<script src="../../Resources/Numeral/numeral.js"></script>
+	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
+	<script src="../../Resources/socket/socket.io.js"></script>
+	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
+	<script src="../../Resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
+	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
+	<script src="../../Resources/socket/socket.io.js"></script>				
+	<script src="../../Resources/bootbox/bootbox.js"></script>
+	<script src="../../Resources/Crypto/crypto-js.js"></script>
+	<!--script src="../../Resources/Crypto/aes.js"></script-->
+	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
+	<script src="../../Resources/growl/bootstrap-growl.min.js"></script>
+	<script src="../../Resources/growl/Notificaciones.js"></script>
+	<script src="../../Resources/fastclick/fastclick.min.js"></script>
+	<script src="../../Resources/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<script src="../../Resources/jquery-datetextentry/jquery.datetextentry.js"></script>
+	<script src="../../Resources/cleave-js/cleave.min.js"></script>
+	<script src="../../Resources/bootstrap-fileinput/js/fileinput.min.js"></script>
+	<script src="../../Resources/bootstrap-fileinput/js/locales/es.js"></script>
+	
+	
+	<!-- app Resources -->
+	<script src="../../Scripts/AppConfig.js"></script>
+	<script src="../../Scripts/Func.js"></script>
+	<script src="../../Scripts/Home/Navbar.js"></script>
+	<script src="../../Scripts/Gestiones/Editar.js"></script>
+
+	
+</html>

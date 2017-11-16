@@ -371,20 +371,6 @@
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
 			<div class="panel-body"  id="seguimiento-panel-body">
-			    <div class="row">
-			    	<div class="col-sm-3">
-						<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-						<input type="date" class="form-control" id="fecha">
-					</div>
-					<div class="col-sm-9">
-						<label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-						<select id="codigo_mun">&nbsp;</select>
-					</div>		
-				</div>
-				<div class="form-group">
-					<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-		  			<textarea class="form-control" rows="3" maxlength="512" id="descripcion">&nbsp;</textarea>
-				</div>
 				<div class="row">
 					<div class="col-sm-6">
 					  	<label for="id_categoria" class="control-label required"  data-toggle="tooltip" title="Clasificación de la intervención, proyecto ó gestión">Estrategia <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
@@ -401,8 +387,22 @@
 					    <label for="id_sector" class="control-label required" data-toggle="tooltip" title="Sector(es) económico al que beneficia">Sector </label>
 						<select id="id_sector" multiple="multiple">&nbsp;</select>				
 					</div>
-				</div><br>
-				<div class="row">
+				</div>
+			    <div class="row">
+			    	<div class="col-sm-3">
+						<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+						<input type="date" class="form-control" id="fecha">
+					</div>
+					<div class="col-sm-9">
+						<label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+						<select id="codigo_mun">&nbsp;</select>
+					</div>		
+				</div>
+				<div class="form-group">
+					<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		  			<textarea class="form-control" rows="3" maxlength="512" id="descripcion">&nbsp;</textarea>
+				</div>
+				<div class="row" id="divTipos" style="display: none;">
 					<div class="col-sm-6">
 		    			<label for="sel_id_tipoc" class="control-label required" data-toggle="tooltip" title="Seleccione el Tipo"> Tipo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		    			<select id="sel_id_tipoc" >&nbsp;</select>			
@@ -442,8 +442,8 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-4">
-						<label for="fte_nacional">Valor Pagado:</label>
-	    				<input type="text" class="form-control valor" id="vr_pagado">
+						<label for="fte_nacional" class="control-label required" data-toggle="tooltip" title="Valor Pagado a la Fecha">Valor Pagado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    				<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="vr_pagado">
 					</div>	    				
 					<div class="col-sm-4">
 		    			<label for="pbeneficiadas" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de personas beneficiadas por la intervención.">Número de personas beneficiadas  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>

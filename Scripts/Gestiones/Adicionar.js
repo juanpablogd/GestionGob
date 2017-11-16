@@ -23,6 +23,7 @@ AppConfig.Inicial= function() {
 		$("#div_cmarco").show();
 		$("#div_infocmarco").show();
 		$("#div_infocderivado").show();
+		$("#divTipos").show();
 		AppConfig.estadoPanel($('#conMarco-panel-body'),'cerrar');
 		AppConfig.estadoPanel($('#conDerivado-panel-body'),'cerrar');
 		//ESTRATEGIA HECHOS CONCRETOS
@@ -73,7 +74,7 @@ AppConfig.Inicial= function() {
             includeSelectAllOption: true,
             enableCaseInsensitiveFiltering: true,
             onChange: function(option, checked, select) {
-            	AppConfig['id_sector'] = $('#id_sector option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_sector']);
+            	AppConfig['id_sector'] = $('#id_sector option:selected').map(function(a, item){return item.value;}).get();	console.log(AppConfig['id_sector']);
             },
             onSelectAll: function(checked) {
             	AppConfig['id_sector'] = $('#id_sector option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_sector']);
@@ -90,7 +91,7 @@ AppConfig.Inicial= function() {
             includeSelectAllOption: true,
             enableCaseInsensitiveFiltering: true,
             onChange: function(option, checked, select) {	//	console.log("onChange");
-            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	console.log(AppConfig['id_centrog']);
             	//AppConfig.EstadoCentroGestor();
             },
             onSelectAll: function(checked) {				//	console.log("onSelectAll");
@@ -314,6 +315,10 @@ AppConfig.CargaSectores= function() {
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoSector"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
 		$('#id_sector').multiselect('dataprovider', AppConfig["ListadoSector"]);
+		if(Func.GetIdPerfil()==122){
+			$('#id_sector').multiselect('select', ["1"]);
+			AppConfig["id_sector"] = ["1"];
+		}
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -325,6 +330,9 @@ AppConfig.CargaSecretarias= function() {
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["ListadoSecretaria"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
 		$('#id_centrog').multiselect('dataprovider', AppConfig["ListadoSecretaria"]);
+		$('#id_centrog').multiselect('select', Func.GetCentrosG());
+		AppConfig["id_centrog"] = Func.GetCentrosG();
+		
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -458,9 +466,10 @@ $('#btn_guardar').click(function(){
 	  	console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
-	  		//var noticia = $("#noticia").val().trim();	if(noticia.length > 255) noticia = noticia.substring(0,255);
 	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
 	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
+	  		var sem = $("input[name='semaforo']:checked").val();	console.log(sem);
+	  		var vr_pagado = $("#vr_pagado").val().trim();			console.log(vr_pagado);
 	  		var id_categoria = $("#id_categoria option:selected").val();
 	  		var responsable_nom = $("#responsable_nom").val().trim();
 	  		var responsable_tel = $("#responsable_tel").val().trim();
@@ -481,23 +490,54 @@ $('#btn_guardar').click(function(){
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;
 	  		
+	  		if($("#sel_id_convenio").is(":visible")){
+	  			if(AppConfig["id_convenio"]===undefined || AppConfig["id_convenio"].length<1){
+		  			Func.MsjPeligro("Debe seleccionar un Convenio");
+		  			$('#sel_id_convenio').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#sel_id_convenio').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+	  			}	
+	  		}
+	  		if(id_categoria == ""){
+	  			Func.MsjPeligro("Debe seleccionar una Estrategia");
+	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
+	  			return;
+	  		}
+			if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
+	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
+	  			$('#id_sector').nextAll('div').addClass("open");
+	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  			return;
+	  		}
 	  		if(fecha == ""){
 	  			Func.MsjPeligro("Debe ingresar una fecha");
 	  			setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 500);
 	  			return;
-/*	  		}else if(noticia==""){
-	  			Func.MsjPeligro("Digite el nombre de la Noticia");
-	  			setTimeout(function() { $('#noticia').focus(); }, 500);
-	  			return;		*/
-	  		}else if(descripcion==""){
-	  			Func.MsjPeligro("Digite una descripción");
-	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
-	  			return;	  			
 	  		}else if(AppConfig["codigo_mun"]===undefined || AppConfig["codigo_mun"].length<1){
 	  			Func.MsjPeligro("Debe seleccionar al menos un Municipio");
 	  			$('#codigo_mun').nextAll('div').addClass("open");
 	  			setTimeout(function() { $('#codigo_mun').nextAll('div').find('.multiselect-search').focus();}, 500);
 	  			return;
+	  		}else if(descripcion==""){
+	  			Func.MsjPeligro("Digite una descripción");
+	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
+	  			return;	  			
+	  		}
+	  		if($("#sel_id_tipoc").is(":visible")){
+				if(AppConfig["id_tipoc"]===undefined || AppConfig["id_tipoc"].length<1){
+		  			Func.MsjPeligro("Debe seleccionar el Tipo");
+		  			$('#sel_id_tipoc').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#sel_id_tipoc').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+		  		}
+	  		}
+	  		if($("#sel_id_estado").is(":visible")){
+				if(AppConfig["id_estado"]===undefined || AppConfig["id_estado"].length<1){
+		  			Func.MsjPeligro("Debe seleccionar el estado actual del contrato");
+		  			$('#sel_id_estado').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#sel_id_estado').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+		  		}
 	  		}
 	  		if(avance_porcentaje==""){
 	  			Func.MsjPeligro("Digite un porcentaje de avance");
@@ -510,17 +550,26 @@ $('#btn_guardar').click(function(){
 		  			return;	
 	  			}
 	  		}
-	  		if(id_categoria == ""){
-	  			Func.MsjPeligro("Debe seleccionar una Categoría");
-	  			setTimeout(function() { $('#id_categoria').focus(); }, 500);
+	  		if($("#sel_id_estado").is(":visible")){
+		  		if(sem == undefined || sem == "" ){
+		  			$("input[name='semaforo']").show();
+		  			Func.MsjPeligro("Seleccione un Color en el semaforo");
+		  			setTimeout(function() { $("input[name='semaforo']").focus(); }, 500);
+		  			return;
+		  		}
+		  	}
+	  		if(vr_pagado == ""){
+	  			Func.MsjPeligro("Debe digitar el valor pagado a la fecha");
+	  			setTimeout(function() { $('#vr_pagado').focus(); }, 500);
 	  			return;
 	  		}
-	  		if(AppConfig["id_sector"]===undefined || AppConfig["id_sector"].length<1){
-	  			Func.MsjPeligro("Debe seleccionar al menos un Sector");
-	  			$('#id_sector').nextAll('div').addClass("open");
-	  			setTimeout(function() { $('#id_sector').nextAll('div').find('.multiselect-search').focus();}, 500);
+	  		if(pbeneficiadas==""){
+  				$('#seguimiento-panel-body').show();
+	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
+	  			setTimeout(function() { $('#pbeneficiadas').focus(); }, 500);
 	  			return;
-	  		}else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
+  			}
+	  		if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
 	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
 	  			$('#id_centrog').nextAll('div').addClass("open");
@@ -536,34 +585,29 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Digite el teléfono des responsable");
 	  			setTimeout(function() { $('#responsable_tel').focus(); }, 500);
 	  			return;
-	  		}else if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
-				if(AppConfig["cod_meta"]===undefined || AppConfig["cod_meta"].length<1){
-					$('#seguimiento-panel-body').show();
-		  			Func.MsjPeligro("Debe seleccionar al menos una meta");
-		  			$('#cod_meta').nextAll('div').addClass("open");
-		  			setTimeout(function() { $('#cod_meta').nextAll('div').find('.multiselect-search').focus();}, 500);
-		  			return;
-		  		}// FIN INFO CONTRACTUAL
 	  		}
-			if(enlace_secop!=""){						//console.log("enlace_secop NO VACIO");
-					if(Func.ValidaURL(enlace_secop)==false){ //console.log("enlace_secop con INFO NO VALIDO");
-		  				$('#contractual-panel-body').show();
-			  			Func.MsjPeligro("Ingrese una URL valida");
-			  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
+	  		if($("#cod_meta").is(":visible")){
+		  		if(id_categoria==1||id_categoria==2){ //SI ES PROYECTO
+					if(AppConfig["cod_meta"]===undefined || AppConfig["cod_meta"].length<1){
+						$('#seguimiento-panel-body').show();
+			  			Func.MsjPeligro("Debe seleccionar al menos una meta");
+			  			$('#cod_meta').nextAll('div').addClass("open");
+			  			setTimeout(function() { $('#cod_meta').nextAll('div').find('.multiselect-search').focus();}, 500);
 			  			return;
-					}	
+			  		}// FIN INFO CONTRACTUAL
+		  		}
+		  	}
+		  	if($("#enlace_secop").is(":visible")){
+				if(enlace_secop!=""){						//console.log("enlace_secop NO VACIO");
+						if(Func.ValidaURL(enlace_secop)==false){ //console.log("enlace_secop con INFO NO VALIDO");
+			  				$('#contractual-panel-body').show();
+				  			Func.MsjPeligro("Ingrese una URL valida");
+				  			setTimeout(function() { $('#enlace_secop').focus(); }, 500);
+				  			return;
+						}	
+				}
 			}
-	  		if(pbeneficiadas==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
-	  			setTimeout(function() { $('#pbeneficiadas').focus(); }, 500);
-	  			return;
-/*  			}else if(empleos_gen_indirecto==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el númeo de empleos generados Indirectamente");
-	  			setTimeout(function() { $('#empleos_gen_indirecto').focus(); }, 500);
-	  			return;		*/
-  			}else if(resultado==""){
+  			if(resultado==""){
 		  				$('#seguimiento-panel-body').show();
 			  			Func.MsjPeligro("Describa el resultado de la gestión");
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
@@ -577,6 +621,14 @@ $('#btn_guardar').click(function(){
 	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
 	  		$("#input-1").focus();
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
+
+  			if(AppConfig["id_convenio"]===undefined)AppConfig["id_convenio"]=""; var id_convenio = Func.Ecrypted(AppConfig["id_convenio"]);	//console.log(AppConfig["id_convenio"]);
+  			if(AppConfig["id_estado"]===undefined)AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);	console.log(AppConfig["id_estado"]);
+  			if(AppConfig["id_tipoc"]===undefined)AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
+  			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
+  			sem = Func.Ecrypted(sem);				
+  			vr_pagado = Func.Ecrypted(vr_pagado);
+	  		
 	  		fecha = Func.Ecrypted(fecha);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
 	  		id_categoria = Func.Ecrypted(id_categoria);
@@ -588,9 +640,6 @@ $('#btn_guardar').click(function(){
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
 	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
-	  		//responsable_nom_ext = Func.Ecrypted($("#responsable_nom_ext").val().trim()); //OPCIONAL
-	  		//responsable_tel_ext = Func.Ecrypted($("#responsable_tel_ext").val().trim()); //OPCIONAL
-	  		//responsable_email_ext = Func.Ecrypted($("#responsable_email_ext").val().trim()); //OPCIONAL
 	  		areaint = Func.Ecrypted($("#areaint").val().trim()); //OPCIONAL
 	  		
 	  		
@@ -616,11 +665,11 @@ $('#btn_guardar').click(function(){
   															descripcion:descripcion,
   															avance_porcentaje:avance_porcentaje,id_centrog:id_centrog,responsable_nom:responsable_nom,id_sector:id_sector,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,
-  															//responsable_nom_ext:responsable_nom_ext,responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,nro_cto:nro_cto,
   															id_tipo_cto:id_tipo_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
-  															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
-  															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,//empleos_gen_indirecto:empleos_gen_indirecto,
-  															id_producto:id_producto,resultado:resultado
+  															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,
+  															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,
+  															id_producto:id_producto,resultado:resultado,
+  															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){
 			 			if(NumArchivos>0){

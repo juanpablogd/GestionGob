@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var initialPreview = [];
 	/* Valida Acceso */
 	if(Func.GetTipo()=="C")	window.location.href = 'index.html';
 
@@ -15,6 +16,22 @@ AppConfig.estadoPanel= function(objeto,evento){	//console.log(objeto);
 		$this.slideUp();
 		$pheading.find('span').addClass('panel-collapsed');
 		$pheading.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+	}
+}
+
+AppConfig.selecccionaColor= function(sem){	console.log(sem);
+	if(sem=="1"){			//ROJO
+		$("#verde").css("background","#ccc");
+		$("#amarillo").css("background","#ccc");
+		$("#rojo").css("background","#cc0000");
+	}else if (sem == "2"){	//AMARILLO
+		$("#verde").css("background","#ccc");
+		$("#amarillo").css("background","#f1da36");
+		$("#rojo").css("background","#ccc");
+	}else{					//VERDE
+		$("#amarillo").css("background","#ccc");
+		$("#rojo").css("background","#ccc");
+      	$("#verde").css("background","#8fc800");
 	}
 }
 	
@@ -247,21 +264,13 @@ AppConfig.Inicial= function() {
 	});
 
 	$("input[name='semaforo']").change(function(){
-		var sem = $("input[name='semaforo']:checked").val();	//console.log(sem);
-		if(sem=="1"){
-			$("#verde").css("background","#ccc");
-			$("#amarillo").css("background","#ccc");
-			$("#rojo").css("background","#cc0000");
-		}else if (sem == "2"){
- 			$("#verde").css("background","#ccc");
-			$("#amarillo").css("background","#f1da36");
-			$("#rojo").css("background","#ccc");
-		}else{
-			$("#amarillo").css("background","#ccc");
-			$("#rojo").css("background","#ccc");
-	      	$("#verde").css("background","#8fc800");
-		}
+		var sem = $("input[name='semaforo']:checked").val();	console.log(sem);
+		AppConfig.selecccionaColor(sem);
 	});
+
+	//	SELECCIONA SEMAFORO
+	$('input[name="semaforo"][value="' + AppConfig['semaforo'] + '"]').prop('checked', true);
+	AppConfig.selecccionaColor(AppConfig['semaforo']);
 	
 	$('#input-1').on('fileloaded', function(event, file, previewId, index, reader) {
 		console.log("fileloaded");
@@ -281,7 +290,6 @@ AppConfig.Inicial= function() {
 	});
 	
   	//SELECCIONA
-  	var initialPreview = [];		//console.log(AppConfig["url"]);
   	if(AppConfig["url"] != null ){	
   		var str_array = AppConfig["url"].split(', ');	//console.log(str_array);
   		var initialPreviewConfig = [];
@@ -432,7 +440,8 @@ AppConfig.getuniConvenio_AddGestion= function(id_convenio) {	console.log(id_conv
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
   	AppConfig.socketDataAdmin.emit('getuniConvenio_AddGestion', {id_convenio : id_convenio }, function(message){
 		console.log(moment().format('h:mm:ss:SSSS')+" Solicita info Convenio: "+id_convenio);				//console.log("message:" + message);
-		var decrypted = FuncDecrypted(message);										console.log(decrypted.datos[0]);
+		var decrypted = FuncDecrypted(message);										//console.log(decrypted.datos[0]);
+		if(decrypted.datos[0]==undefined) return false;
 		var tipoc = decrypted.datos[0].tipoc;	console.log(tipoc);
 		if(tipoc == 1 && ($("#dnro_con").text() == '' )) AppConfig.estadoPanel($('#conMarco-panel-body'),'Abrir');
 		if(tipoc == 2) AppConfig.estadoPanel($('#conDerivado-panel-body'),'Abrir');
@@ -480,6 +489,9 @@ AppConfig.cargaEstados= function() {	//console.log(AppConfig['id_centrog']);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoEstados"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		$('#sel_id_estado').multiselect('dataprovider', AppConfig["listadoEstados"]);
+		//SELECCIONA ESTADOS
+		console.log(AppConfig["id_estado"]);
+		$('#sel_id_estado').multiselect('select', AppConfig["id_estado"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -491,6 +503,10 @@ AppConfig.cargaTipos= function() {	//console.log(AppConfig['id_centrog']);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoTipos"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		$('#sel_id_tipoc').multiselect('dataprovider', AppConfig["listadoTipos"]);
+		//SELECCIONA TIPO
+		console.log(AppConfig["id_tipoc"]);
+		$('#sel_id_tipoc').multiselect('select', AppConfig["id_tipoc"]);
+		AppConfig.cargaSubtipos(AppConfig["id_tipoc"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -501,6 +517,9 @@ AppConfig.cargaSubtipos= function(id_tipoc) {	//console.log(AppConfig['id_centro
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoSubtipos"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		$('#sel_id_subtipoc').multiselect('dataprovider', AppConfig["listadoSubtipos"]);
+		//SELECCIONA TIPO
+		console.log(AppConfig["id_subtipoc"]);
+		$('#sel_id_subtipoc').multiselect('select', AppConfig["id_subtipoc"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -530,7 +549,7 @@ AppConfig.CargarGestion= function() {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
 						AppConfig[name] = value;
-						$('#'+name).val(value);
+						if(name != 'semaforo') $('#'+name).val(value);
 			      	});
 				}); //console.log("Cargaaaaaa");
 			});
@@ -577,7 +596,8 @@ $('#btn_guardar').click(function(){
 	  		var areaint = $("#areaint").val().trim();
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
-	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;
+			var numArchivos = $('#input-1').fileinput('getFilesCount');		console.log(numArchivos + " + " + initialPreview.length);
+			var totalArchivos = numArchivos + initialPreview.length;		
 	  		
 	  		if($("#sel_id_convenio").is(":visible")){
 	  			if(AppConfig["id_convenio"]===undefined || AppConfig["id_convenio"].length<1){
@@ -702,12 +722,12 @@ $('#btn_guardar').click(function(){
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
 			  			return;
 	  		}
-	  		if(NumArchivos==0){
-	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
+	  		if(totalArchivos==0){
+	  			Func.MsjPeligro("Debe seleccionar al menos un archivo");
 	  			setTimeout(function() { $('#input-1').focus(); }, 500);
 	  			return;
 	  		}
-	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");
+	  		console.log("FORMULARIO OK!!!!!!!!!!!!!");	//return false;
 	  		$("#input-1").focus();
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 
@@ -716,7 +736,7 @@ $('#btn_guardar').click(function(){
   			if(AppConfig["id_tipoc"]===undefined)AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
   			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
   			sem = Func.Ecrypted(sem);				
-  			vr_pagado = Func.Ecrypted(vr_pagado);
+  			vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
 	  		
 	  		fecha = Func.Ecrypted(fecha);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
@@ -756,7 +776,6 @@ $('#btn_guardar').click(function(){
   															avance_porcentaje:avance_porcentaje,id_sector:id_sector,
   															id_centrog:id_centrog,responsable_nom:responsable_nom,
   															responsable_tel:responsable_tel,responsable_email:responsable_email,
-  															//responsable_nom_ext:responsable_nom_ext,responsable_tel_ext:responsable_tel_ext,responsable_email_ext:responsable_email_ext,
   															id_tipo_cto:id_tipo_cto,//nro_cto:nro_cto,
   															fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
@@ -765,8 +784,8 @@ $('#btn_guardar').click(function(){
   															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){
-			 			if(NumArchivos>0){
-			 				console.log("Adjuntos: "+NumArchivos);
+			 			if(numArchivos>0){
+			 				console.log("Adjuntos: "+numArchivos);
 							AppConfig["id_gestion"] = message;	//console.log(AppConfig["IdVisita"]);
 				 			$('#input-1').fileinput('upload');
 			 			}else{

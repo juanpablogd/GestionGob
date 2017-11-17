@@ -627,7 +627,7 @@ $('#btn_guardar').click(function(){
   			if(AppConfig["id_tipoc"]===undefined)AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
   			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
   			sem = Func.Ecrypted(sem);				
-  			vr_pagado = Func.Ecrypted(vr_pagado);
+  			vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
 	  		
 	  		fecha = Func.Ecrypted(fecha);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);

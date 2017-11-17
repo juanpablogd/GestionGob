@@ -13,7 +13,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
           "defaultContent": txtCol
         },
         {
-          	"targets": [ 7 ],
+          	"targets": [ 8 ],
             "visible": false,
             "searchable": false
         }
@@ -56,7 +56,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 	  	AppConfig.socketDataAdmin.emit('GetListadoGes',  {usrTipo : usrTipo, id_centrog : centroGestor}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log(message);
-			var decrypted = FuncDecrypted(message);		//console.log(decrypted);
+			var decrypted = FuncDecrypted(message);		console.log(decrypted);
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');
@@ -88,7 +88,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 		        var tipo = $(this).attr("class");
 		        if(tipo=="btn_detalle"){
 			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[7]);
+			  		Func.SetIdGestion(data[8]);
 			  		setTimeout(function(){
 			  			window.open(
 						  'Detalle.html',
@@ -97,13 +97,13 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					}, 50);
 		        }else if(tipo=="btn_add_visita"){
 			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[7]);
+			  		Func.SetIdGestion(data[8]);
 			  		setTimeout(function(){
 				    	window.location.href = 'AdicionarVisita.html';
 					}, 50);
 		        }else if(tipo=="btn_editar"){
 			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[7]);
+			  		Func.SetIdGestion(data[8]);
 			  		setTimeout(function(){
 			  			window.open(
 						  'Editar.html',
@@ -115,7 +115,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> la gestión: '+data[2], function(result) {
 					  	if(result){
 				  			AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	 //console.log("Cliente:"+AppConfig.socketDataAdmin.io.engine.id);		
-						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[7] }, function(message){			
+						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[8] }, function(message){			
 						  		console.log(message);
 						  		if(message=="Ok"){	
 						  			oTable.row('#'+fila).remove().draw( false );	console.log('Removido');

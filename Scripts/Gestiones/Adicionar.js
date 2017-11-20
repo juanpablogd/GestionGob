@@ -272,7 +272,7 @@ AppConfig.Inicial= function() {
 	$("#input-1").fileinput({
 	    uploadUrl: "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen.php", // server upload action
 	    language: "es",
-	    minFileCount: 1,
+	    minFileCount: AppConfig.MinImagen,
 	    maxFileCount: AppConfig.MaxImagen,
 	    minImageWidth: AppConfig.minImageWidth,
     	minImageHeight: AppConfig.minImageHeight,
@@ -288,7 +288,10 @@ AppConfig.Inicial= function() {
 	});
 	
 	$('[data-toggle="tooltip"]').tooltip();
-	setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 0.5*000);
+	if(Func.GetIdPerfil()==122) {
+		$('#sel_id_convenio').nextAll('div').addClass("open");
+	 	setTimeout(function() { $('#sel_id_convenio').nextAll('div').find('.multiselect-search').focus();}, 500);
+	} else setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 0.5*1000);
 	//console.log("ToolTip");
 };
 
@@ -486,6 +489,8 @@ $('#btn_guardar').click(function(){
 	  		//var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
 	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
 	  		var areaint = $("#areaint").val().trim();
+	  		var und = $("#und").val().trim();
+	  		var valor = $("#valor").val().trim();
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;
@@ -613,7 +618,7 @@ $('#btn_guardar').click(function(){
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
 			  			return;
 	  		}
-	  		if(NumArchivos==0){
+	  		if(NumArchivos<AppConfig.MinImagen){
 	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
 	  			setTimeout(function() { $('#input-1').focus(); }, 500);
 	  			return;
@@ -626,7 +631,7 @@ $('#btn_guardar').click(function(){
   			if(AppConfig["id_estado"]===undefined)AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);	console.log(AppConfig["id_estado"]);
   			if(AppConfig["id_tipoc"]===undefined)AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
   			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
-  			sem = Func.Ecrypted(sem);				
+  			sem = Func.Ecrypted(sem);
   			vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
 	  		
 	  		fecha = Func.Ecrypted(fecha);
@@ -640,7 +645,10 @@ $('#btn_guardar').click(function(){
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
 	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
-	  		areaint = Func.Ecrypted($("#areaint").val().trim()); //OPCIONAL
+	  		areaint = Func.Ecrypted(areaint); //OPCIONAL
+	  		und = Func.Ecrypted(und); //OPCIONAL
+	  		valor = Func.Ecrypted(numeral().unformat(valor)); //OPCIONAL
+
 	  		
 	  		
 	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
@@ -668,7 +676,7 @@ $('#btn_guardar').click(function(){
   															id_tipo_cto:id_tipo_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,
   															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,
-  															id_producto:id_producto,resultado:resultado,
+  															und:und,valor:valor,id_producto:id_producto,resultado:resultado,
   															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){

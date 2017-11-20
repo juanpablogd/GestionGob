@@ -26,7 +26,7 @@
   <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" rel="stylesheet"/>
   <link href="../../Resources/jquery-datetextentry/jquery.datetextentry.css" type="text/css" rel="stylesheet"/>
-  
+  <link href="../../Resources/lightGallery/dist/css/lightgallery.min.css" type="text/css" rel="stylesheet"/>
   <!-- CSS app -->
   <link href="../../Content/Home/NavMap.css" rel="stylesheet">
   <link href="../../Content/Home/ContentMap.css" rel="stylesheet">
@@ -58,8 +58,50 @@
 	.control-label.required:after {
 	  content:" *";color:red;font-size: 18px;
 	}
+	.galeria {
+	    max-width: 100px;
+	}
 	/*********************************/
-	
+
+	.jq-dte-day{
+		width: 55px;
+	}
+	.jq-dte-month{
+		width: 55px;
+	}
+	.jq-dte-year{
+		width: 70px;
+	}
+	.jq-dte-errorbox{
+		z-index: 100 !important;
+	}
+	/* SEMAFORO */
+	.circulo {
+		background-color: #ccc;
+		display: block;
+		width: 60px;
+		height: 60px;
+		margin: 0 auto;
+		moz-border-radius: 75px;
+		-webkit-border-radius: 75px;
+		border-radius: 75px;
+		margin: 5px auto;
+	}
+	#rojo{
+		background-color: #ccc;
+	}
+	#amarillo{
+		background-color: #ccc;
+	}
+	#verde {
+		background-color: #ccc;
+	}
+	/* Semaforo en línea */
+	.whole {
+	  overflow: hidden;
+	  width: 100%; /* for good measure */
+	}
+	/* ****************************** */
   </style>
   
 </head>
@@ -85,6 +127,10 @@
 	        <li class="active"><a href="../Gestiones/">
 	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
 	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_convenios">
+	        <li class="active"><a href="../Convenios">
+	        	<i class="fa fa-align-justify" aria-hidden="true">&nbsp;</i> Convenio/Contrato </a></li>
+	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
 	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -104,43 +150,87 @@
 	    </div>
 	  </div>
 	</nav>
-  <form role="form">
-  		<div class="form-group">
-		    <label id="nom_gestion">&nbsp;</label>
-	  	</div>
-	  	<div class="form-group">
-		    <label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<select id="codigo_mun" >&nbsp;</select>
-	  	</div>
-		<div class="form-group">
-			<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio del avance">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<input type="date" class="form-control" id="fecha">
-		</div>
-		<div class="form-group">
-	    	<label for="und" class="control-label required" data-toggle="tooltip" title="Dependiendo de la intervención describir unidad de medida. p.e. En una entrega de 100 Viviendas escribir 'Viviendas'">Und medida <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    	<input type="text" class="form-control" id="und">
-		</div>
-		<div class="form-group">
-	    	<label for="valor" class="control-label required" data-toggle="tooltip" title="Dependiendo de la intervención describir la cantidad de la unidad de medida anterior. p.e. En una entrega de 100 Viviendas escribir '100'">Cantidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    	<input type="number" class="form-control valor" id="valor">
-		</div>
 
-		<div class="form-group" >
-	    	<label for="avance_porcentaje" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención (0-100%)">% Porcentaje de avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-	    	<input type="number" class="form-control" id="avance_porcen">
-		</div>
+  	<form role="form">
 		<div class="form-group">
-			<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta el avance realizado (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-  			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
+			<label id="nom_gestion">&nbsp;</label><br>
+			<a href="Editar.html" id="btn_Editar" data-toggle="tooltip" title="Editar gestión">Editar Gestión&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 		</div>
-		<div class="form-group">
-			<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
-			<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
+		<div id="panel-visitas" class="panel panel-primary"></div>
+		<div class="panel panel-primary" id="div_addGestion">
+		<div class="panel-heading">
+			<h3 class="panel-title">Adicionar Avance</h3>
+				<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 		</div>
-	  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
-	  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
-		</a>
-</form>
+		<div class="panel-body" id="addGestion-panel-body">
+		    <div class="row">
+		    	<div class="col-sm-3">
+					<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="date" class="form-control" id="fecha">
+				</div>
+				<div class="col-sm-9">
+					<label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<select id="codigo_mun">&nbsp;</select>
+				</div>		
+			</div>
+		    <div class="row">
+		    	<div class="col-sm-4">
+	    			<label for="sel_id_estado" class="control-label required" data-toggle="tooltip" title="Seleccione el estado actual"> Estado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<select id="sel_id_estado" >&nbsp;</select>
+				</div>
+				<div class="col-sm-2">
+					<label for="avance_porcen" class="control-label required" data-toggle="tooltip" title="Porcentaje de avance de la intervención u obra (0-100%)">% Avance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="number" class="form-control" id="avance_porcen">
+				</div>
+				<div class="col-sm-2" style="text-align: center;position:relative;">
+					<span class="circulo" id="rojo"></span>
+					<label class="form-check-label" style="color:red;">
+						<input class="form-check-input" type="radio" name="semaforo" id="semaforo" value="1"> Atrasado
+					</label>
+				</div>
+				<div class="col-sm-2" style="text-align: center;position:relative;">
+					<span class="circulo" id="amarillo"></span>
+					<label class="form-check-label" style="color:orange;">
+						<input class="form-check-input" type="radio" name="semaforo" id="semaforo" value="2"> En riesgo
+					</label>
+				</div>
+				<div class="col-sm-2" style="text-align: center;position:relative;">
+					<span class="circulo" id="verde"></span>
+					<label class="form-check-label" style="color:green;">
+						<input class="form-check-input" type="radio" name="semaforo" id="semaforo" value="3"> Al día
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<label for="vr_pagado" class="control-label required" data-toggle="tooltip" title="Valor Pagado a la Fecha del avance">Valor Pagado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="vr_pagado">
+				</div>	    				
+				<div class="col-sm-4">
+			    	<label for="und" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir unidad de medida. p.e. En una entrega de 100 Viviendas escribir 'Viviendas'">Und medida <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<input type="text" class="form-control" id="und">
+				</div>
+				<div class="col-sm-4">
+			    	<label for="valor" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir la cantidad de la unidad de medida anterior. p.e. En una entrega de 100 Viviendas escribir '100'">Cantidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+			    	<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="valor">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta logros y dificulatades en avance registrado (obra, gestión o inversión), novedades, etc">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	  			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
+			</div>
+			<div class="form-group">
+				<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				<input id="input-1" name="input1[]" type="file" class="file-loading" multiple data-show-upload="false" data-show-caption="true">
+			</div>
+		  	<a href="#" class="btn btn-success btn-lg" id="btn_guardar">
+		  		<span class="glyphicon glyphicon-save">&nbsp;</span> Guardar
+			</a>
+		</div>
+	</div>
+	</form>
+
 
 </body>
 	<!-- script Resources -->
@@ -166,6 +256,9 @@
 	<script src="../../Resources/cleave-js/cleave.min.js"></script>
 	<script src="../../Resources/bootstrap-fileinput/js/fileinput.min.js"></script>
 	<script src="../../Resources/bootstrap-fileinput/js/locales/es.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lightgallery.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lg-thumbnail.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lg-fullscreen.min.js"></script>
 
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>

@@ -216,8 +216,8 @@ AppConfig.Inicial= function() {
 
 };
 
-$('#modificacion_con').click(function() {
-    if($(this).is(':checked')) {	//        console.log("SI");
+AppConfig.revisaModificacion = function(obj){
+	if(obj.is(':checked')) {	//        console.log("SI");
         $("#div_fec_terminacion").show();
         $("#div_vr_adicion").show();
         $("#div_vrtotal").show();
@@ -228,6 +228,10 @@ $('#modificacion_con').click(function() {
         $("#vr_adicion").val(0);
     }
     AppConfig.sumaTotales();
+}
+
+$('#modificacion_con').click(function() {
+    AppConfig.revisaModificacion($(this));
 });
 
 AppConfig.calculaFecha= function(fini,dias) {	//console.log(fini + " " + dias);
@@ -312,7 +316,8 @@ AppConfig.getNombrefuente= function(value) {	//console.log(AppConfig["ListadoFue
 }
 
 AppConfig.sumaTotales= function() {
-	AppConfig["sumafuentes"] = 0;
+	AppConfig["sumafuentes"] = 0;	console.log(AppConfig["fuentes"]);
+	if(AppConfig["fuentes"]==undefined) return false;
 	Object.keys(AppConfig["fuentes"]).forEach(function(key, index) {	//console.log(index + ": "+ key +" - "+ AppConfig["fuentes"][key]);
 		AppConfig["sumafuentes"] += numeral().unformat(AppConfig["fuentes"][key]);
 	});		
@@ -360,7 +365,10 @@ AppConfig.CargarConvenio= function() {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
 					$.each(value1, function (name, value) {	//console.log(name + '=' + value);
 						AppConfig[name] = value;
-						$('#'+name).val(value);
+						if(name == 'modificacion_con'){
+							$('#'+name).prop('checked', value);
+							AppConfig.revisaModificacion($('#'+name));
+						} else $('#'+name).val(value);
 			      	});
 				}); //console.log("Cargaaaaaa");
 			});
@@ -465,13 +473,9 @@ $('#btn_guardar').click(function(){
 	  			//setTimeout(function() { $('#vrFte').focus(); }, 400);
 	  			return;
 	  		}else if (modificacion_con){
-	  			if(fec_terminacion==""){
-		  			Func.MsjPeligro("Digite la fecha de Terminación del convenio o contrato");
+	  			if(fec_terminacion=="" && vr_adicion==""){
+		  			Func.MsjPeligro("Digite la fecha de Terminación del convenio/contrato y/o el valor");
 		  			setTimeout(function() { $('#fec_terminacion').nextAll('span').find('.jq-dte-day').focus(); }, 400);
-		  			return;
-		  		}else if(vr_adicion==""){
-		  			Func.MsjPeligro("Digite la valor adicionado del convenio o contrato");
-		  			setTimeout(function() { $('#vr_adicion').focus(); }, 400);
 		  			return;
 		  		}
 	  		}else if(observacion==""){

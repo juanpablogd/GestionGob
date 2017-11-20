@@ -299,7 +299,7 @@ $("#btn_add").click(function(){
 
 $('#btn_guardar').click(function(){
 	bootbox.confirm("Seguro que desea Guardar?", function(result) {
-	  	if(result){	//CAMPOS OBLIGATORIOS
+	  	if(result){		//CAMPOS OBLIGATORIOS
 	  		console.log("Confirm result: "+result);
 	  		// ------ ESTANDARIZACIÓN DE VALORES ------
 			var tipoConvenio = $("input[name='tipoConvenio']:checked").val();	console.log(tipoConvenio);
@@ -368,15 +368,11 @@ $('#btn_guardar').click(function(){
 	  			//setTimeout(function() { $('#vrFte').focus(); }, 400);
 	  			return;
 	  		}else if (modificacion_con){
-	  			if(fec_terminacion==""){
-		  			Func.MsjPeligro("Digite la fecha de Terminación del convenio o contrato");
+	  			if(fec_terminacion=="" && vr_adicion==""){
+		  			Func.MsjPeligro("Digite la fecha de Terminación del convenio/contrato ó el valor de la adición");
 		  			setTimeout(function() { $('#fec_terminacion').nextAll('span').find('.jq-dte-day').focus(); }, 400);
 		  			return;
-		  		}else if(vr_adicion==""){
-		  			Func.MsjPeligro("Digite la valor adicionado del convenio o contrato");
-		  			setTimeout(function() { $('#vr_adicion').focus(); }, 400);
-		  			return;
-		  		}
+	  			}
 	  		}else if(observacion==""){
 	  			Func.MsjPeligro("Debe ingresar una Observación");
 	  			setTimeout(function() { $('#observacion').focus(); }, 400);

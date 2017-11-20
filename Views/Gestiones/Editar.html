@@ -149,7 +149,8 @@
   <form role="form" id="FrmAdicionar" >
 	    <div class="row" id="div_cmarco" style="display: none">
 	    	<div class="col-sm-12">
-    			<label for="sel_id_convenio" class="control-label required" data-toggle="tooltip" title="Seleccione el convenio Marco al que pertenece"> Convenio Marco <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    		<a href="#" id="btn_add_visita" data-toggle="tooltip" title="Ver avances">Avances&nbsp;<i class="fa fa-braille" aria-hidden="true"></i></a><br>
+    			<label for="sel_id_convenio" class="control-label required" data-toggle="tooltip" title="Seleccione el convenio Marco al que pertenece"> Convenio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
     			<select id="sel_id_convenio" >&nbsp;</select>
 			</div>
 		</div><br>
@@ -460,6 +461,17 @@
 		    			<label for="areaint">Area intervenida:</label>
 		    			<input type="text" class="form-control" id="areaint">
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+				    	<label for="und" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir unidad de medida. p.e. En una entrega de 100 Viviendas escribir 'Viviendas'">Und medida <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				    	<input type="text" class="form-control" id="und">
+					</div>
+					<div class="col-sm-4">
+				    	<label for="valor" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir la cantidad de la unidad de medida anterior. p.e. En una entrega de 100 Viviendas escribir '100'">Cantidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				    	<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="valor">
+					</div>	    				
+					<div class="col-sm-4"></div>
 				</div>
 			</div>
 		</div>

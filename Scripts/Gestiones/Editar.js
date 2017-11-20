@@ -2,6 +2,10 @@ $(document).ready(function() {
 	var initialPreview = [];
 	/* Valida Acceso */
 	if(Func.GetTipo()=="C")	window.location.href = 'index.html';
+	var IdGestion = Func.GetIdGestion();	console.log(IdGestion);
+	if(IdGestion == "")	window.location.href = 'index.html';
+	var NomGestion = Func.GetNomGestion();	console.log(NomGestion);
+	$("#nom_gestion").text(NomGestion);
 
 AppConfig.estadoPanel= function(objeto,evento){	//console.log(objeto);
 	var $this = objeto;		//console.log($this.prev());
@@ -34,12 +38,6 @@ AppConfig.selecccionaColor= function(sem){	console.log(sem);
       	$("#verde").css("background","#8fc800");
 	}
 }
-	
-	var IdGestion = Func.GetIdGestion();
-	console.log(IdGestion);
-	if(IdGestion == "")	window.location.href = 'index.html';
-	var NomGestion = Func.GetNomGestion();
-	$("#nom_gestion").text(NomGestion);
 
 AppConfig.Inicial= function() {
 	if(Func.GetIdPerfil()==122){
@@ -318,7 +316,7 @@ AppConfig.Inicial= function() {
 	$("#input-1").fileinput({
 	    uploadUrl: "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen.php", // server upload action
 	    language: "es",
-	    minFileCount: 1,
+	    minFileCount: AppConfig.MinImagen,
 	    maxFileCount: AppConfig.MaxImagen,
 	    minImageWidth: AppConfig.minImageWidth,
     	minImageHeight: AppConfig.minImageHeight,
@@ -338,9 +336,14 @@ AppConfig.Inicial= function() {
 			    return data;
 		}
 	});
+
+	$('#btn_add_visita').click(function(){
+  		setTimeout(function(){
+	    	window.location.href = 'AdicionarVisita.html';
+		}, 50);
+	});
 	
 	$('[data-toggle="tooltip"]').tooltip();
-	setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 0.5*000);
 	//console.log("ToolTip");
 };
 
@@ -594,7 +597,8 @@ $('#btn_guardar').click(function(){
 	  		//var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
 	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
 	  		var areaint = $("#areaint").val().trim();
-	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
+	  		var und = $("#und").val().trim();
+	  		var valor = $("#valor").val().trim();
 	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
 			var numArchivos = $('#input-1').fileinput('getFilesCount');		console.log(numArchivos + " + " + initialPreview.length);
 			var totalArchivos = numArchivos + initialPreview.length;		
@@ -722,7 +726,7 @@ $('#btn_guardar').click(function(){
 			  			setTimeout(function() { $('#resultado').focus();}, 500);
 			  			return;
 	  		}
-	  		if(totalArchivos==0){
+	  		if(totalArchivos<AppConfig.MinImagen){
 	  			Func.MsjPeligro("Debe seleccionar al menos un archivo");
 	  			setTimeout(function() { $('#input-1').focus(); }, 500);
 	  			return;
@@ -750,11 +754,12 @@ $('#btn_guardar').click(function(){
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
 	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
 	  		areaint = Func.Ecrypted($("#areaint").val().trim()); //OPCIONAL
+	  		und = Func.Ecrypted(und); //OPCIONAL
+	  		valor = Func.Ecrypted(numeral().unformat(valor)); //OPCIONAL
 	  		
-	  		
-	  		if(AppConfig["id_tipo_cto"]===undefined)AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
-	  		if(AppConfig["cod_meta"]===undefined)AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
-	  		if(AppConfig["id_producto"]===undefined)AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
+	  		if(AppConfig["id_tipo_cto"]===undefined) AppConfig["id_tipo_cto"]=""; 	var id_tipo_cto = Func.Ecrypted(AppConfig["id_tipo_cto"]);	//console.log(AppConfig["cod_meta"]);	console.log(Func.Ecrypted(AppConfig["cod_meta"]));
+	  		if(AppConfig["cod_meta"]===undefined) AppConfig["cod_meta"]=""; 			var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
+	  		if(AppConfig["id_producto"]===undefined) AppConfig["id_producto"]="";	var id_producto = Func.Ecrypted(AppConfig["id_producto"]);
 	  		//nro_cto = Func.Ecrypted(nro_cto);
 	  		fte_nacional = Func.Ecrypted(numeral().unformat(fte_nacional));
 	  		fte_depto = Func.Ecrypted(numeral().unformat(fte_depto));
@@ -780,7 +785,7 @@ $('#btn_guardar').click(function(){
   															fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
   															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,//empleos_gen_indirecto:empleos_gen_indirecto,
-  															id_producto:id_producto,resultado:resultado,
+  															und:und,valor:valor,id_producto:id_producto,resultado:resultado,
   															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){

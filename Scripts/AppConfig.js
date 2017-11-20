@@ -15,7 +15,7 @@ var AppConfig={
 	id_perfil_admin:[24,69,79,87,96,70],	// tipo 'A',
 	//id_centros_gestores:[],
 	socketGeoAdmin:'',
-	MinImagen: 3,
+	MinImagen: 1,
 	MaxImagen: 10,
 	minImageWidth: 600,
 	minImageHeight: 600,

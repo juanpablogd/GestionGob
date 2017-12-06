@@ -1,0 +1,29 @@
+body {
+  padding-top: 5px;
+  padding-bottom: 0px;
+}
+
+.navbar {
+  margin-bottom: 5px;
+}
+.LogoMap {
+   max-height: 40px;
+}
+.containerDash {
+    margin: 5px;
+    width: 97%;
+    padding-left: 20px
+    
+}
+
+.titulotabla{
+	width: 120px;
+}
+/*
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: #428bca;
+}
+.navbar-default {
+    background-color: #428bca;
+    border-color: #428bca;
+}*/

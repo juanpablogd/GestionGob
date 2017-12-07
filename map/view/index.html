@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="jpgarzon">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Atención Psicosocial</title>
+    <title>SAGA-Obras</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,312 +43,214 @@
   </head>
 
   <body>
-
-    <div class="containerDash">
-
-      <!-- Static navbar -->
-      <!-- Static navbar -->
-      <!--nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a  href="#">
-              <img src="../images/logos_gobernacion.png" class="LogoMap"  >
-            </a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li >
-                <div class="btn-group hide">
-                        <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
-                        </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
-                            class="glyphicon glyphicon-th"></span>Grid</a>
-                 </div>
-              </li>
-            </ul>
-            <!--ul class="nav navbar-nav navbar-right">
-              <li>
-                <select class="selectpicker" data-live-search="true"  multiple data-selected-text-format="count"  data-width="fit" multiple title="Nivel"   id="SlctNivel" multiple data-actions-box="true">
-                </select>
-              </li>
-              <li>
-              <li>
-                <select class="selectpicker" data-live-search="true"  multiple data-selected-text-format="count" data-width="fit"   id="SlctModalidad"  multiple title="Modalidad" multiple data-actions-box="true">
-                </select>
-              </li>
-              <li>
-                <select class="selectpicker" data-live-search="true"  multiple data-selected-text-format="count" data-width="fit"  id="SlctLinea" multiple title="Linea" multiple data-actions-box="true">
-                </select>
-              </li>
-              <li>
-                <select class="selectpicker" data-live-search="true"  multiple data-selected-text-format="count" data-width="fit"  id="SlctAgente"  multiple title="Agente" multiple data-actions-box="true">
-                </select>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div >
-        <div id="products" class="row list-group">
-        <div class="item  col-xs-12 col-md-12 col-lg-2">
+   <div class="containerDash">
+      <div id="products" class="row list-group">
+         <!-- COLUMNA 1/2 FILTROS, TOTAL Y GRÁFICA -->
+         <div class="item  col-xs-12 col-md-12 col-lg-2">
             <div class="row">
-                <div class="col-lg-12 col-md-12">
-                  <center><a  href="#">
-                    <img src="../images/logos_gobernacion.png" class="LogoMap"  >
-                  </a></center>
-                  
-                </div>
-                <div class="col-lg-12 col-md-6 col-xs-12">
-                	<div class="panel ">
-	                   <form >
-					    <div class="form-group">
-					      <label for="selMotivo">Motivo:</label>
-					      <select class="form-control" id="selMotivo">
-					        <option value="all">--Todos--</option>
-					        
-					      </select>
-					    </div>
-					    <div class="form-group">
-					   	  <label for="selSeguimiento">Seguimiento:</label>
-					      <select class="form-control" id="selSeguimiento">
-					        <option  value="all">--Todos--</option>
-					        <option value="SI">Si</option>
-					        <option value="NO">No</option>
-					      </select>
-					    </div>
-					  </form>
-					</div>
-                </div>
-                <div class="col-lg-12 col-md-6 col-xs-12">
-                	<div class="panel ">	 
-					  <form>
-					    <div class="form-group">
-					   	  <label for="fechaIni" >Inicial:</label><br>
-					   	  
-						    <div class="form-group">
-						        <div class="row">
-						        	<div class="col-md-2">
-						        	</div>
-						            <div class="col-md-8">
-						                <div class="form-group">
-							                <div class='input-group date' id='fechaDatosMin'>
-							                    <input type='text' class="form-control" />
-							                    <span class="input-group-addon">
-							                        <span class="glyphicon glyphicon-calendar"></span>
-							                    </span>
-							                </div>
-							            </div>
-						            </div>
-						            <div class="col-md-2">
-						        	</div>
-						        </div>
-						    </div>
-					
-					      <label for="fechaFin" >Final:</label><br>
-					      <div class="form-group">
-						        <div class="row">
-						        	<div class="col-md-2">
-						        	</div>
-						            <div class="col-md-8">
-						                <div class='input-group date' id='fechaDatosMax'>
-							                    <input type='text' class="form-control" />
-							                    <span class="input-group-addon">
-							                        <span class="glyphicon glyphicon-calendar"></span>
-							                    </span>
-							                </div>
-						            </div>
-						            <div class="col-md-2">
-						        	</div>
-						        </div>
-						    </div>
-					    </div>
-					     
-					  </form>
-				  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-xs-12">
-                	<button type="button" class="btn btn-danger btn-block" id="btonBuscar">Buscar</button>
-                	<br>
-				</div>	    
-                <div class="col-lg-12 col-md-12 col-xs-12">
-                   <div class="panel panel-primary">
-                        <div class="panel-heading"><h4><center>Total Atención Psicosocial</center></h4><h3> <center><b><span id="CantTotal">0 (0%)</span></center></b></h3></div>
-                    </div><br>
-                    <div id="logosSec">
-	                    <center><a  href="#">
-	                    <img src="../images/sectic.png" class="LogoMap"  >
-	                  </a></center><br>
-	                    <center><a  href="#">
-	                    <img src="../images/secgobierno.jpg" class="LogoMap"  >
-	                  </a></center><br>
-	                  <center><a  href="#">
-	                    <img src="../images/logo123.png" height="80px"  >
-	                  </a></center><br>
-                	</div>  
-                </div>
-                
-                <!--div class="col-lg-12 col-md-12 col-xs-12">
-                   <div class="panel panel-danger">
-                        <div class="panel-heading"><h4><center>Municipios Faltantes </center></h4><h3><center><b><span id="CantMpioFal">0 (0%)</span></center></b></h3></div>
-                        <div class="panel-body" id="MunFaltantes">
-                          <table class="table" >
-                            <tbody id="DatosTabla">
-                                
-                              </tbody>
-                            </table>
+              <!-- LOGOS GOBER -->
+               <div class="col-lg-12 col-md-12">
+                  <center>
+                     <a  href="#">
+                     <img src="../images/logos_gobernacion.png" class="LogoMap"  >
+                     </a>
+                  </center>
+               </div>
+              <!-- FILTROS - PARAMETROS DE BUSQUEDA -->
+               <div class="col-lg-12 col-md-6 col-xs-12">
+                  <div class="panel ">
+                     <form >
+                        <div class="form-group">
+                           <label for="selSeguimiento">Fuentes:</label>
+                           <select class="form-control" id="selSeguimiento">
+                              <option  value="all">--Todos--</option>
+                              <option value="SI">Si</option>
+                              <option value="NO">No</option>
+                           </select>
                         </div>
-                      </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-xs-12">
-                      <div class="panel  ">
-                        <div class="panel-heading"><h3>Tipo Proyectos</h3></div>
-                        <div class="panel-body"><center><div id="bar_tipo"></div></center></div>
-                      </div>
-                                                
-                </div-->
-                <!--div class="col-lg-12 col-md-12">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                           <label for="selMotivo">Tipo:</label>
+                           <select class="form-control" id="selMotivo">
+                              <option value="all">--Todos--</option>
+                           </select>
                         </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
+                        <div class="form-group">
+                           <label for="selSeguimiento">sub Tipo:</label>
+                           <select class="form-control" id="selSeguimiento">
+                              <option  value="all">--Todos--</option>
+                              <option value="SI">Si</option>
+                              <option value="NO">No</option>
+                           </select>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+              <!-- FILTROS - FECHAS -->
+               <div class="col-lg-12 col-md-6 col-xs-12">
+                  <div class="panel ">
+                     <form>
+                        <div class="form-group">
+                           <label for="fechaIni" >Inicial:</label><br>
+                           <div class="form-group">
+                              <div class="row">
+                                 <div class="col-md-2">
+                                 </div>
+                                 <div class="col-md-8">
+                                    <div class="form-group">
+                                       <div class='input-group date' id='fechaDatosMin'>
+                                          <input type='text' class="form-control" />
+                                          <span class="input-group-addon">
+                                          <span class="glyphicon glyphicon-calendar"></span>
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-2">
+                                 </div>
+                              </div>
+                           </div>
+                           <label for="fechaFin" >Final:</label><br>
+                           <div class="form-group">
+                              <div class="row">
+                                 <div class="col-md-2">
+                                 </div>
+                                 <div class="col-md-8">
+                                    <div class='input-group date' id='fechaDatosMax'>
+                                       <input type='text' class="form-control" />
+                                       <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"></span>
+                                       </span>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-2">
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+               <!-- BOTÓN BUSCAR -->
+               <div class="col-lg-12 col-md-12 col-xs-12">
+                  <button type="button" class="btn btn-danger btn-block" id="btonBuscar">Buscar</button><br>
+               </div>
+               <!-- GRAFICA SUBTIPO -->
+               <div class="col-lg-12 col-md-12 col-xs-12">
+                  <div id="container" style="min-width: 310px; height: 200px; max-width: 600px; margin: 0 auto"></div>
+               </div>
+               <!-- LABEL TOTAL  -->
+               <div class="col-lg-12 col-md-12 col-xs-12">
+                  <div class="panel panel-primary">
+                     <div class="panel-heading">
+                        <h5>
+                           <center>Total Obras</center>
+                        </h5>
+                        <h4>
+                           <center><b><span id="CantTotal">0 (0%)</span></b></center>
+                        </h4>
+                     </div>
+                  </div>
+                  <br>
+               </div>
+               <!-- LOGO -->
+               <div class="col-lg-12 col-md-12 col-xs-12">
+                  <br>
+                  <div id="logosSec">
+                     <center>
+                        <a  href="#">
+                        <img src="../images/sec.png" class="LogoMap" style="max-width: 200px; margin: 0 auto">
                         </a>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div-->
+                     </center>
+                     <br>
+                  </div>
+               </div>
             </div>
-        </div>
-
-        <div class="item  col-xs-12 col-md-12 col-lg-10">
-          <div class="item  col-xs-12 col-lg-6 col-md-6">
-                  <div class="panel panel-green ">
-                        <div class="panel-heading"><h2>Atención Psicosocial Provincias</h2></div>
-                        <div class="panel-body">
-                        	 <div id="PanelLeyendacod_prov"  class="PanelLeyendacod_prov" >
-                                <div class="panel panel-primary">
-                                      <div  class="panel-body" style="max-width: 300px;">
-                                              <center><b>Cantidad</b></center>
-                                              <div id="symbolscod_prov"> </div>
-                                              <div id="labelscod_prov"> </div>
-                                      </div>
-                                  </div>
-                            </div>
-                          <div id="cod_prov">
-                          	<div id="info"></div>
-						  </div>
-                          <img src="../images/logo.png" class="LogoSaga"  >
-                          
-
+         </div>
+         <!-- COLUMNA 2/2 MAPAS Y GRAFICA -->
+         <div class="item  col-xs-12 col-md-12 col-lg-10">
+            <!-- MAPA PROVINCIA -->
+            <div class="item  col-xs-12 col-lg-6 col-md-6">
+               <div class="panel panel-green ">
+                  <div class="panel-heading">
+                     <h2>Obras - Provincia</h2>
+                  </div>
+                  <div class="panel-body">
+                     <div id="PanelLeyendacod_prov"  class="PanelLeyendacod_prov" >
+                        <div class="panel panel-primary">
+                           <div  class="panel-body" style="max-width: 300px;">
+                              <center><b>Cantidad</b></center>
+                              <div id="symbolscod_prov"> </div>
+                              <div id="labelscod_prov"> </div>
+                           </div>
                         </div>
+                     </div>
+                     <div id="cod_prov">
+                        <div id="info"></div>
+                     </div>
+                     <img src="../images/logo.png" class="LogoSaga"  >
                   </div>
-          </div>
-          <div class="item  col-xs-12 col-lg-6 col-md-6">
-                  <div class="panel panel-orange ">
-                        <div class="panel-heading"><h2>Atención Psicosocial Municipios </h2></div>
-                        <div class="panel-body">
-                           <div id="PanelLeyendacod_mpio"  class="PanelLeyendacod_mpio" >
-                                <div class="panel panel-primary">
-                                      <div  class="panel-body" style="max-width: 300px;">
-                                              <center><b>Cantidad</b></center>
-                                              <div id="symbolscod_mpio"> </div>
-                                              <div id="labelscod_mpio"> </div>
-                                      </div>
-                                  </div>
-                            </div>
-                          <div id="cod_mpio">
-                          </div>
-                          <div id="info2"></div>
-
-                          <img src="../images/logo.png" class="LogoSaga"  >
+               </div>
+            </div>
+            <!-- MAPA MUNICIPIO -->
+            <div class="item  col-xs-12 col-lg-6 col-md-6">
+               <div class="panel panel-orange ">
+                  <div class="panel-heading">
+                     <h2>Obras - Municipios </h2>
+                  </div>
+                  <div class="panel-body">
+                     <div id="PanelLeyendacod_mpio"  class="PanelLeyendacod_mpio" >
+                        <div class="panel panel-primary">
+                           <div  class="panel-body" style="max-width: 300px;">
+                              <center><b>Cantidad</b></center>
+                              <div id="symbolscod_mpio"> </div>
+                              <div id="labelscod_mpio"> </div>
+                           </div>
                         </div>
-                  </div>                  
-          </div>
-          <div class="item  col-xs-12 col-lg-6 col-md-6 ">
-                  <div id="col_cod_prov">
+                     </div>
+                     <div id="cod_mpio">
+                     </div>
+                     <div id="info2"></div>
+                     <img src="../images/logo.png" class="LogoSaga"  >
                   </div>
-          </div>
-          <div class="item  col-xs-12 col-lg-6 col-md-6  ">
-                  
-                  <div id="col_cod_mpio">
-                  </div>
-          </div>
-          
-          
-        </div>
-       
-     </div>
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery.min.js"></script>
-    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="../libs/waitingDialog/waitingDialog.js"></script>
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../js/ie10-viewport-bug-workaround.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-    
-    <script src="../libs/moment/moment-with-locales.min.js"></script>
-    <script src="../libs/socket/socket.io.js"></script>
-    <script src="../libs/topojson/topojson.min.js"></script>
-    <script src="../libs/Crypto/core-min.js"></script>
-    <script src="../libs/Crypto/aes.js"></script>
-    <script src="../libs/geocolor/geocolor.js"></script>
-    <script src="../libs/numeraljs/numeral.min.js"></script>
-    <script src="../libs/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-    
-
-    <!-- APP -->
-
-    <script src="../js/app/Config.js"></script>
-    <script src="../js/app/Func.js"></script>
-    <script src="../js/app/Map.js"></script>
-    <script src="../js/app/Main.js"></script>
-        </body>
+               </div>
+            </div>
+            <!-- GRAFICA COLUMNAS PROVINCIA -->
+            <div class="item  col-xs-12 col-lg-6 col-md-6 ">
+               <div id="col_cod_prov">
+               </div>
+            </div>
+            <!-- GRAFICA COLUMNAS MUNICIPIO -->
+            <div class="item  col-xs-12 col-lg-6 col-md-6  ">
+               <div id="col_cod_mpio">
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /container -->
+   <!-- Bootstrap core JavaScript
+      ================================================== -->
+   <!-- Placed at the end of the document so the pages load faster -->
+   <script src="../js/jquery.min.js"></script>
+   <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+   <script src="../libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+   <script src="../libs/waitingDialog/waitingDialog.js"></script>
+   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+   <script src="../js/ie10-viewport-bug-workaround.js"></script>
+   <script src="https://code.highcharts.com/highcharts.js"></script>
+   <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+   <script src="../libs/moment/moment-with-locales.min.js"></script>
+   <script src="../libs/socket/socket.io.js"></script>
+   <script src="../libs/topojson/topojson.min.js"></script>
+   <script src="../libs/Crypto/core-min.js"></script>
+   <script src="../libs/Crypto/aes.js"></script>
+   <script src="../libs/geocolor/geocolor.js"></script>
+   <script src="../libs/numeraljs/numeral.min.js"></script>
+   <script src="../libs/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+   <!-- APP -->
+   <script src="../js/app/Config.js"></script>
+   <script src="../js/app/Func.js"></script>
+   <script src="../js/app/Map.js"></script>
+   <script src="../js/app/Main.js"></script>
+</body>
 </html>

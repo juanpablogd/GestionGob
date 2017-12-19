@@ -28,7 +28,7 @@ var appMain={
         cod_mpio:'',
         cod_prov:''
     },
-    socket:io.connect(Config.UrlSocket+'/Psicosocial'),
+    socket:io.connect(Config.UrlSocket+'/DataAdmin'),
     colors:{
       pie:{
           '2':'#e41a1c',
@@ -245,16 +245,16 @@ var appMain={
     appMain.info2 = $('#info2');
     appMain.info.tooltip({animation: false, trigger: 'manual',html:true});
     appMain.info2.tooltip({animation: false, trigger: 'manual',html:true});
-    AppMap.cod_prov.on('pointermove', function(evt) {
+    /* AppMap.cod_prov.on('pointermove', function(evt) {
     	appMain.displayFeatureInfo(AppMap.cod_mpio.getEventPixel(evt.originalEvent),'cod_mpio');
         appMain.displayFeatureInfo(AppMap.cod_prov.getEventPixel(evt.originalEvent),'cod_prov');
-    });
+    }); */
     AppMap.cod_mpio.on('pointermove', function(evt) {
         appMain.displayFeatureInfo(AppMap.cod_mpio.getEventPixel(evt.originalEvent),'cod_mpio');
-        appMain.displayFeatureInfo(AppMap.cod_prov.getEventPixel(evt.originalEvent),'cod_prov');
+        //appMain.displayFeatureInfo(AppMap.cod_prov.getEventPixel(evt.originalEvent),'cod_prov');
     });
     AppMap.cod_mpio.on('click', function(evt) {appMain.displayFeatureInfo(evt.pixel,'cod_mpio');});
-    AppMap.cod_prov.on('click', function(evt) {appMain.displayFeatureInfo(evt.pixel,'cod_prov');});
+    //AppMap.cod_prov.on('click', function(evt) {appMain.displayFeatureInfo(evt.pixel,'cod_prov');});
   },
   GetGeo:function(){
     //console.log("Ingresa a geo");
@@ -292,20 +292,23 @@ var appMain={
 		appMain.glo.motivo=motivo;
 	}
   },
-  getParametros:function(){
+  getParametros:function(){ 
   	var data={}
-  	data.motivo=$("#selMotivo").val();
-  	data.seguimiento=$("#selSeguimiento").val();
+    data.idFuentes=appMain['idFuente'];
+    data.id_tipo=appMain['id_tipoc'];
+    data.id_subtipo=appMain['id_subtipoc'];
+  	data.semaforo=$("#semaforo").val();
   	data.fechaDatosMin=$('#fechaDatosMin').data('DateTimePicker').date();
   	data.fechaDatosMax=$('#fechaDatosMax').data('DateTimePicker').date();
   	return data;
   },
   getData:function(){
     var data=appMain.getParametros();
-    console.log("Ingresa a GetData");
+    console.log("Ingresa a getDash");
     console.log(data);
-    appMain.socket.emit('GetData',data,function(dataEnc){
-      console.log("devuelve a GetData");
+    appMain.socket.emit('getDash',data,function(dataEnc){
+      console.log("devuelve a getDash");  
+      console.log(dataEnc);
       var data=Func.Decrypted(dataEnc);
       console.log(data);
       waitingDialog.hide();
@@ -316,8 +319,8 @@ var appMain={
       	AppMap['cod_mpio'].removeLayer(appMain.lyr['cod_mpio']);	
       }
       
-      appMain.updateFecha(data['fecha'][0]);
-      appMain.updateMotivo(data['motivo']);
+      //appMain.updateFecha(data['fecha'][0]);
+      //appMain.updateMotivo(data['motivo']);
       appMain.asigData('cod_mpio',data['cod_mpio']);
       appMain.asigData('cod_prov',data['cod_prov']);
       $("#CantTotal").empty().append(data["total"][0].cuenta);
@@ -427,9 +430,9 @@ var appMain={
   },
   eventJquery:function(){
   	$("#btonBuscar").click(function() {
-  		waitingDialog.show();
-  		appMain.getData();
-	});
+    		waitingDialog.show();
+    		appMain.getData();
+  	});
   },
   graficaTipo:function(){
       Highcharts.chart('container', {
@@ -479,18 +482,113 @@ var appMain={
               }]
           }]
       });
-  }, IniMain:function(){
+  },
+  CargaFuentes:function() {  
+      appMain.socket.emit('GetListFuentes', null, function(message){     //console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+      console.log(moment().format('h:mm:ss:SSSS')+" Listado Fuentes");        //console.log("message:" + message);
+      var decrypted = Func.Decrypted(message);                   //console.log(decrypted[0].value);
+      if(decrypted[0].value == ""){
+        decrypted.shift();
+      }   console.log(decrypted);
+      appMain["ListadoFuentes"]=decrypted;
+      $('#idFte').multiselect('dataprovider', appMain["ListadoFuentes"]);
+        console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+    });
+  },
+  cargaTipos:function() {
+    var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());  console.log(Func.GetCentrosG().join());
+      appMain.socket.emit('getlistaTiposParam', {id_centrog : id_centroges}, function(message){
+      console.log(moment().format('h:mm:ss:SSSS')+" Listado Tipos");        //console.log("message:" + message);
+      var decrypted = Func.Decrypted(message);                   //console.log(message);                 
+      if(decrypted[0].label == " -- Seleccione --"){
+        decrypted[0].label = " Todos ";
+      }   console.log(decrypted);
+      appMain["listadoTipos"]=decrypted;                      
+      $('#sel_id_tipoc').multiselect('dataprovider', appMain["listadoTipos"]);
+        console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+    });
+  },
+  cargaSubtipos:function(id_tipoc) {
+      appMain.socket.emit('getlistaSubtiposParam', {id_tipoc : id_tipoc}, function(message){
+        console.log(moment().format('h:mm:ss:SSSS')+" Listado SUB Tipos");        //console.log("message:" + message);
+        var decrypted = Func.Decrypted(message);                   //console.log(message);                 
+        if(decrypted[0].label == " -- Seleccione --"){
+          decrypted[0].label = " Todos ";
+        }   console.log(decrypted);
+        appMain["listadoSubtipos"]=decrypted;                     
+        $('#sel_id_subtipoc').multiselect('dataprovider', appMain["listadoSubtipos"]);
+        console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+      });
+  },
+  iniSelects:function(){
+    /* SELECT - CENTRO GESTOR */
+    $('#idFte').multiselect({
+              enableClickableOptGroups: true,
+              enableCollapsibleOptGroups: true,
+              enableFiltering: true,
+              includeSelectAllOption: true,
+              enableCaseInsensitiveFiltering: true,
+              onChange: function(option, checked, select) { //  console.log("onChange");
+                appMain['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get(); //console.log(AppConfig['id_centrog']);
+              },
+              onSelectAll: function(checked) {        //  console.log("onSelectAll");
+                appMain['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get(); //console.log(AppConfig['id_centrog']);
+            },
+              onDeselectAll: function(checked) {        //  console.log("onDeselectAll");
+                appMain['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get(); //console.log(AppConfig['id_centrog']);
+            }
+    });
+    /* SELECT - TIPO */
+    $('#sel_id_tipoc').multiselect({
+              enableClickableOptGroups: true,
+              enableCollapsibleOptGroups: true,
+              enableFiltering: true,
+              enableCaseInsensitiveFiltering: true,
+              onChange: function(option, checked, select) {
+                var options = []; appMain['id_subtipoc'] = [''];
+                $('#sel_id_subtipoc').multiselect('dataprovider', options);
+    
+                appMain['id_tipoc'] = $('#sel_id_tipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log('onChange: '+AppConfig['id_convenio']); //console.log(AppConfig['id_tipoc'][0]);
+                if(appMain['id_tipoc'][0] != "") appMain.cargaSubtipos(appMain['id_tipoc'][0]);
+              },
+              onSelectAll: function(checked) {
+                appMain['id_tipoc'] = $('#sel_id_tipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
+            },
+              onDeselectAll: function(checked) {
+                appMain['id_tipoc'] = $('#sel_id_tipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
+            }
+    });
+    /* SELECT - SUBTIPO */
+    $('#sel_id_subtipoc').multiselect({
+              enableClickableOptGroups: true,
+              enableCollapsibleOptGroups: true,
+              enableFiltering: true,
+              enableCaseInsensitiveFiltering: true,
+              onChange: function(option, checked, select) {   //console.log("cambia subTIPO");
+                appMain['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log('onChange: '+AppConfig['id_convenio']);
+              },
+              onSelectAll: function(checked) {
+                appMain['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
+            },
+              onDeselectAll: function(checked) {
+                appMain['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
+            }
+    });
+  },
+  IniMain:function(){
       waitingDialog.show();
       
-      this.column_cod_prov();
+      // this.column_cod_prov();
       this.column_cod_mpio();
       appMain.eventJquery();
       AppMap.cod_mpio=AppMap.Initcod_mpio();
-      AppMap.cod_prov=AppMap.Initcod_prov();
-      
+      //AppMap.cod_prov=AppMap.Initcod_prov();
+      appMain.CargaFuentes();
+      appMain.cargaTipos();
       appMain.GetGeo();
       appMain.geoTooltip();
       appMain.graficaTipo();
+      appMain.iniSelects();
   }
 };
 

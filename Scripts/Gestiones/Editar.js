@@ -636,8 +636,8 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
 	  			return;	  			
 	  		}
-	  		if($("#sel_id_tipoc").is(":visible")){
-				if(AppConfig["id_tipoc"]===undefined || AppConfig["id_tipoc"].length<1){
+	  		if($("#sel_id_tipoc").is(":visible")){	console.log(AppConfig["id_tipoc"]);
+				if(AppConfig["id_tipoc"]===undefined || AppConfig["id_tipoc"]==null || AppConfig["id_tipoc"].length<1){
 		  			Func.MsjPeligro("Debe seleccionar el Tipo");
 		  			$('#sel_id_tipoc').nextAll('div').addClass("open");
 		  			setTimeout(function() { $('#sel_id_tipoc').nextAll('div').find('.multiselect-search').focus();}, 500);

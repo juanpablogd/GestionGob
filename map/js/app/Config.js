@@ -1,6 +1,6 @@
 
 var Config={
- 	UrlSocket: 'http://saga.cundinamarca.gov.co:3321',
+ 	UrlSocket: 'http://saga.cundinamarca.gov.co:3322',
  	cl:'1erf2a5f1e87g1',
  	NextLogin:'../Home/',
  	// TABLA public.p_perfil

@@ -20,10 +20,13 @@ var Func={
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(json), Config.cl);
 		return ciphertext.toString();
 	},
-	
+	DataLogin: function (){
+		var DatosUsuario=this.Decrypted(localStorage.dt); //console.log(DatosUsuario);
+		return	DatosUsuario;
+	},
 	degToRad:function(deg) {
        return deg * Math.PI * 2 / 360;
-   },
+   	},
    	sorting:function(json_object, key_to_sort_by) {
 	    function sortByKey(a, b) {
 	        var x = a[key_to_sort_by];
@@ -66,7 +69,18 @@ var Func={
           zoom: 11,
           duration: duration / 2
         }, callback);
-      }
+      },	
+      GetCentrosG: function (){ //jp 24
+		var data=this.DataLogin();	//console.log(data);
+		//console.log("CORREGIR: centrog");
+		data = data[0].centrog;		//console.log(data.length);	//JP
+		//data = 1119;		//console.log(data.length);
+		var cg = [];
+		for (s=0;s<data.length;s++) {
+			cg.push(data[s].id); //console.log(data[s]);
+		}
+		return cg; 
+	},
 
 }
 

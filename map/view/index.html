@@ -30,6 +30,7 @@
     <link href="../css/admin.css" rel="stylesheet">
     <link href="../css/map.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="../../Resources/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="../libs/ol/ol.css" type="text/css">
 	<link href="../libs/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
@@ -61,25 +62,24 @@
                   <div class="panel ">
                      <form >
                         <div class="form-group">
-                           <label for="selSeguimiento">Fuentes:</label>
-                           <select class="form-control" id="selSeguimiento">
-                              <option  value="all">--Todos--</option>
-                              <option value="SI">Si</option>
-                              <option value="NO">No</option>
-                           </select>
+                           <label for="idFte">Fuentes:</label>
+                           <select id="idFte" multiple="multiple">&nbsp;</select>       
                         </div>
                         <div class="form-group">
-                           <label for="selMotivo">Tipo:</label>
-                           <select class="form-control" id="selMotivo">
-                              <option value="all">--Todos--</option>
-                           </select>
+                           <label for="sel_id_tipoc">Tipo:</label>
+                           <select id="sel_id_tipoc" >&nbsp;</select>
                         </div>
                         <div class="form-group">
-                           <label for="selSeguimiento">sub Tipo:</label>
-                           <select class="form-control" id="selSeguimiento">
+                           <label for="sel_id_subtipoc">sub Tipo:</label>
+                           <select id="sel_id_subtipoc" >&nbsp;</select>
+                        </div>
+                        <div class="form-group">
+                           <label for="semaforo">Semaforo:</label>
+                           <select class="form-control" id="semaforo">
                               <option  value="all">--Todos--</option>
-                              <option value="SI">Si</option>
-                              <option value="NO">No</option>
+                              <option value="3">Verde</option>
+                              <option value="2">Amarillo</option>
+                              <option value="1">Rojo</option>
                            </select>
                         </div>
                      </form>
@@ -168,8 +168,8 @@
          </div>
          <!-- COLUMNA 2/2 MAPAS Y GRAFICA -->
          <div class="item  col-xs-12 col-md-12 col-lg-10">
-            <!-- MAPA PROVINCIA -->
-            <div class="item  col-xs-12 col-lg-6 col-md-6">
+            <!-- MAPA PROVINCIA  -->
+            <!-- div class="item  col-xs-12 col-lg-6 col-md-6">
                <div class="panel panel-green ">
                   <div class="panel-heading">
                      <h2>Obras - Provincia</h2>
@@ -190,9 +190,9 @@
                      <img src="../images/logo.png" class="LogoSaga"  >
                   </div>
                </div>
-            </div>
+            </div -->
             <!-- MAPA MUNICIPIO -->
-            <div class="item  col-xs-12 col-lg-6 col-md-6">
+            <div class="item  col-xs-12 col-lg-12 col-md-12">
                <div class="panel panel-orange ">
                   <div class="panel-heading">
                      <h2>Obras - Municipios </h2>
@@ -215,12 +215,12 @@
                </div>
             </div>
             <!-- GRAFICA COLUMNAS PROVINCIA -->
-            <div class="item  col-xs-12 col-lg-6 col-md-6 ">
+            <!-- div class="item  col-xs-12 col-lg-6 col-md-6 ">
                <div id="col_cod_prov">
                </div>
-            </div>
+            </div -->
             <!-- GRAFICA COLUMNAS MUNICIPIO -->
-            <div class="item  col-xs-12 col-lg-6 col-md-6  ">
+            <div class="item  col-xs-12 col-lg-12 col-md-12 ">
                <div id="col_cod_mpio">
                </div>
             </div>
@@ -246,6 +246,7 @@
    <script src="../libs/Crypto/aes.js"></script>
    <script src="../libs/geocolor/geocolor.js"></script>
    <script src="../libs/numeraljs/numeral.min.js"></script>
+   <script src="../../Resources/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
    <script src="../libs/datepicker/js/bootstrap-datetimepicker.min.js"></script>
    <!-- APP -->
    <script src="../js/app/Config.js"></script>

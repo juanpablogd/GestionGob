@@ -1,10 +1,21 @@
 Change Log: `bootstrap-fileinput`
 =================================
 
-## version 4.4.6 (_under development_)
+## version 4.4.7 (_under development_)
 
-**Date:** Work in progress
+**Date:** _work in progress_
 
+- (enh #1131): New public method `readFiles` to allow input & preview of file objects programmatically.
+- (enh #1128, #1129): Update rubaxa sortable plugin to fix Chrome support errors.
+- (enh #1127): Update Italian Translations.
+
+## version 4.4.6
+
+**Date:** 13-Nov-2017
+
+- (enh #1125): Create CODE_OF_CONDUCT.md.
+- (bug #1123): Correct error container close button click behavior for various scenarios.
+- (enh #1121): Update Spanish Translations.
 - (enh #1119): Enhance close button icon markup as per BS4 norms.
 - (enh #1118): Better file action button style.
 - (bug #1117): Reset `ajaxAborted` status more correctly before upload.

@@ -201,7 +201,7 @@ var appMain={
   },
   AutoDisplayLeyend:function(c,key){
       var leyend=document.getElementById('labels'+key);
-      var labels=[];
+      var labels=[];  //console.log(c.symbols.length);
       for(var i=0;i<c.symbols.length;i++){
           labels.push('<div>'+numeral(c.symbols[i].from).format('0,0').replace(',','.')+' - '+numeral(c.symbols[i].to).format('0,0').replace(',','.')+'</div>');
       }
@@ -215,7 +215,7 @@ var appMain={
       }
       leyend.innerHTML=labels.join('');
   },
-  displayFeatureInfo:function(pixel,key) {
+  displayFeatureInfo:function(pixel,key) { //console.log(pixel);
         var info='',pesos='';
         if(key=='cod_mpio'){
         	info='info2';	
@@ -253,7 +253,36 @@ var appMain={
         appMain.displayFeatureInfo(AppMap.cod_mpio.getEventPixel(evt.originalEvent),'cod_mpio');
         //appMain.displayFeatureInfo(AppMap.cod_prov.getEventPixel(evt.originalEvent),'cod_prov');
     });
-    AppMap.cod_mpio.on('click', function(evt) {appMain.displayFeatureInfo(evt.pixel,'cod_mpio');});
+    AppMap.cod_mpio.on('click', function(e) {
+/*        var id_centrog = AppConfig['id_centrog'];   //console.log(id_centrog);
+        (id_centrog !== undefined)? id_centrog = id_centrog.join() : id_centrog = ''; //console.log("id_centrog: "+id_centrog);
+        var cod_meta = AppConfig['cod_meta'];       
+        (cod_meta !== undefined)? cod_meta = cod_meta.join() : cod_meta = ''; */
+        
+        var pixel = e.pixel;
+          AppMap.cod_mpio.forEachFeatureAtPixel(pixel, function(feature, layer) { console.log(feature.O.id);
+            var data = appMain.getParametros();   
+            data.cod_mun = feature.O.id;
+            console.log(data);
+            localStorage.ps = Func.Ecrypted(data);
+            setTimeout(function(){  //console.log('Valido');
+                  $.fancybox.open([
+                        {
+                            type: 'iframe',
+                            href : '../../Views/Gestiones/indexMapa.html',                
+                            width   : '90%',
+                      height    : '100%',
+                      autoSize  : false,
+                      fitToView : false,
+                        }
+                    ], {
+                        padding : 20
+                    });
+                }, 1000*0.1);
+          }); 
+      //appMain.displayFeatureInfo(evt.pixel,'cod_mpio');
+    });
+    //console.log("geoTooltip");
     //AppMap.cod_prov.on('click', function(evt) {appMain.displayFeatureInfo(evt.pixel,'cod_prov');});
   },
   GetGeo:function(){
@@ -264,7 +293,7 @@ var appMain={
             var geo =Func.Decrypted(data[val]);
             appMain.glo.geoAdmin[val]=topojson.feature(geo, geo.objects.collection);
         });
-        console.log(appMain.glo.geoAdmin);
+        //console.log(appMain.glo.geoAdmin);
         appMain.asigDataGeo();
     });
   },
@@ -304,25 +333,27 @@ var appMain={
   },
   getData:function(){
     var data=appMain.getParametros();
-    console.log("Ingresa a getDash");
-    console.log(data);
+    //console.log("Ingresa a getDash");
+    //console.log(data);
     appMain.socket.emit('getDash',data,function(dataEnc){
-      console.log("devuelve a getDash");  
-      console.log(dataEnc);
+      console.log("devuelve a getDash");
       var data=Func.Decrypted(dataEnc);
-      console.log(data);
+      //console.log(data);
       waitingDialog.hide();
+      //console.log(appMain.lyr['cod_prov']);
+      //console.log(appMain.lyr['cod_mpio']);
       if(appMain.lyr['cod_prov']){
       	AppMap['cod_prov'].removeLayer(appMain.lyr['cod_prov']);	
       }
-      if(appMain.lyr['cod_prov']){
+      if(appMain.lyr['cod_mpio']){
       	AppMap['cod_mpio'].removeLayer(appMain.lyr['cod_mpio']);	
       }
       
       //appMain.updateFecha(data['fecha'][0]);
-      //appMain.updateMotivo(data['motivo']);
+      //appMain.updateMotivo(data['motivo']); 
       appMain.asigData('cod_mpio',data['cod_mpio']);
-      appMain.asigData('cod_prov',data['cod_prov']);
+      //appMain.asigData('cod_prov',data['cod_prov']);
+      appMain.graficaTipo(data['g_subtipo']);
       $("#CantTotal").empty().append(data["total"][0].cuenta);
       
     });
@@ -330,8 +361,7 @@ var appMain={
   asigDataGeo:function(){
       appMain.getData();
   },
-  asigData:function(key,data){
-        console.log(data);
+  asigData:function(key,data){  //console.log(data);
         var sum=[],cont=[];
        $.each(appMain.glo.geoAdmin[key].features, function( index, value ) {
           //console.log(index);
@@ -364,17 +394,17 @@ var appMain={
           }, 11000);
   },
   crearGeo:function(key,tipoGroup,l){
-      console.log(key);
-      console.log(tipoGroup);
-      var numberOfBreaks = 1;
-      if(l>6)numberOfBreaks = 6  ;  
-      else numberOfBreaks = l;
-	  //geoJenks = geocolor.equalIntervals(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[tipoGroup]);
-	  geoJenks = geocolor.jenks(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
-	  appMain.AutoDisplayLeyend(geoJenks.legend,key);  
+    //console.log(key);
+    //console.log(tipoGroup);
+    var numberOfBreaks = 1; //console.log(l);
+    if(l>6){  numberOfBreaks = 3;
+      geoJenks = geocolor.equalIntervals(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
+    }
+    else{ numberOfBreaks = l;
+      geoJenks = geocolor.jenks(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
+    }
 	  
-      
-      console.log(geoJenks);
+	  appMain.AutoDisplayLeyend(geoJenks.legend,key);   //console.log(geoJenks);
       
       appMain.source[key]=new ol.source.Vector({
           features: (new ol.format.GeoJSON()).readFeatures(geoJenks)
@@ -423,9 +453,9 @@ var appMain={
           source: appMain.source[key],
           style: appMain.styleFunction[key]
       });
-     console.log("paso");
+     //console.log("paso");
      AppMap[key].addLayer(appMain.lyr[key]);
-     console.log("paso2");
+     //console.log("paso2");
    
   },
   eventJquery:function(){
@@ -434,7 +464,7 @@ var appMain={
     		appMain.getData();
   	});
   },
-  graficaTipo:function(){
+  graficaTipo:function(g_subtipo){  //console.log(g_subtipo);
       Highcharts.chart('container', {
           chart: {
               plotBackgroundColor: null,
@@ -444,6 +474,10 @@ var appMain={
           },
           title: {
               text: ''
+          },
+          credits: {
+            text: 'SAGA-SECTIC',
+            href: '#'
           },
           tooltip: {
               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -465,21 +499,7 @@ var appMain={
           series: [{
               name: 'Brands',
               colorByPoint: true,
-              data: [{
-                  name: 'Acueducto',
-                  y: 56.33
-              }, {
-                  name: 'Alcantarillado',
-                  y: 24.03,
-                  sliced: true,
-                  selected: true
-              }, {
-                  name: 'Agua para la Vereda',
-                  y: 10.38
-              }, {
-                  name: 'Compactadores',
-                  y: 5.88
-              }]
+              data: g_subtipo
           }]
       });
   },
@@ -489,7 +509,7 @@ var appMain={
       var decrypted = Func.Decrypted(message);                   //console.log(decrypted[0].value);
       if(decrypted[0].value == ""){
         decrypted.shift();
-      }   console.log(decrypted);
+      }   //console.log(decrypted);
       appMain["ListadoFuentes"]=decrypted;
       $('#idFte').multiselect('dataprovider', appMain["ListadoFuentes"]);
         console.log(moment().format('h:mm:ss:SSSS')+" FIN");
@@ -502,7 +522,7 @@ var appMain={
       var decrypted = Func.Decrypted(message);                   //console.log(message);                 
       if(decrypted[0].label == " -- Seleccione --"){
         decrypted[0].label = " Todos ";
-      }   console.log(decrypted);
+      }   //console.log(decrypted);
       appMain["listadoTipos"]=decrypted;                      
       $('#sel_id_tipoc').multiselect('dataprovider', appMain["listadoTipos"]);
         console.log(moment().format('h:mm:ss:SSSS')+" FIN");

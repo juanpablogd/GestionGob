@@ -774,7 +774,7 @@ $('#btn_guardar').click(function(){
 	  		
 	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
 	  		resultado = Func.Ecrypted(resultado);
-	  		id_gestion = Func.Ecrypted(IdGestion);
+	  		id_gestion = Func.Ecrypted(IdGestion);	//console.log("Envia: UpdateGestion");
 	  		
   			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,//noticia:noticia,
   															descripcion:descripcion,

@@ -465,34 +465,32 @@ AppConfig.CargaProductosPrensa();
 
 
 $('#btn_guardar').click(function(){
-	bootbox.confirm("Seguro que desea Guardar?", function(result) {
-	  	console.log("Confirm result: "+result);
+	bootbox.confirm("Seguro que desea Guardar?", function(result) {		console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
-	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
-	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
-	  		var sem = $("input[name='semaforo']:checked").val();	console.log(sem);
-	  		var vr_pagado = $("#vr_pagado").val().trim();			console.log(vr_pagado);
+	  		var descripcion = $("#descripcion").val();	if(descripcion != undefined)	descripcion = descripcion.trim();			//console.log($("#avance_porcentaje").val());
+	  		var avance_porcentaje = $("#avance_porcentaje").val();	if(avance_porcentaje != undefined)	avance_porcentaje = avance_porcentaje.trim();
+	  		var sem = $("input[name='semaforo']:checked").val();	//console.log(sem);
+	  		var vr_pagado = $("#vr_pagado").val();			if(vr_pagado != undefined) vr_pagado = vr_pagado.trim();			//console.log(vr_pagado);
 	  		var id_categoria = $("#id_categoria option:selected").val();
-	  		var responsable_nom = $("#responsable_nom").val().trim();
-	  		var responsable_tel = $("#responsable_tel").val().trim();
-	  		//var nro_cto = $("#nro_cto").val().trim();	
-	  		var fte_nacional = $("#fte_nacional").val().trim();
-	  		var fte_depto = $("#fte_depto").val().trim();
-	  		var fte_mpio = $("#fte_mpio").val().trim();
-	  		var fte_sgp = $("#fte_sgp").val().trim();
-	  		var fte_regalias = $("#fte_regalias").val().trim();
-	  		var fte_otros = $("#fte_otros").val().trim();	//console.log(fte_otros);
-	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();
+	  		var responsable_nom = $("#responsable_nom").val();	if(responsable_nom != undefined) responsable_nom = responsable_nom.trim();
+	  		var responsable_tel = $("#responsable_tel").val();	if(responsable_tel != undefined) responsable_tel = responsable_tel.trim();
+	  		var fte_nacional = $("#fte_nacional").val();	if(fte_nacional != undefined) fte_nacional = fte_nacional.trim();
+	  		var fte_depto = $("#fte_depto").val();	if(fte_depto != undefined) fte_depto = fte_depto.trim();
+	  		var fte_mpio = $("#fte_mpio").val();	if(fte_mpio != undefined) fte_mpio = fte_mpio.trim();
+	  		var fte_sgp = $("#fte_sgp").val();	if(fte_sgp != undefined) fte_sgp = fte_sgp.trim();
+	  		var fte_regalias = $("#fte_regalias").val();	if(fte_regalias != undefined) fte_regalias = fte_regalias.trim();
+	  		var fte_otros = $("#fte_otros").val();	if(fte_otros != undefined) fte_otros = fte_otros.trim();
+	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val();	if(descripcion_fte_otros != undefined) descripcion_fte_otros = descripcion_fte_otros.trim();
 	  		//var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);//var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
-	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
+	  		var enlace_secop = $("#enlace_secop").val();	if(enlace_secop != undefined) enlace_secop = enlace_secop.trim();		//console.log(enlace_secop);
 	  		//var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
-	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
-	  		var areaint = $("#areaint").val().trim();
-	  		var und = $("#und").val().trim();
-	  		var valor = $("#valor").val().trim();
+	  		var pbeneficiadas = $("#pbeneficiadas").val();	if(pbeneficiadas != undefined) pbeneficiadas = pbeneficiadas.trim();
+	  		var areaint = $("#areaint").val();	if(areaint != undefined) areaint = areaint.trim();
+	  		var und = $("#und").val();	if(und != undefined) und = und.trim();
+	  		var valor = $("#valor").val();	if(valor != undefined) valor = valor.trim();
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
-	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
+	  		var resultado = $("#resultado").val();	if(resultado != undefined) resultado = resultado.trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;
 	  		
 	  		if($("#sel_id_convenio").is(":visible")){
@@ -536,6 +534,14 @@ $('#btn_guardar').click(function(){
 		  			return;
 		  		}
 	  		}
+	  		if($("#sel_id_subtipoc").is(":visible")){
+				if(AppConfig["id_subtipoc"]===undefined || AppConfig["id_subtipoc"].length<1){
+		  			Func.MsjPeligro("Debe seleccionar el subTipo");
+		  			$('#sel_id_subtipoc').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#sel_id_subtipoc').nextAll('div').find('.multiselect-search').focus();}, 500);
+		  			return;
+		  		}
+	  		}
 	  		if($("#sel_id_estado").is(":visible")){
 				if(AppConfig["id_estado"]===undefined || AppConfig["id_estado"].length<1){
 		  			Func.MsjPeligro("Debe seleccionar el estado actual del contrato");
@@ -544,7 +550,7 @@ $('#btn_guardar').click(function(){
 		  			return;
 		  		}
 	  		}
-	  		if(avance_porcentaje==""){
+/*	  		if(avance_porcentaje=="" && avance_porcentaje != undefined){
 	  			Func.MsjPeligro("Digite un porcentaje de avance");
 	  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
 	  			return;	  			
@@ -554,26 +560,26 @@ $('#btn_guardar').click(function(){
 		  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
 		  			return;	
 	  			}
-	  		}
-	  		if($("#sel_id_estado").is(":visible")){
+	  		} */
+/*	  		if($("#sel_id_estado").is(":visible")){
 		  		if(sem == undefined || sem == "" ){
 		  			$("input[name='semaforo']").show();
 		  			Func.MsjPeligro("Seleccione un Color en el semaforo");
 		  			setTimeout(function() { $("input[name='semaforo']").focus(); }, 500);
 		  			return;
 		  		}
-		  	}
-	  		if(vr_pagado == ""){
+		  	} */
+/*	  		if(vr_pagado == ""){
 	  			Func.MsjPeligro("Debe digitar el valor pagado a la fecha");
 	  			setTimeout(function() { $('#vr_pagado').focus(); }, 500);
 	  			return;
-	  		}
-	  		if(pbeneficiadas==""){
+	  		} */
+/*	  		if(pbeneficiadas==""){
   				$('#seguimiento-panel-body').show();
 	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
 	  			setTimeout(function() { $('#pbeneficiadas').focus(); }, 500);
 	  			return;
-  			}
+  			}	*/
 	  		if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
 	  			$('#responsable-panel-body').show();
 	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
@@ -619,7 +625,7 @@ $('#btn_guardar').click(function(){
 			  			return;
 	  		}
 	  		if(NumArchivos<AppConfig.MinImagen){
-	  			Func.MsjPeligro("Debe seleccionar al menos una imágen");
+	  			Func.MsjPeligro("Debe seleccionar al menos un archivo");
 	  			setTimeout(function() { $('#input-1').focus(); }, 500);
 	  			return;
 	  		}
@@ -627,25 +633,27 @@ $('#btn_guardar').click(function(){
 	  		$("#input-1").focus();
 	  		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); 	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});//console.log(AppConfig["codigo_mun"]);	console.log(AppConfig["codigo_mun"].join());
 
-  			if(AppConfig["id_convenio"]===undefined)AppConfig["id_convenio"]=""; var id_convenio = Func.Ecrypted(AppConfig["id_convenio"]);	//console.log(AppConfig["id_convenio"]);
-  			if(AppConfig["id_estado"]===undefined)AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);	console.log(AppConfig["id_estado"]);
-  			if(AppConfig["id_tipoc"]===undefined)AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
-  			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
-  			sem = Func.Ecrypted(sem);
-  			vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
+  			if(AppConfig["id_convenio"]===undefined)	AppConfig["id_convenio"]=""; var id_convenio = Func.Ecrypted(AppConfig["id_convenio"]);	//console.log(AppConfig["id_convenio"]);
+  			if(AppConfig["id_estado"]===undefined)		AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);	console.log(AppConfig["id_estado"]);
+  			if(AppConfig["id_tipoc"]===undefined)		AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
+  			if(AppConfig["id_subtipoc"]===undefined) 	AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
+  			if(sem===undefined) sem = Func.Ecrypted("");	sem = Func.Ecrypted(sem);
+  			if(vr_pagado===undefined) vr_pagado = Func.Ecrypted("0");	vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
 	  		
 	  		fecha = Func.Ecrypted(fecha);
 	  		var codigo_mun = Func.Ecrypted(AppConfig["codigo_mun"]);					//console.log(codigo_mun);
 	  		id_categoria = Func.Ecrypted(id_categoria);
 	  		//noticia = Func.Ecrypted(noticia);
 	  		descripcion = Func.Ecrypted(descripcion);
-	  		avance_porcentaje = Func.Ecrypted(avance_porcentaje);
+	  		avance_porcentaje = Func.Ecrypted("0");
+	  		if(AppConfig["id_subtipoc"]===undefined) 	AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
 	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
 	  		var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
 	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
-	  		areaint = Func.Ecrypted(areaint); //OPCIONAL
+	  		if(areaint===undefined) areaint = Func.Ecrypted("");	areaint = Func.Ecrypted(areaint);	//OPCIONAL
+	  		console.log(und);
 	  		und = Func.Ecrypted(und); //OPCIONAL
 	  		valor = Func.Ecrypted(numeral().unformat(valor)); //OPCIONAL
 
@@ -663,11 +671,12 @@ $('#btn_guardar').click(function(){
 	  		descripcion_fte_otros = Func.Ecrypted(descripcion_fte_otros);
 	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
 	  		enlace_secop = Func.Ecrypted(enlace_secop);
-	  		//empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);
-	  		pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
+	  		//empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);		console.log(pbeneficiadas);	
+	  		if(pbeneficiadas===undefined) pbeneficiadas = Func.Ecrypted(""); pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
 	  		
 	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
-	  		resultado = Func.Ecrypted(resultado);
+	  		console.log(resultado);
+	  		if(resultado===undefined) resultado = Func.Ecrypted(""); resultado = Func.Ecrypted(resultado);
 	  		
   			AppConfig.socketDataAdmin.emit('SetGestion', {	fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,//noticia:noticia,
   															descripcion:descripcion,
@@ -675,9 +684,10 @@ $('#btn_guardar').click(function(){
   															responsable_tel:responsable_tel,responsable_email:responsable_email,
   															id_tipo_cto:id_tipo_cto,fte_nacional:fte_nacional,fte_depto:fte_depto,fte_mpio:fte_mpio,fte_sgp:fte_sgp,
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,
-  															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,
+  															enlace_secop:enlace_secop,cod_meta:cod_meta, pbeneficiadas:pbeneficiadas,areaint:areaint,
   															und:und,valor:valor,id_producto:id_producto,resultado:resultado,
-  															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado
+  															id_convenio:id_convenio,id_estado:id_estado,
+  															id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem ,vr_pagado:vr_pagado
 			 }, function(message){	//console.log(message);
 			 		if($.isNumeric(message)){
 			 			if(NumArchivos>0){

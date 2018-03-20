@@ -120,7 +120,7 @@
 	      </ul>
 	      <ul class="nav navbar-nav" id="opcion_listado">
 	        <li class="active"><a href="../Gestiones/">
-	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
+	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Gestiones </a></li>
 	      </ul>
 	      <ul class="nav navbar-nav" id="opcion_convenios">
 	        <li class="active"><a href="../Convenios">
@@ -373,7 +373,7 @@
 		<!--  PANEL SEGUIMIENTO --> 
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Seguimiento</h3>
+				<h3 class="panel-title">Identificación de la Gestión</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 			</div>
 			<div class="panel-body"  id="seguimiento-panel-body">
@@ -405,7 +405,7 @@
 					</div>		
 				</div>
 				<div class="form-group">
-					<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+					<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta los productos y logros a realizar o realizados (obra, gestión o inversión)"> Alcance <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		  			<textarea class="form-control" rows="3" maxlength="512" id="descripcion">&nbsp;</textarea>
 				</div>
 				<div class="row" id="divTipos" style="display: none;">
@@ -414,11 +414,11 @@
 		    			<select id="sel_id_tipoc" >&nbsp;</select>			
 					</div>
 					<div class="col-sm-6">
-		    			<label for="sel_id_subtipoc" class="control-label" data-toggle="tooltip" title="Seleccione el sub tipo"> Sub Tipo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		    			<label for="sel_id_subtipoc" class="control-label required" data-toggle="tooltip" title="Seleccione el sub tipo"> Sub Tipo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		    			<select id="sel_id_subtipoc" >&nbsp;</select>			
 					</div>
 				</div>
-			    <div class="row">
+			    <!-- div class="row">
 			    	<div class="col-sm-4">
 		    			<label for="sel_id_estado" class="control-label required" data-toggle="tooltip" title="Seleccione el estado actual"> Estado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		    			<select id="sel_id_estado" >&nbsp;</select>
@@ -445,8 +445,8 @@
 							<input class="form-check-input" type="radio" name="semaforo" id="semaforo" value="3"> Al día
 						</label>
 					</div>
-				</div>
-				<div class="row">
+				</div -->
+				<!-- div class="row">
 					<div class="col-sm-4">
 						<label for="fte_nacional" class="control-label required" data-toggle="tooltip" title="Valor Pagado a la Fecha">Valor Pagado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 	    				<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="vr_pagado">
@@ -459,14 +459,14 @@
 		    			<label for="areaint">Area intervenida:</label>
 		    			<input type="text" class="form-control" id="areaint">
 					</div>
-				</div>
+				</div -->
 				<div class="row">
 					<div class="col-sm-4">
 				    	<label for="und" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir unidad de medida. p.e. En una entrega de 100 Viviendas escribir 'Viviendas'">Und medida <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 				    	<input type="text" class="form-control" id="und">
 					</div>
 					<div class="col-sm-4">
-				    	<label for="valor" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir la cantidad de la unidad de medida anterior. p.e. En una entrega de 100 Viviendas escribir '100'">Cantidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				    	<label for="valor" class="control-label" data-toggle="tooltip" title="Dependiendo de la intervención describir la cantidad de la unidad de medida anterior. p.e. En una entrega de 100 Viviendas escribir '100'">Cantidad Estimada <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 				    	<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="valor">
 					</div>	    				
 					<div class="col-sm-4"></div>
@@ -549,10 +549,10 @@
 		    <label for="id_producto" data-toggle="tooltip" title="Señalar los productos que la Secretaría de Prensa realizó respecto a la intervención.">Productos Prensa <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<select id="id_producto" multiple="multiple">&nbsp;</select>
 		</div>
-		<div class="form-group">
+		<!-- div class="form-group">
 			<label for="resultado" class="control-label required" data-toggle="tooltip" title="Describir detalladamente el resultado de la intervención.">Resultado <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
   			<textarea class="form-control" rows="5" id="resultado">&nbsp;</textarea>
-		</div>
+		</div -->
 
 		<div class="form-group">
 			<label class="control-label" data-toggle="tooltip" title="Adjunte los archivos relacionados a la intervención, (Imágenes, Texto, Cálculo, etc)">Seleccione archivos adjuntos <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>

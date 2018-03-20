@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
 
-  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame Remove this if you use the .htaccess -->
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>SAGA</title>
@@ -23,7 +24,8 @@
   <link href="../../Resources/ol3/ol.css" rel="stylesheet">
   <link href="../../Resources/DataTables/media/css/jquery.dataTables.min.css" rel="stylesheet">
   
-    <!-- CSS app -->
+  
+  <!-- CSS app -->
   <link href="../../Content/Home/NavMap.css" rel="stylesheet">
   <link href="../../Content/Home/ContentMap.css" rel="stylesheet">
   <style>
@@ -42,60 +44,7 @@
   
 </head>
 <body>
-  <nav class="navbar navbar-inverse">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-	        <span class="icon-bar">&nbsp;</span>
-	        <span class="icon-bar">&nbsp;</span>
-	        <span class="icon-bar">&nbsp;</span>                        
-	      </button>
-	      <a  href="#">
-	      	<img src="../../Images/Home/logos_gobernacion.png" class="LogoMap"  >
-	      </a>
-	    </div>
-	    <div class="collapse navbar-collapse" id="myNavbar">
-	      <ul class="nav navbar-nav">
-	        <li class="active"><a href="../Home/">
-	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
-	      </ul>
-	      <ul class="nav navbar-nav" id="opcion_listado">
-	        <li class="active"><a href="#">
-	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Gestiones </a></li>
-	      </ul>
-	      <ul class="nav navbar-nav" id="opcion_convenios">
-	        <li class="active"><a href="../Convenios">
-	        	<i class="fa fa-align-justify" aria-hidden="true">&nbsp;</i> Convenio/Contrato </a></li>
-	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
-	        <li class="dropdown">
-	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	                    <i class="fa fa-user fa-fw">&nbsp;</i>  <i class="fa fa-caret-down">&nbsp;</i>
-	                </a>
-	            	<ul class="dropdown-menu dropdown-user">
-	                    <li id="Perfil"><a href="#"><i class="fa fa-user fa-fw">&nbsp;</i> Perfil</a>
-	                    </li>
-	                    <!--li id="CambiarClave"><a href="#"><i class="fa fa-gear fa-fw">&nbsp;</i> Cambiar Contraseña</a>
-	                    </li-->
-	                    <li class="divider">&nbsp;</li>
-	                    <li id="CerrarSession"><a href="#"><i class="fa fa-sign-out fa-fw">&nbsp;</i> Cerrar sesión</a>
-	                    </li>
-	                </ul>
-	          </li>
-	      </ul>
-	    </div>
-	  </div>
-	</nav>
-<div class="row">
-    <div class="col-md-3 col-md-offset-1">
-      <div id="div_add"><a href="Adicionar.html"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="label label-primary">Inicio Gestión</span></a>
-      </div>
-    </div>
-    <div class="col-md-4">
-     	<label style="font-size: 24px;color: #3578B2;">LISTADO DE GESTIONES</label>
-    </div>
-</div>
-   
+<div id="div_add" style="display: none"><h4><a href="Adicionar.html" target="_blank"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="label label-primary">Adicionar Gestión</span></a></h4></div>   
 <table id="TBList" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -106,9 +55,9 @@
                 <th>Meta</th>
                 <th>Municipios</th>
                 <th>Entidades</th>
-                <th>Convenio</th>
-                <th>Cod</th>
-                <th>Opciones</th>
+                <!-- th>Avances</th>
+                <th>Eliminar</th -->
+                <th>Detalle</th>
             </tr>
         </thead>
         <tfoot>
@@ -120,9 +69,9 @@
                 <th>Meta</th>
                 <th>Municipios</th>
                 <th>Entidades</th>
-                <th>Convenio</th>
-                <th>Cod</th>
-                <th>Opciones</th>
+                <!-- th>Avances</th>
+                <th>Eliminar</th -->
+                <th>Detalle</th>
             </tr>
         </tfoot>
         <tbody id="TBody">&nbsp;</tbody>
@@ -132,14 +81,14 @@
 	<script src="../../Resources/Numeral/numeral.js"></script>
 	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
 	<script src="../../Resources/socket/socket.io.js"></script>
-	<script src="../../Resources/Jquery/jquery-1.12.4.js"></script>
+	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
 	<script src="../../Resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
 	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
 	<script src="../../Resources/socket/socket.io.js"></script>				
 	<script src="../../Resources/bootbox/bootbox.min.js"></script>
-	<script src="../../Resources/Crypto/crypto-js.js"></script>
-	<!--script src="../../Resources/Crypto/aes.js"></script-->
+	<script src="../../Resources/Crypto/core-min.js"></script>
+	<script src="../../Resources/Crypto/aes.js"></script>
 	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
 	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
 	<script src="../../Resources/fastclick/fastclick.min.js"></script>
@@ -149,6 +98,6 @@
 	<script src="../../Scripts/AppConfig.js"></script>
 	<script src="../../Scripts/Func.js"></script>
 	<script src="../../Scripts/Home/Navbar.js"></script>
-	<script src="../../Scripts/Gestiones/Gestiones.js"></script>
+	<script src="../../Scripts/Gestiones/ListaFiltroMap.js"></script>
 	
 </html>

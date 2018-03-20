@@ -577,29 +577,30 @@ $('#btn_guardar').click(function(){
 	  	console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
-	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
-	  		var avance_porcentaje = $("#avance_porcentaje").val().trim();
-	  		var sem = $("input[name='semaforo']:checked").val();	console.log(sem);
-	  		var vr_pagado = $("#vr_pagado").val().trim();			console.log(vr_pagado);
+	  		var descripcion = $("#descripcion").val();	if(descripcion != undefined)	descripcion = descripcion.trim();			//console.log($("#avance_porcentaje").val());
+	  		var avance_porcentaje = $("#avance_porcentaje").val();	if(avance_porcentaje != undefined)	avance_porcentaje = avance_porcentaje.trim();
+	  		var sem = $("input[name='semaforo']:checked").val();	//console.log(sem);
+	  		var vr_pagado = $("#vr_pagado").val();			if(vr_pagado != undefined) vr_pagado = vr_pagado.trim();			//console.log(vr_pagado);
 	  		var id_categoria = $("#id_categoria option:selected").val();
-	  		var responsable_nom = $("#responsable_nom").val().trim();
-	  		var responsable_tel = $("#responsable_tel").val().trim();
+	  		var responsable_nom = $("#responsable_nom").val();	if(responsable_nom != undefined) responsable_nom = responsable_nom.trim();
+	  		var responsable_tel = $("#responsable_tel").val();	if(responsable_tel != undefined) responsable_tel = responsable_tel.trim();
 	  		//var nro_cto = $("#nro_cto").val().trim();	
-	  		var fte_nacional = $("#fte_nacional").val().trim();
-	  		var fte_depto = $("#fte_depto").val().trim();
-	  		var fte_mpio = $("#fte_mpio").val().trim();
-	  		var fte_sgp = $("#fte_sgp").val().trim();
-	  		var fte_regalias = $("#fte_regalias").val().trim();
-	  		var fte_otros = $("#fte_otros").val().trim();	//console.log(fte_otros);
-	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val().trim();
+	  		var fte_nacional = $("#fte_nacional").val();	if(fte_nacional != undefined) fte_nacional = fte_nacional.trim();
+	  		var fte_depto = $("#fte_depto").val();	if(fte_depto != undefined) fte_depto = fte_depto.trim();
+	  		var fte_mpio = $("#fte_mpio").val();	if(fte_mpio != undefined) fte_mpio = fte_mpio.trim();
+	  		var fte_sgp = $("#fte_sgp").val();	if(fte_sgp != undefined) fte_sgp = fte_sgp.trim();
+	  		var fte_regalias = $("#fte_regalias").val();	if(fte_regalias != undefined) fte_regalias = fte_regalias.trim();
+	  		var fte_otros = $("#fte_otros").val();	if(fte_otros != undefined) fte_otros = fte_otros.trim();
+	  		var descripcion_fte_otros = $("#descripcion_fte_otros").val();	if(descripcion_fte_otros != undefined) descripcion_fte_otros = descripcion_fte_otros.trim();
 	  		//var fecha_ini = $("#fecha_ini").val().trim(); //console.log(fecha_ini);//var fecha_fin = $("#fecha_fin").val().trim(); //console.log(fecha_fin);
-	  		var enlace_secop = $("#enlace_secop").val().trim();		//console.log(enlace_secop);
+	  		var enlace_secop = $("#enlace_secop").val();	if(enlace_secop != undefined) enlace_secop = enlace_secop.trim();		//console.log(enlace_secop);
 	  		//var empleos_gen_directo = $("#empleos_gen_directo").val().trim();
-	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();
-	  		var areaint = $("#areaint").val().trim();
-	  		var und = $("#und").val().trim();
-	  		var valor = $("#valor").val().trim();
-	  		var resultado = $("#resultado").val().trim();		//console.log(resultado);
+	  		var pbeneficiadas = $("#pbeneficiadas").val();	if(pbeneficiadas != undefined) pbeneficiadas = pbeneficiadas.trim();
+	  		var areaint = $("#areaint").val();	if(areaint != undefined) areaint = areaint.trim();
+	  		var und = $("#und").val();	if(und != undefined) und = und.trim();
+	  		var valor = $("#valor").val();	if(valor != undefined) valor = valor.trim();
+	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
+	  		var resultado = $("#resultado").val();	if(resultado != undefined) resultado = resultado.trim();		//console.log(resultado);
 			var numArchivos = $('#input-1').fileinput('getFilesCount');		console.log(numArchivos + " + " + initialPreview.length);
 			var totalArchivos = numArchivos + initialPreview.length;		
 	  		
@@ -652,7 +653,7 @@ $('#btn_guardar').click(function(){
 		  			return;
 		  		}
 	  		}
-	  		if(avance_porcentaje==""){
+/*	  		if(avance_porcentaje==""){
 	  			Func.MsjPeligro("Digite un porcentaje de avance");
 	  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
 	  			return;	  			
@@ -662,7 +663,7 @@ $('#btn_guardar').click(function(){
 		  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
 		  			return;	
 	  			}
-	  		}
+	  		} */
 	  		if($("#sel_id_estado").is(":visible")){
 		  		if(sem == undefined || sem == "" ){
 		  			$("input[name='semaforo']").show();
@@ -753,7 +754,8 @@ $('#btn_guardar').click(function(){
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
 	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
-	  		areaint = Func.Ecrypted($("#areaint").val().trim()); //OPCIONAL
+	  		var areaint = $("#areaint").val();	if(areaint != undefined) areaint = areaint.trim();
+	  		console.log(und);
 	  		und = Func.Ecrypted(und); //OPCIONAL
 	  		valor = Func.Ecrypted(numeral().unformat(valor)); //OPCIONAL
 	  		
@@ -773,7 +775,7 @@ $('#btn_guardar').click(function(){
 	  		pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
 	  		
 	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
-	  		resultado = Func.Ecrypted(resultado);
+	  		var resultado = $("#resultado").val();	if(resultado != undefined) resultado = resultado.trim();		//console.log(resultado);
 	  		id_gestion = Func.Ecrypted(IdGestion);	//console.log("Envia: UpdateGestion");
 	  		
   			AppConfig.socketDataAdmin.emit('UpdateGestion', { IdGestion:id_gestion,fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,//noticia:noticia,

@@ -20,7 +20,23 @@ AppConfig.Inicial= function() {
 	$("#vr_adicion").bind('input',function() {
 		AppConfig.sumaTotales();
 	});
-	
+
+	/* SELECT - estado */
+	$('#sel_id_estado').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_estado'] = $('#sel_id_estado option:selected').map(function(a, item){return item.value;}).get();	//console.log('onChange: '+AppConfig['id_convenio']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_estado'] = $('#sel_id_estado option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_estado'] = $('#sel_id_estado option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        }
+	});	
 	/* SELECT - CENTRO GESTOR */
 	$('#idFte').multiselect({
             enableClickableOptGroups: true,
@@ -178,6 +194,17 @@ AppConfig.calculaFecha= function(fini,dias) {	//console.log(fini + " " + dias);
 	return new_date;
 };
 
+AppConfig.cargaEstados= function() {	//console.log(AppConfig['id_centrog']);
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+  	AppConfig.socketDataAdmin.emit('getlistaEstadosParam', {condicion : 'all'}, function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Estados");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["listadoEstados"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
+		$('#sel_id_estado').multiselect('dataprovider', AppConfig["listadoEstados"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+
 AppConfig.CargaFuentes= function() {	
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
   	AppConfig.socketDataAdmin.emit('GetListFuentes', null, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
@@ -274,6 +301,7 @@ AppConfig.eliminaFuente= function(id) {	//console.log(AppConfig["fuentes"]);
 };
 
 AppConfig.Inicial();
+AppConfig.cargaEstados();
 AppConfig.CargaFuentes();
 AppConfig.CargaMetas();
 AppConfig.cargaComarco();
@@ -303,8 +331,7 @@ $('#btn_guardar').click(function(){
 	  		console.log("Confirm result: "+result);
 	  		// ------ ESTANDARIZACIÓN DE VALORES ------
 			var tipoConvenio = $("input[name='tipoConvenio']:checked").val();	console.log(tipoConvenio);
-			console.log(AppConfig["id_con_marco"]);
-			console.log(AppConfig["cod_meta"]);
+			console.log(AppConfig["id_con_marco"]);	console.log(AppConfig["cod_meta"]);	console.log(AppConfig["id_estado"]);
 			var nro_con = $("#nro_con").val().trim();			console.log(nro_con);
 			var enlace_secop = $("#enlace_secop").val().trim();	console.log(enlace_secop);
 			var objeto = $("#objeto").val().trim();				console.log(objeto);
@@ -348,7 +375,12 @@ $('#btn_guardar').click(function(){
 	  		}else if(objeto==""){
 	  			Func.MsjPeligro("Digite el Objeto convenio o contrato");
 	  			setTimeout(function() { $('#objeto').focus(); }, 400);
-	  			return;	  			
+	  			return;
+	  		}else if(AppConfig["id_estado"]===undefined || AppConfig["id_estado"].length<1){
+	  			Func.MsjPeligro("Seleccione un estado");
+	  			$('#sel_id_estado').nextAll('div').addClass("open");
+	  			setTimeout(function() { $('#sel_id_estado').nextAll('div').find('.multiselect-search').focus();}, 400);
+	  			return;	  
 	  		}else if(nom_tercero==""){
 	  			Func.MsjPeligro("Digite el Nombre del Tercero o Ejecutor del convenio o contrato");
 	  			setTimeout(function() { $('#nom_tercero').focus(); }, 400);
@@ -393,6 +425,7 @@ $('#btn_guardar').click(function(){
 			tipoConvenio = Func.Ecrypted(tipoConvenio);
 			if(AppConfig["id_con_marco"]===undefined) AppConfig["id_con_marco"]=""; var id_con_marco = Func.Ecrypted(AppConfig["id_con_marco"]);
 			if(AppConfig["cod_meta"]===undefined) AppConfig["cod_meta"]=""; var cod_meta = Func.Ecrypted(AppConfig["cod_meta"]);
+			if(AppConfig["id_estado"]===undefined) AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);
 			nro_con = Func.Ecrypted(nro_con);
 			enlace_secop = Func.Ecrypted(enlace_secop);
 			objeto = Func.Ecrypted(objeto);
@@ -419,7 +452,7 @@ $('#btn_guardar').click(function(){
   															nom_interventor:nom_interventor,vr_interventoria:vr_interventoria,
   															fec_suscripcion:fec_suscripcion,fec_inicio:fec_inicio,plazo_dias:plazo_dias,fec_proy_finalizacion:fec_proy_finalizacion,
   															totalFte:totalFte,id_fuente:id_fuente,modificacion_con:modificacion_con,fec_terminacion:fec_terminacion,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
-  															vr_adicion:vr_adicion,vrtotal:vrtotal,observacion:observacion
+  															vr_adicion:vr_adicion,vrtotal:vrtotal,observacion:observacion,id_estado:id_estado
 			 }, function(message){	console.log(message);
 			 		if($.isNumeric(message)){
 			 			if(numArchivos>0){	console.log("Adjuntos: "+numArchivos);

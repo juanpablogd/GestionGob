@@ -196,7 +196,7 @@ AppConfig.CargarVisitas= function() {
 					$.each(this, function (name1, value1) {		console.log(value1.id);
 						var eliminar;
 						if(Func.GetTipo()!="C"){
-							eliminar  = '<a  class="btn_eliminar_visita" val="'+value1.id+'" v="'+name1+'">Eliminar <i class="fa fa-trash" aria-hidden="true"></i></a>';
+							//eliminar  = '<a  class="btn_eliminar_visita" val="'+value1.id+'" v="'+name1+'">Eliminar <i class="fa fa-trash" aria-hidden="true"></i></a>';
 						}
 						var html =	  '<div id="panel_heading_'+name1+'" class="panel-heading"></div>'+
 								      '<div id="panel_body_'+name1+'" class="panel-body">'+

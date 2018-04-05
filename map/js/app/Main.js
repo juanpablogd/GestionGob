@@ -201,17 +201,17 @@ var appMain={
   },
   AutoDisplayLeyend:function(c,key){
       var leyend=document.getElementById('labels'+key);
-      var labels=[];  //console.log(c.symbols.length);
-      for(var i=0;i<c.symbols.length;i++){
-          labels.push('<div>'+numeral(c.symbols[i].from).format('0,0').replace(',','.')+' - '+numeral(c.symbols[i].to).format('0,0').replace(',','.')+'</div>');
+      var labels=[];  
+      for(var i=0;i<c.length;i++){  //console.log(c.length + " " +i);
+        if((i+1) != c.length) labels.push('<div>'+numeral(c[i]).format('0,0').replace(',','.')+' - '+numeral(c[i+1]).format('0,0').replace(',','.')+'</div>');
       }
       leyend.innerHTML=labels.join('');
       var leyend=document.getElementById('symbols'+key);
       var labels=[];
-      for(var i=0;i<c.symbols.length;i++){
-        if(c.symbols[i].to>0){
-          labels.push('<div class="symbolBox" style="background-color:'+c.symbols[i].color+'"></div>');
-        }
+      for(var i=0;i<c.length;i++){
+        //if(c[i].to>0){
+          labels.push('<div class="symbolBox" style="background-color:'+appMain.colors[key][i]+'"></div>');
+        //}
       }
       leyend.innerHTML=labels.join('');
   },
@@ -260,9 +260,9 @@ var appMain={
         (cod_meta !== undefined)? cod_meta = cod_meta.join() : cod_meta = ''; */
         
         var pixel = e.pixel;
-          AppMap.cod_mpio.forEachFeatureAtPixel(pixel, function(feature, layer) { console.log(feature.O.id);
+          AppMap.cod_mpio.forEachFeatureAtPixel(pixel, function(feature, layer) { //console.log(feature);
             var data = appMain.getParametros();   
-            data.cod_mun = feature.O.id;
+            data.cod_mun = feature.N.id;
             console.log(data);
             localStorage.ps = Func.Ecrypted(data);
             setTimeout(function(){  //console.log('Valido');
@@ -337,8 +337,7 @@ var appMain={
     //console.log(data);
     appMain.socket.emit('getDash',data,function(dataEnc){
       console.log("devuelve a getDash");
-      var data=Func.Decrypted(dataEnc);
-      //console.log(data);
+      var data=Func.Decrypted(dataEnc);   console.log(data);
       waitingDialog.hide();
       //console.log(appMain.lyr['cod_prov']);
       //console.log(appMain.lyr['cod_mpio']);
@@ -348,12 +347,11 @@ var appMain={
       if(appMain.lyr['cod_mpio']){
       	AppMap['cod_mpio'].removeLayer(appMain.lyr['cod_mpio']);	
       }
-      
       //appMain.updateFecha(data['fecha'][0]);
       //appMain.updateMotivo(data['motivo']); 
       appMain.asigData('cod_mpio',data['cod_mpio']);
       //appMain.asigData('cod_prov',data['cod_prov']);
-      appMain.graficaTipo(data['g_subtipo']);
+      appMain.graficaTipo(data['g_subtipo']); console.log(data["total"][0].cuenta);
       $("#CantTotal").empty().append(data["total"][0].cuenta);
       
     });
@@ -363,22 +361,20 @@ var appMain={
   },
   asigData:function(key,data){  //console.log(data);
         var sum=[],cont=[];
-       $.each(appMain.glo.geoAdmin[key].features, function( index, value ) {
-          //console.log(index);
-          //console.log(value);
+       $.each(appMain.glo.geoAdmin[key].features, function( index, value ) {  //console.log(index); console.log(value);
           appMain.glo.geoAdmin[key].features[index].properties.cuenta=0;
-          var as=$(data).filter(function (i,n){return n[key]===value.properties.id});
-          //console.log(as);
+          var as=$(data).filter(function (i,n){return n[key]===value.properties.id}); //console.log(as);
           if(as.length==1)  {
             appMain.glo.geoAdmin[key].features[index].properties.cuenta=as[0].cuenta;
             cont.push(as[0].cuenta);
           }
         });
-        cont=Func.uniques(cont);
+        cont=Func.uniques(cont);  //console.log(cont);
         appMain.crearGeo(key,'cuenta',cont.length);
+        console.log("Final: asigData");
   },
   zoomMap:function(feature){
-          console.log("inggresa");
+          console.log("ingresa");
           var cor=feature.getGeometry().getExtent();
           var x=(cor[0]+cor[2])/2;
           var y=(cor[1]+cor[3])/2;
@@ -393,28 +389,61 @@ var appMain={
             }, 3500);
           }, 11000);
   },
-  crearGeo:function(key,tipoGroup,l){
-    //console.log(key);
+  getColor:function(global_valores,d){ console.log(d);
+      return d > global_valores[5]  ? 'rgba(107,6,1,1)' :
+               d > global_valores[4]  ? 'rgba(158,68,16,1)' :
+               d > global_valores[3]  ? 'rgba(214,133,34,1)' :
+               d > global_valores[2]  ? 'rgba(247,186,62,1)' :                   
+               d > global_valores[1]   ? 'rgba(252,221,53,1)' :
+               d > global_valores[0]  ? 'rgba(252,255,128,1)' :
+                           'rgb(255,255,255)';
+  },
+  crearGeo:function(key,tipoGroup,l){ //console.log(l); //console.log(key);
     //console.log(tipoGroup);
-    var numberOfBreaks = 1; //console.log(l);
-    if(l>6){  numberOfBreaks = 3;
+    var numberOfBreaks = l-1; console.log(appMain.glo.geoAdmin[key]); console.log(tipoGroup); console.log(numberOfBreaks); console.log(appMain.colors[key]);
+/*    if(l>6){  numberOfBreaks = 4;
       geoJenks = geocolor.equalIntervals(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
     }
-    else{ numberOfBreaks = l;
-      geoJenks = geocolor.jenks(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
-    }
+    else{ numberOfBreaks = l; */
+      //console.log(geocolor);
+      //geoJenks = geocolor.equalIntervals(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
+      //console.log(geoJenks);
+      //geoJenks = geocolor.jenks(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks, appMain.colors[key]);
+    //}
+
+    geoJenks = turf.jenks(appMain.glo.geoAdmin[key], tipoGroup, numberOfBreaks);
+
+    console.log(geoJenks);  console.log(key);
 	  
-	  appMain.AutoDisplayLeyend(geoJenks.legend,key);   //console.log(geoJenks);
+	  appMain.AutoDisplayLeyend(geoJenks,key);   //console.log(geoJenks);
       
       appMain.source[key]=new ol.source.Vector({
-          features: (new ol.format.GeoJSON()).readFeatures(geoJenks)
+          features: (new ol.format.GeoJSON()).readFeatures(appMain.glo.geoAdmin[key])
       });
       var temp_json=[]
       appMain.source[key].forEachFeature(function(feature){
-        var prop=feature.getProperties();
-        if(prop[tipoGroup]>0){
-          temp_json.push({y: prop[tipoGroup],color: prop.fill,categories:prop.n});   
-        }
+          var prop=feature.getProperties(); //console.log(appMain.getColor(geoJenks,prop.n));
+          var colorFeature = appMain.getColor(geoJenks,prop[tipoGroup]);  console.log(colorFeature);
+          
+          style = new ol.style.Style({
+                      //I don't know how to get the color of your kml to fill each room
+                      fill: new ol.style.Fill({ color: colorFeature }),
+                      stroke: new ol.style.Stroke({ color: colorFeature }),
+                      text: new ol.style.Text({
+                          text: feature.get('name'),
+                          font: '12px Calibri,sans-serif',
+                          fill: new ol.style.Fill({ color: colorFeature }),
+                          stroke: new ol.style.Stroke({
+                              color: '#fff', width: 2
+                          })
+                      })
+                  });
+
+          feature.setStyle(style);
+
+          if(prop[tipoGroup]>0){
+            temp_json.push({y: prop[tipoGroup],color: colorFeature,categories:prop.n});
+          }
       });
       Func.sorting(temp_json, 'y');
 
@@ -428,6 +457,7 @@ var appMain={
           appMain.series[key].push({y: value.y,color: value.color});     
         }
       });
+      console.log("paso1");
       var altura=$( window ).height();
       var ancho=$( window ).width();
       altura=altura-450;
@@ -453,9 +483,9 @@ var appMain={
           source: appMain.source[key],
           style: appMain.styleFunction[key]
       });
-     //console.log("paso");
+     console.log("paso2");
      AppMap[key].addLayer(appMain.lyr[key]);
-     //console.log("paso2");
+     console.log("paso3");
    
   },
   eventJquery:function(){

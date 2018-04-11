@@ -44,7 +44,7 @@ var appMain={
     column_cod_mpio:function(){
         appMain.column.cod_mpio=Highcharts.chart('col_cod_mpio', {
             chart: {
-                type: 'column',
+                type: 'bar',
                 height: 300,
                 marginTop:5,
                 spacingTop: 5
@@ -163,7 +163,7 @@ var appMain={
 	    var prop=feature.getProperties();
 	    var texto = feature.get('n')+'\n'+ ((feature.get(dat)> 0) ? feature.get(dat):"");
 	    var fuente=appMain.getFuente(resolution,0,key);
-	    var stroke='black',width=0.5;
+	    var stroke='#319FD3',width=1;
 	   
 	    var rgb=appMain.hexToRgb(prop.fill);
 	  
@@ -188,11 +188,12 @@ var appMain={
 	            text: texto,
 	            fill: new ol.style.Fill({
 	              color: '#000'
-	            }),
+	            })
+              /*,
 	            stroke: new ol.style.Stroke({
 	              color: 'white',
 	              width: 4
-	            })
+	            })*/
 	          })
 	
 	
@@ -336,24 +337,32 @@ var appMain={
     //console.log("Ingresa a getDash");
     //console.log(data);
     appMain.socket.emit('getDash',data,function(dataEnc){
-      console.log("devuelve a getDash");
-      var data=Func.Decrypted(dataEnc);   console.log(data);
-      waitingDialog.hide();
-      //console.log(appMain.lyr['cod_prov']);
-      //console.log(appMain.lyr['cod_mpio']);
+      console.log("devuelve a getDash");  //console.log(dataEnc);
+
       if(appMain.lyr['cod_prov']){
       	AppMap['cod_prov'].removeLayer(appMain.lyr['cod_prov']);	
       }
       if(appMain.lyr['cod_mpio']){
       	AppMap['cod_mpio'].removeLayer(appMain.lyr['cod_mpio']);	
       }
-      //appMain.updateFecha(data['fecha'][0]);
-      //appMain.updateMotivo(data['motivo']); 
-      appMain.asigData('cod_mpio',data['cod_mpio']);
-      //appMain.asigData('cod_prov',data['cod_prov']);
-      appMain.graficaTipo(data['g_subtipo']); console.log(data["total"][0].cuenta);
-      $("#CantTotal").empty().append(data["total"][0].cuenta);
-      
+      waitingDialog.hide();
+
+      if(dataEnc!=undefined){
+        $("#col_cod_mpio").show();
+        $("#container").show();
+        $("#PanelLeyendacod_mpio").show();
+        var data=Func.Decrypted(dataEnc);   //console.log(data);
+        appMain.asigData('cod_mpio',data['cod_mpio']);
+        appMain.graficaTipo(data['g_subtipo']); console.log(data["total"][0].cuenta);        
+        $("#CantTotal").empty().append(data["total"][0].cuenta);
+      }else{
+        $("#col_cod_mpio").hide();
+        $("#container").hide();
+        $("#PanelLeyendacod_mpio").hide();
+        Func.MsjAvisoTop("No se encontraron datos!");
+        $("#CantTotal").empty().append("0");
+
+      }
     });
   },
   asigDataGeo:function(){
@@ -389,7 +398,7 @@ var appMain={
             }, 3500);
           }, 11000);
   },
-  getColor:function(global_valores,d){ console.log(d);
+  getColor:function(global_valores,d){ //console.log(d);
       return d > global_valores[5]  ? 'rgba(107,6,1,1)' :
                d > global_valores[4]  ? 'rgba(158,68,16,1)' :
                d > global_valores[3]  ? 'rgba(214,133,34,1)' :
@@ -423,18 +432,18 @@ var appMain={
       var temp_json=[]
       appMain.source[key].forEachFeature(function(feature){
           var prop=feature.getProperties(); //console.log(appMain.getColor(geoJenks,prop.n));
-          var colorFeature = appMain.getColor(geoJenks,prop[tipoGroup]);  console.log(colorFeature);
+          var colorFeature = appMain.getColor(geoJenks,prop[tipoGroup]);  //console.log(colorFeature);
           
           style = new ol.style.Style({
                       //I don't know how to get the color of your kml to fill each room
                       fill: new ol.style.Fill({ color: colorFeature }),
-                      stroke: new ol.style.Stroke({ color: colorFeature }),
+                      stroke: new ol.style.Stroke({ color: 'black', width: 1 }),
                       text: new ol.style.Text({
                           text: feature.get('name'),
                           font: '12px Calibri,sans-serif',
                           fill: new ol.style.Fill({ color: colorFeature }),
                           stroke: new ol.style.Stroke({
-                              color: '#fff', width: 2
+                              color: '#319FD3', width: 1
                           })
                       })
                   });
@@ -458,7 +467,7 @@ var appMain={
         }
       });
       console.log("paso1");
-      var altura=$( window ).height();
+/*      var altura=$( window ).height();
       var ancho=$( window ).width();
       altura=altura-450;
       var GrafAltura=0;
@@ -466,11 +475,11 @@ var appMain={
       	GrafAltura=400;
       }else{
       	GrafAltura= altura-200;
-      }
+      } */
 	  appMain.column[key].update({
-        chart: {
+/*        chart: {
               height: GrafAltura
-        },
+        },  */
         xAxis: {
           categories:appMain.categories[key]
         },

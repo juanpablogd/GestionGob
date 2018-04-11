@@ -165,10 +165,18 @@
 		<div class="panel-body" id="addGestion-panel-body">
 		    <div class="row">
 		    	<div class="col-sm-3">
+					<label class="radio-inline">
+				      <input type="radio" name="final" checked="checked" value="0">Avance
+				    </label>
+				    <label class="radio-inline">
+				      <input type="radio" name="final" value="1">Final
+				    </label>
+				</div>
+		    	<div class="col-sm-3">
 					<label for="fecha" class="control-label required" data-toggle="tooltip" title="Fecha de Inicio Proyecto/Gestión">Fecha <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 					<input type="date" class="form-control" id="fecha">
 				</div>
-				<div class="col-sm-9">
+				<div class="col-sm-6">
 					<label for="codigo_mun" class="control-label required" data-toggle="tooltip" title="Indicar el municipio(s) en el que se realiza la intervención">Municipio <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 					<select id="codigo_mun">&nbsp;</select>
 				</div>		
@@ -215,9 +223,21 @@
 			    	<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="valor">
 				</div>
 			</div>
-
+			<div class="row" id="filaFinal" style="display: none;">
+				<div class="col-sm-4">
+	    			<label for="pbeneficiadas" class="control-label required" data-toggle="tooltip" title="Número entero de la cantidad de personas beneficiadas por la intervención.">N° personas beneficiadas  <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+	    			<input type="text" class="form-control valor" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="pbeneficiadas">
+				</div>
+				<div class="col-sm-4">
+	    			<label for="areaint">Area intervenida:</label>
+	    			<input type="text" class="form-control" id="areaint">
+				</div>
+				<div class="col-sm-4">
+					&nbsp;
+				</div>	
+			</div>
 			<div class="form-group">
-				<label for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta logros y dificulatades en avance registrado (obra, gestión o inversión), novedades, etc">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+				<label id="labelDescipcion" for="descripcion" class="control-label required" data-toggle="tooltip" title="Describir de manera clara y concreta logros y dificulatades en avance registrado (obra, gestión o inversión), novedades, etc">Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 	  			<textarea class="form-control" rows="5" id="descripcion">&nbsp;</textarea>
 			</div>
 			<div class="form-group">

@@ -156,6 +156,26 @@ var Func={
 			}
 		});
 	},
+	MsjAviso:function(msj){
+		$.notify({
+			// options
+			icon: 'fa fa-exclamation-circle',
+			message: msj 
+		},{
+			// settings
+			type: 'info',
+			timer : 100,
+			delay: 3000,
+			animate: {
+				enter: 'animated bounceInRight',
+				exit: 'animated bounceOutRight'
+			},
+			placement: {
+				from: "bottom",
+				align: "right"
+			}
+		});
+	},
 	ComparaFechas:function(dateTimeA, dateTimeB){
 	    var momentA = moment(dateTimeA,"YYYY-MM-DD");
 	    var momentB = moment(dateTimeB,"YYYY-MM-DD");

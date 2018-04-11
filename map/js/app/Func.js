@@ -81,6 +81,66 @@ var Func={
 		}
 		return cg; 
 	},
+	MsjPeligro:function(msj){
+		$.notify({
+			// options
+			icon: 'fa fa-exclamation-circle',
+			message: msj 
+		},{
+			// settings
+			type: 'danger',
+			timer : 100,
+			delay: 3000,
+			animate: {
+				enter: 'animated bounceInRight',
+				exit: 'animated bounceOutRight'
+			},
+			placement: {
+				from: "bottom",
+				align: "right"
+			}
+		});
+	},
+	MsjAviso:function(msj){
+		$.notify({
+			// options
+			icon: 'fa fa-exclamation-circle',
+			message: msj 
+		},{
+			// settings
+			type: 'info',
+			timer : 100,
+			delay: 3000,
+			animate: {
+				enter: 'animated bounceInRight',
+				exit: 'animated bounceOutRight'
+			},
+			placement: {
+				from: "bottom",
+				align: "right"
+			}
+		});
+	},
+	MsjAvisoTop:function(msj){
+		$.notify({
+			// options
+			icon: 'fa fa-exclamation-circle',
+			message: msj 
+		},{
+			// settings
+			type: 'danger',
+			timer : 100,
+			delay: 3000,
+			animate: {
+				enter: 'animated bounceInRight',
+				exit: 'animated bounceOutRight'
+			},
+			placement: {
+				from: "top",
+				align: "right"
+			}
+		});
+	},
 
 }
 

@@ -46,7 +46,7 @@ $(document).ready(function() {
 		},
 		"columnDefs": columnDefs
 	};
-	var CargarConvenios = function() {	//OPTIMIZAR CARGA	http://jsfiddle.net/V2Kdz/
+	var CargarConvenios = function(usrTipo,centroGestor) {	//OPTIMIZAR CARGA	http://jsfiddle.net/V2Kdz/
 		$('#TBList tbody > tr').remove(); //console.log($('#TBList tr').length);	//console.log($('#TBody').length);
 		 $('#TBList tfoot th').each( function () {
 	        var title = $(this).text();
@@ -54,16 +54,22 @@ $(document).ready(function() {
 	    } );
 		
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-	  	AppConfig.socketDataAdmin.emit('getlistadoConvenio',  null , function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+	  	AppConfig.socketDataAdmin.emit('getlistadoConvenio',  {usrTipo : usrTipo, id_centrog : centroGestor} , function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log(message);
 			var decrypted = FuncDecrypted(message);		//console.log(decrypted);
 			$.each(decrypted, function () {
-				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
+				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1);
 					$("#TBody").append('<tr id="f'+name1+'"></tr>');
 					$.each(value1, function (name, value) {		//console.log(name + '=' + value);
 						if(name=="id"){
 							$('#f'+name1).append("<td>"+value+"</td><td></td>");
-						}else $('#f'+name1).append("<td>"+value+"</td>");
+						}else if (name == "id_usuario"){
+/*							if(Func.GetTipo()=="C" || (Func.GetTipo()=="E" && (id_usuario != value && value != null)) ){ //si es consulta o cargue y la gestion no es su propiedad
+								txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_add_visita" data-toggle="tooltip" title="Adicionar avance"><i class="fa fa-plus-square" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Gestión"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+							} else txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_add_visita" data-toggle="tooltip" title="Adicionar avance"><i class="fa fa-plus-square" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Gestión"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Gestión"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+							$('#f'+name1).append("<td>"+txtCol+"</td>");	*/
+						} 
+						else $('#f'+name1).append("<td>"+value+"</td>");
 						
 			      	});
 				}); //console.log("Cargaaaaaa");
@@ -99,7 +105,7 @@ $(document).ready(function() {
 			  		setTimeout(function(){
 			  			window.open(
 						  'Editar.html',
-						  '_blank' // <- This is what makes it open in a new window.
+						  '_top' // <- This is what makes it open in a new window.
 						); 
 					}, 50);
 		        }else if(tipo=="btn_eliminar"){
@@ -122,7 +128,7 @@ $(document).ready(function() {
 		});
 	};
 	console.log("Carga Inicial de Convenios!");
-	CargarConvenios();
+	CargarConvenios(Func.GetTipo(),Func.GetCentrosG().join());
 	if(Func.GetTipo()=="C"){
 		$("#div_add").hide();
 	}

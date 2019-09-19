@@ -411,13 +411,17 @@
 		  			<textarea class="form-control" rows="3" maxlength="512" id="descripcion">&nbsp;</textarea>
 				</div>
 				<div class="row" id="divTipos" style="display: none;">
-					<div class="col-sm-6">
+					<div class="col-sm-4">
 		    			<label for="sel_id_tipoc" class="control-label required" data-toggle="tooltip" title="Seleccione el Tipo"> Tipo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		    			<select id="sel_id_tipoc" >&nbsp;</select>			
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-4">
 		    			<label for="sel_id_subtipoc" class="control-label" data-toggle="tooltip" title="Seleccione el sub tipo"> Sub Tipo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 		    			<select id="sel_id_subtipoc" >&nbsp;</select>			
+					</div>
+					<div class="col-sm-4">
+		    			<label for="sel_id_detalle" class="control-label required" data-toggle="tooltip" title="Seleccione el Detalle"> Detalle <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+		    			<select id="sel_id_detalle" >&nbsp;</select>			
 					</div>
 				</div>
 				<div class="row">
@@ -505,7 +509,7 @@
 		    <label for="cod_meta" data-toggle="tooltip" title="Meta(s) del plan de desarrollo que afectan la intervención">Meta(s) del plan de desarrollo <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>&nbsp;<!-- span id="MsjAlertaMetas" class="label label-danger">Seleccione una secretaría con metas</span -->
 			<select id="cod_meta" multiple="multiple">&nbsp;</select>
 		</div>
-		<div class="form-group">
+		<div class="form-group" style="display: none;">
 		    <label for="id_producto" data-toggle="tooltip" title="Señalar los productos que la Secretaría de Prensa realizó respecto a la intervención.">Productos Prensa <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			<select id="id_producto" multiple="multiple">&nbsp;</select>
 		</div>

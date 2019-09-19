@@ -21,7 +21,7 @@
   <link href="../../Resources/FontAwesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
   <link href="../../Resources/Animate/animate.css" rel="stylesheet">
-  <link href="../../Resources/ol3/ol.css" rel="stylesheet">
+  <!--link href="../../Resources/ol3/ol.css" rel="stylesheet" -->
   <link href="../../Resources/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap-slider/css/bootstrap-slider.min.css" rel="stylesheet">
   <link href="../../Resources/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" rel="stylesheet"/>
@@ -60,20 +60,20 @@
 	        <li class="active"><a href="#">
 	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav" id="opcion_listado">
-	        <li class="active"><a href="../Gestiones">
-	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Gestiones </a></li>
-	      </ul>
 	      <ul class="nav navbar-nav" id="opcion_convenios">
-	        <li class="active"><a href="../Convenios">
+	        <li class="active"><a href="../Convenios" target="_top">
 	        	<i class="fa fa-align-justify" aria-hidden="true">&nbsp;</i> Convenio/Contrato </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_listado">
+	        <li class="active"><a href="../Gestiones" target="_top">
+	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Gestiones </a></li>
 	      </ul>
 	      <ul class="nav navbar-nav" id="opcion_convenios">
 	        <li class="active"><a href="http://www.aquacun.com.co/" target="_blank" style="padding: 2px;">
 	        	<img src="../../Images/Home/aquacun.png" class="LogoMap"  ></a></li>
 	      </ul>
 	      <ul class="nav navbar-nav" id="opcion_convenios">
-	        <li class="active"><a href="http://104.237.140.114/siccu/" target="_blank" style="padding: 2px;">
+	        <li class="active"><a href="http://18.224.218.156:8080/siccu/" target="_blank" style="padding: 2px;">
 	        	<img src="../../Images/Home/siccu.png" class="LogoMap"  ></a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
@@ -96,7 +96,7 @@
 	  </div>
 	</nav>
 	<div class="embed-container">
-	    <iframe width="560" height="315" src="../../map/view/" frameborder="0" allowfullscreen ></iframe>
+	    <iframe width="560" height="-webkit-fill-available" src="../../map/view/" frameborder="0" allowfullscreen ></iframe>
 	</div>
    <!-- Panel Mapa -->
    <!-- div id="map" class="map">
@@ -223,7 +223,7 @@
 	<script src="../../Resources/fancyapps/source/jquery.fancybox.js"></script>
 	<script src="../../Resources/topojson/topojson.v1.min.js"></script>
 	<script src="../../Resources/turf/turf.min.js"></script>
-	<script src="../../Resources/ol3/ol.js"></script>
+	<!--script src="../../Resources/ol3/ol.js"></script-->
 	
 	<!-- app Resources -->
 	<script src="../../Scripts/AppConfig.js"></script>

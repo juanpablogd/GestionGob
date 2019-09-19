@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	var IdGestion = Func.GetIdGestion(); //console.log(IdGestion);
+	var avanceActual=0;
 	/* VAlida Acceso */	
 	if(IdGestion == "" || Func.GetTipo()=="C")	window.location.href = 'index.html';
 
@@ -91,6 +92,37 @@ AppConfig.Inicial= function() {
 	      	$("#verde").css("background","#8fc800");
 		}
 	});
+
+	$('input[name="final"]').on('click change', function(e) {
+		var final = $(this).val();
+		if(final == 0){
+			$("#filaFinal").hide();
+			$("#labelDescipcion").html('Descripción <i class="fa fa-info-circle fa-fw">&nbsp;</i>');
+		}else{
+			$("#filaFinal").show();
+			$("#labelDescipcion").html('Resultado Final <i class="fa fa-info-circle fa-fw">&nbsp;</i>');
+		}
+	    //console.log(e.type);	console.log($(this).val());
+	});
+
+	$(".circulo").click(function(){
+		var color = $(this).attr('id');
+		var valor;
+		
+		switch (color) {
+		    case "amarillo":
+		        valor = 2;
+		        break;
+		    case "rojo":
+		        valor = 1;
+		        break;
+		    case "verde":
+		        valor = 3;
+		        break;
+		}
+		$('input[name="semaforo"][value="' + valor + '"]').prop('checked', true);
+		$("input[name='semaforo']").trigger( "change" );
+	});
 	
 	$('#input-1').on('fileloaded', function(event, file, previewId, index, reader) {
 		console.log("fileloaded");
@@ -173,6 +205,8 @@ var Eventos = function(){
 };
 
 AppConfig.CargarVisitas= function() {
+		avanceActual = 0;
+		$("#div_addGestion").show();
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
 	  	AppConfig.socketDataAdmin.emit('GetUnicaGesVisita',  {id_gestion : IdGestion}, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 			console.log(moment().format('h:mm:ss:SSSS')+" Visitas Ini");			//console.log("message:" + message);
@@ -185,7 +219,7 @@ AppConfig.CargarVisitas= function() {
 						if(Func.GetTipo()!="C"){
 							eliminar  = '<a  class="btn_eliminar_visita" val="'+value1.id+'" v="'+name1+'">Eliminar <i class="fa fa-trash" aria-hidden="true"></i></a>';
 						}
-						var html =	  '<div id="panel_heading_'+name1+'" class="panel-heading"></div>'+
+						var html =	  '<div id="panel_heading_'+name1+'" class="panel-heading"><label id="panel_heading_tipo'+name1+'"></label>: <label id="panel_heading_fecha'+name1+'"></label>&nbsp;<label style="display: initial;" id="panel_heading_eliminar'+name1+'"></label></div>'+
 								      '<div id="panel_body_'+name1+'" class="panel-body">'+
 								      		'<div class="row">'+
 								      			'<div class="col-sm-12">'+
@@ -230,7 +264,11 @@ AppConfig.CargarVisitas= function() {
 								      '</div>';
 					 	$("#panel-visitas").append(html);	//console.log(eliminar);
 						$.each(value1, function (name, value) {	//console.log(name + '=' + value);
-							if(name == "fecha" ) $('#panel_heading_'+name1).html("Avance "+(name1+1)+":      "+value+"      "+eliminar);
+							if(name == "fecha" ){
+								$('#panel_heading_tipo'+name1).html("Avance "+(name1+1));
+								$('#panel_heading_fecha'+name1).html(value);
+								$('#panel_heading_eliminar'+name1).html(eliminar);
+							} 
 							if(name == "nombre_mun" ) $('#codigo_mun_vis_'+name1).html(value);
 							if(name == "nom_estado" ) $('#nom_estado_vis_'+name1).html(value);
 							if(name == "descripcion" ) $('#descripcion_vis_'+name1).html(value);
@@ -243,6 +281,7 @@ AppConfig.CargarVisitas= function() {
 							}
 							if(name == "avance_porcen" ){	//console.log(value);	//
 								$('#avance_porcen_'+name1).html(value);
+								if(value>avanceActual) avanceActual = value;
 							} 
 							if(name == "valor" ) $('#valor_'+name1).html(value);
 							if(name == "und" ) $('#und_'+name1).html(value);
@@ -268,11 +307,15 @@ AppConfig.CargarVisitas= function() {
 									});
 								}
 							}
-	
+							if(name=="final"){
+								if(value==1){
+									$('#panel_heading_tipo'+name1).html("FINAL "+(name1+1));
+									$("#div_addGestion").hide();
+								} 
+							}
 				      	});
-						
 					}); //console.log("Cargaaaaaa");
-				});
+				});	console.log("Avance actual: "+avanceActual);	//$("#avance_porcen").val(avanceActual);
 				Eventos();
 			}else
 			{
@@ -299,10 +342,13 @@ $('#btn_guardar').click(function(){
 	  		var avance_porcen = $("#avance_porcen").val().trim();
 	  		var sem = $("input[name='semaforo']:checked").val();	console.log(sem);
 	  		var vr_pagado = $("#vr_pagado").val().trim();			console.log(vr_pagado);
+	  		var pbeneficiadas = $("#pbeneficiadas").val().trim();				//console.log("Descripción: " + descripcion);
+	  		var areaint = $("#areaint").val().trim();				//console.log("Descripción: " + descripcion);
 	  		var descripcion = $("#descripcion").val().trim();				//console.log("Descripción: " + descripcion);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;	//console.log(NumArchivos);
 	  		var valor = $("#valor").val().trim();
 	  		var und = $("#und").val().trim();
+	  		var final = $('input[name="final"]:checked').val(); console.log	(final);
 	  		
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		if(fecha == ""){
@@ -334,6 +380,12 @@ $('#btn_guardar').click(function(){
 		  			Func.MsjPeligro("Digite un porcentaje de avance VALIDO");
 		  			setTimeout(function() { $('#avance_porcen').focus(); }, 500);
 		  			return;	
+	  			}else{
+	  				if(avance_porcen<avanceActual){
+			  			Func.MsjPeligro("El porcentaje de avance no puede ser menor a: "+avanceActual );
+			  			setTimeout(function() { $('#avance_porcen').focus(); }, 500);
+			  			return;	
+	  				}
 	  			}
 	  		}
 	  		if($("#sel_id_estado").is(":visible")){
@@ -349,6 +401,14 @@ $('#btn_guardar').click(function(){
 	  			setTimeout(function() { $('#vr_pagado').focus(); }, 500);
 	  			return;
 	  		}
+	  		if($("#pbeneficiadas").is(":visible")){
+	  			if(pbeneficiadas==""){
+			  		Func.MsjPeligro("Debe ingresar el número de personas beneficiadas");
+			  		setTimeout(function() { $('#pbeneficiadas').focus(); }, 500);
+			  		return;	  				
+	  			}
+		  	}
+
 			if(descripcion==""){
 	  			Func.MsjPeligro("Digite una descripción");
 	  			setTimeout(function() { $('#descripcion').focus(); }, 500);
@@ -371,15 +431,23 @@ $('#btn_guardar').click(function(){
   			vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
   			und = Func.Ecrypted(und);
 	  		valor = Func.Ecrypted(numeral().unformat(valor));
+			pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
+			areaint = Func.Ecrypted(areaint);
 	  		descripcion = Func.Ecrypted(descripcion);	//	console.log(Func.Ecrypted(IdGestion));
+			final = Func.Ecrypted(final);
 	  		
+	  		$("#btn_guardar").hide();
+	  		Func.MsjAviso("Espere por favor mientras se cargan los archivos en el servidor, gracias!");
+
   			AppConfig.socketDataAdmin.emit('SetGestionVisita', {id_gestion:Func.Ecrypted(IdGestion),fecha:fecha,codigo_mun:codigo_mun,id_estado:id_estado,
-  															avance_porcen:avance_porcen,sem:sem,vr_pagado:vr_pagado,und:und,valor:valor,descripcion:descripcion
+  															avance_porcen:avance_porcen,sem:sem,vr_pagado:vr_pagado,und:und,valor:valor,descripcion:descripcion,
+  															final:final,pbeneficiadas:pbeneficiadas,areaint:areaint
 			 }, function(message){				//console.log(message);
 			 		if($.isNumeric(message)){
 			 			AppConfig["id_visita"] = message;	//console.log(AppConfig["IdVisita"]);
 			 			$('#input-1').fileinput('upload');
 			 		}else{
+			 			$("#btn_guardar").show();
 			 			Func.MsjPeligro("No se pudo Guardar el registro");
 			 		}
 			});

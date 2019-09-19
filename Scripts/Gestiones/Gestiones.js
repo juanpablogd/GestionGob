@@ -1,19 +1,10 @@
-$(document).ready(function() {	console.log(Func.GetIdPerfil());
+$(document).ready(function() {	console.log(Func.GetIdPerfil()); console.log(Func.GetIdusuario()); console.log(Func.GetTipo());
 	var oTable;
 	var txtCol;
-	if(Func.GetTipo()=="C"){
-		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a>';
-	} else{
-		txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_add_visita" data-toggle="tooltip" title="Adicionar avance"><i class="fa fa-plus-square" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Gestión"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Gestión"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-	}
+	var id_usuario =  Func.GetIdusuario();
 	var columnDefs = [ 
-		{
-          "targets": -1,
-          "data": null,
-          "defaultContent": txtCol
-        },
         {
-          	"targets": [ 8 ],
+          	"targets": [ 9 ],
             "visible": false,
             "searchable": false
         }
@@ -44,9 +35,13 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
 					}
 		},
+		"dom": 'Bfrtip',
+		"buttons": [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
 		"columnDefs": columnDefs
 	};
-	var CargarGestiones = function(usrTipo,centroGestor) {	//OPTIMIZAR CARGA	http://jsfiddle.net/V2Kdz/
+	var CargarGestiones = function(usrTipo,centroGestor) {	console.log(centroGestor);	//OPTIMIZAR CARGA	http://jsfiddle.net/V2Kdz/
 		$('#TBList tbody > tr').remove(); //console.log($('#TBList tr').length);	//console.log($('#TBody').length);
 		 $('#TBList tfoot th').each( function () {
 	        var title = $(this).text();
@@ -63,10 +58,13 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					$.each(value1, function (name, value) {		//console.log(name + '=' + value);
 						if(name=="avance_porcentaje"){
 							if(value<100) $('#f'+name1).css('color', 'red'); 
-						}
-						if(name=="id_gestion"){
-							$('#f'+name1).append("<td>"+value+"</td><td></td>");
-						}else $('#f'+name1).append("<td>"+value+"</td>");
+						} 
+						if (name == "id_usuario"){
+							if(Func.GetTipo()=="C" || (Func.GetTipo()=="E" && (id_usuario != value && value != null)) ){ //si es consulta o cargue y la gestion no es su propiedad
+								txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_add_visita" data-toggle="tooltip" title="Adicionar avance"><i class="fa fa-plus-square" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Gestión"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+							} else txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a></br><a href="#" class="btn_add_visita" data-toggle="tooltip" title="Adicionar avance"><i class="fa fa-plus-square" aria-hidden="true"></i></a></br><a href="#" class="btn_editar" data-toggle="tooltip" title="Editar Gestión"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></br><a href="#" class="btn_eliminar" data-toggle="tooltip" title="Eliminar Gestión"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+							$('#f'+name1).append("<td>"+txtCol+"</td>");
+						} else $('#f'+name1).append("<td>"+value+"</td>");
 						
 			      	});
 				}); //console.log("Cargaaaaaa");
@@ -88,7 +86,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 		        var tipo = $(this).attr("class");
 		        if(tipo=="btn_detalle"){
 			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[8]);
+			  		Func.SetIdGestion(data[9]);
 			  		setTimeout(function(){
 			  			window.open(
 						  'Detalle.html',
@@ -97,13 +95,16 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					}, 50);
 		        }else if(tipo=="btn_add_visita"){
 			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[8]);
+			  		Func.SetIdGestion(data[9]);
 			  		setTimeout(function(){
-				    	window.location.href = 'AdicionarVisita.html';
+			  			window.open(
+						  'AdicionarVisita.html',
+						  '_blank' // <- This is what makes it open in a new window.
+						); 
 					}, 50);
 		        }else if(tipo=="btn_editar"){
 			  		Func.SetNomGestion(data[2]);
-			  		Func.SetIdGestion(data[8]);
+			  		Func.SetIdGestion(data[9]);
 			  		setTimeout(function(){
 			  			window.open(
 						  'Editar.html',
@@ -115,7 +116,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> la gestión: '+data[2], function(result) {
 					  	if(result){
 				  			AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	 //console.log("Cliente:"+AppConfig.socketDataAdmin.io.engine.id);		
-						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[8] }, function(message){			
+						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[9] }, function(message){			
 						  		console.log(message);
 						  		if(message=="Ok"){	
 						  			oTable.row('#'+fila).remove().draw( false );	console.log('Removido');

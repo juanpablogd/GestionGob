@@ -1,0 +1,15 @@
+.bg-gober {
+    background-color: #4682BB;
+}
+.galeria {
+    max-width: 80px;
+    max-height: 80px;
+    margin-left: 5px;
+}
+
+.amcharts-chart-div a {display:none !important;}
+
+.right-icon-pos {
+    position: absolute;
+    right: 5px;
+}

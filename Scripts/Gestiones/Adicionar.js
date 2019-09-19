@@ -1,6 +1,14 @@
-$(document).ready(function() {
+$(document).ready(function() {	//console.log(Func.GetIdusuario());
 	/* Valida Acceso */	
 	if(Func.GetTipo()=="C")	window.location.href = 'index.html';
+	var obraEjemplar=false;
+	if(Func.GetIdPerfil()==121 || Func.GetIdPerfil()==122 || Func.GetIdPerfil()==93) obraEjemplar = true;
+	var idUsuario = Func.GetIdusuario();
+	if(idUsuario===undefined || idUsuario == "" || idUsuario == null) {
+		Func.MsjPeligro("Usuario no definido");
+		setTimeout(function() { Func.CerrarAPP(); }, 3*1000);
+	}
+
 
 AppConfig.estadoPanel= function(objeto,evento){	//console.log(objeto);
 	var $this = objeto;		//console.log($this.prev());
@@ -19,7 +27,7 @@ AppConfig.estadoPanel= function(objeto,evento){	//console.log(objeto);
 }
 
 AppConfig.Inicial= function() {
-	if(Func.GetIdPerfil()==122){
+	if(obraEjemplar){
 		$("#div_cmarco").show();
 		$("#div_infocmarco").show();
 		$("#div_infocderivado").show();
@@ -149,7 +157,7 @@ AppConfig.Inicial= function() {
 				AppConfig.estadoPanel($('#conDerivado-panel-body'),'cerrar');
             	/* CONSULTA EL CONVENIO SELECCIONADO */
             	if(AppConfig['id_convenio'][0] != "") {
-            		AppConfig.getuniConvenio_AddGestion(AppConfig['id_convenio'][0]);	
+            		AppConfig.getuniConvenio_AddGestion(AppConfig['id_convenio'][0]);
             	}
 
             },
@@ -201,12 +209,29 @@ AppConfig.Inicial= function() {
             enableCaseInsensitiveFiltering: true,
             onChange: function(option, checked, select) {
             	AppConfig['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();	//console.log('onChange: '+AppConfig['id_convenio']);
+            	if(AppConfig['id_subtipoc'][0] != "") AppConfig.cargaDetalle(AppConfig['id_subtipoc'][0]);
             },
             onSelectAll: function(checked) {
             	AppConfig['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
 	        },
             onDeselectAll: function(checked) {
             	AppConfig['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        }
+	});
+	/* SELECT - DETALLE */
+	$('#sel_id_detalle').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_detalle'] = $('#sel_id_detalle option:selected').map(function(a, item){return item.value;}).get();	//console.log('onChange: '+AppConfig['id_convenio']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_detalle'] = $('#sel_id_detalle option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_detalle'] = $('#sel_id_detalle option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
 	        }
 	});
 	/* SELECT -  Productos de Prensa*/
@@ -288,7 +313,7 @@ AppConfig.Inicial= function() {
 	});
 	
 	$('[data-toggle="tooltip"]').tooltip();
-	if(Func.GetIdPerfil()==122) {
+	if(obraEjemplar) {
 		$('#sel_id_convenio').nextAll('div').addClass("open");
 	 	setTimeout(function() { $('#sel_id_convenio').nextAll('div').find('.multiselect-search').focus();}, 500);
 	} else setTimeout(function() { $('#fecha').nextAll('span').find('.jq-dte-day').focus();}, 0.5*1000);
@@ -305,7 +330,7 @@ AppConfig.CargaMunicipios= function() {
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
   	AppConfig.socketDataAdmin.emit(tipoMpio, '', function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Municipios Ini");		//console.log("message:" + message);
-		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		var decrypted = FuncDecrypted(message);										console.log(decrypted);
 		AppConfig["ListadoMpio"]=decrypted;											//console.log("geojson Mun:" + AppConfig["ListadoMpio"].features.length);
 		$('#codigo_mun').multiselect('dataprovider', AppConfig["ListadoMpio"]);		//console.log(AppConfig["ListadoMpio"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
@@ -356,8 +381,9 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
    
 };
 AppConfig.cargaConvenios= function() {	//console.log(AppConfig['id_centrog']);
+	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	console.log(Func.GetCentrosG());	//console.log(Func.GetCentrosG().join());
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
-  	AppConfig.socketDataAdmin.emit('getlistaConveniosParam', '', function(message){
+  	AppConfig.socketDataAdmin.emit('getlistaConveniosParam', {id_centrog : id_centroges}, function(message){
 		console.log(moment().format('h:mm:ss:SSSS')+" Listado Convenio Marco");				//console.log("message:" + message);
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoConvenios"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
@@ -375,6 +401,7 @@ AppConfig.getuniConvenio_AddGestion= function(id_convenio) {	console.log(id_conv
 		if(tipoc == 1 && ($("#dnro_con").text() == '' )) AppConfig.estadoPanel($('#conMarco-panel-body'),'Abrir');
 		if(tipoc == 2) AppConfig.estadoPanel($('#conDerivado-panel-body'),'Abrir');
 		$.each(decrypted.datos[0], function(i, item) {	//console.log(i + " " + item);	id_convenio
+			if(item==null) item = "NA";
 			if(tipoc==1){
 				if(i == 'fuentes'){
 					var vrFteTmp = item.split(";");		console.log(vrFteTmp.length);
@@ -421,7 +448,7 @@ AppConfig.cargaEstados= function() {	//console.log(AppConfig['id_centrog']);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
-AppConfig.cargaTipos= function() {	//console.log(AppConfig['id_centrog']);
+AppConfig.cargaTipos= function() {	console.log(AppConfig['id_centrog']);
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
 	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	//console.log(Func.GetCentrosG().join());
   	AppConfig.socketDataAdmin.emit('getlistaTiposParam', {id_centrog : id_centroges}, function(message){
@@ -439,6 +466,16 @@ AppConfig.cargaSubtipos= function(id_tipoc) {	//console.log(AppConfig['id_centro
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoSubtipos"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		$('#sel_id_subtipoc').multiselect('dataprovider', AppConfig["listadoSubtipos"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+AppConfig.cargaDetalle= function(id_subtipo) {	//console.log(AppConfig['id_centrog']);
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+  	AppConfig.socketDataAdmin.emit('getlistaDetalleParam', {id_subtipo : id_subtipo}, function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Detalle");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["listadoDetalle"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
+		$('#sel_id_detalle').multiselect('dataprovider', AppConfig["listadoDetalle"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -464,7 +501,7 @@ AppConfig.CargaProductosPrensa();
 
 
 
-$('#btn_guardar').click(function(){
+$('#btn_guardar').click(function(){	 console.log(idUsuario);
 	bootbox.confirm("Seguro que desea Guardar?", function(result) {		console.log("Confirm result: "+result);
 	  	if(result){	//CAMPOS OBLIGATORIOS
 	  		var fecha = $("#fecha").val().trim(); //console.log(fecha_ini);
@@ -492,6 +529,7 @@ $('#btn_guardar').click(function(){
 	  		//var empleos_gen_indirecto = $("#empleos_gen_indirecto").val().trim();
 	  		var resultado = $("#resultado").val();	if(resultado != undefined) resultado = resultado.trim();		//console.log(resultado);
 	  		var NumArchivos = $('#input-1').fileinput('getFileStack').length;
+	  		
 	  		
 	  		if($("#sel_id_convenio").is(":visible")){
 	  			if(AppConfig["id_convenio"]===undefined || AppConfig["id_convenio"].length<1){
@@ -550,37 +588,7 @@ $('#btn_guardar').click(function(){
 		  			return;
 		  		}
 	  		}
-/*	  		if(avance_porcentaje=="" && avance_porcentaje != undefined){
-	  			Func.MsjPeligro("Digite un porcentaje de avance");
-	  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
-	  			return;	  			
-	  		}else{
-	  			if(Func.ValidaPorcentaje(avance_porcentaje)==false){
-		  			Func.MsjPeligro("Digite un porcentaje de avance VALIDO");
-		  			setTimeout(function() { $('#avance_porcentaje').focus(); }, 500);
-		  			return;	
-	  			}
-	  		} */
-/*	  		if($("#sel_id_estado").is(":visible")){
-		  		if(sem == undefined || sem == "" ){
-		  			$("input[name='semaforo']").show();
-		  			Func.MsjPeligro("Seleccione un Color en el semaforo");
-		  			setTimeout(function() { $("input[name='semaforo']").focus(); }, 500);
-		  			return;
-		  		}
-		  	} */
-/*	  		if(vr_pagado == ""){
-	  			Func.MsjPeligro("Debe digitar el valor pagado a la fecha");
-	  			setTimeout(function() { $('#vr_pagado').focus(); }, 500);
-	  			return;
-	  		} */
-/*	  		if(pbeneficiadas==""){
-  				$('#seguimiento-panel-body').show();
-	  			Func.MsjPeligro("Ingrese el número de personas beneficiadas");
-	  			setTimeout(function() { $('#pbeneficiadas').focus(); }, 500);
-	  			return;
-  			}	*/
-	  		if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
+	  		if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1) {
 	  			$('#responsable-panel-body').show();
 	  			Func.MsjPeligro("Debe seleccionar al menos una Secretaría");
 	  			$('#id_centrog').nextAll('div').addClass("open");
@@ -637,6 +645,7 @@ $('#btn_guardar').click(function(){
   			if(AppConfig["id_estado"]===undefined)		AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);	console.log(AppConfig["id_estado"]);
   			if(AppConfig["id_tipoc"]===undefined)		AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
   			if(AppConfig["id_subtipoc"]===undefined) 	AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
+  			if(AppConfig["id_detalle"]===undefined) 	AppConfig["id_detalle"]=""; var id_detalle = Func.Ecrypted(AppConfig["id_detalle"]);	console.log(AppConfig["id_subtipoc"]);
   			if(sem===undefined) sem = Func.Ecrypted("");	sem = Func.Ecrypted(sem);
   			if(vr_pagado===undefined) vr_pagado = Func.Ecrypted("0");	vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
 	  		
@@ -646,7 +655,7 @@ $('#btn_guardar').click(function(){
 	  		//noticia = Func.Ecrypted(noticia);
 	  		descripcion = Func.Ecrypted(descripcion);
 	  		avance_porcentaje = Func.Ecrypted("0");
-	  		if(AppConfig["id_subtipoc"]===undefined) 	AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
+	  		//if(AppConfig["id_subtipoc"]===undefined) 	AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
 	  		var id_sector = Func.Ecrypted(AppConfig["id_sector"]);
 	  		var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
 	  		responsable_nom = Func.Ecrypted(responsable_nom);
@@ -655,7 +664,7 @@ $('#btn_guardar').click(function(){
 	  		if(areaint===undefined) areaint = Func.Ecrypted("");	areaint = Func.Ecrypted(areaint);	//OPCIONAL
 	  		console.log(und);
 	  		und = Func.Ecrypted(und); //OPCIONAL
-	  		valor = Func.Ecrypted(numeral().unformat(valor)); //OPCIONAL
+	  		valor = Func.Ecrypted(numeral(valor).format('0')); //OPCIONAL
 
 	  		
 	  		
@@ -672,10 +681,13 @@ $('#btn_guardar').click(function(){
 	  		fte_otros = Func.Ecrypted(numeral().unformat(fte_otros));//fecha_ini = Func.Ecrypted(fecha_ini);//fecha_fin = Func.Ecrypted(fecha_fin);
 	  		enlace_secop = Func.Ecrypted(enlace_secop);
 	  		//empleos_gen_directo = Func.Ecrypted(empleos_gen_directo);		console.log(pbeneficiadas);	
-	  		if(pbeneficiadas===undefined) pbeneficiadas = Func.Ecrypted(""); pbeneficiadas = Func.Ecrypted(numeral().unformat(pbeneficiadas));
-	  		
+	  		if(pbeneficiadas===undefined) {
+	  			pbeneficiadas = Func.Ecrypted(""); 	
+	  		} else {
+	  			pbeneficiadas = Func.Ecrypted(numeral(pbeneficiadas).format('0'));	
+	  		}
 	  		//empleos_gen_indirecto = Func.Ecrypted(empleos_gen_indirecto);
-	  		console.log(resultado);
+	  		//console.log(resultado);
 	  		if(resultado===undefined) resultado = Func.Ecrypted(""); resultado = Func.Ecrypted(resultado);
 	  		
   			AppConfig.socketDataAdmin.emit('SetGestion', {	fecha:fecha,codigo_mun:codigo_mun,id_categoria:id_categoria,//noticia:noticia,
@@ -687,8 +699,8 @@ $('#btn_guardar').click(function(){
   															enlace_secop:enlace_secop,cod_meta:cod_meta, pbeneficiadas:pbeneficiadas,areaint:areaint,
   															und:und,valor:valor,id_producto:id_producto,resultado:resultado,
   															id_convenio:id_convenio,id_estado:id_estado,
-  															id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem ,vr_pagado:vr_pagado
-			 }, function(message){	//console.log(message);
+  															id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem ,vr_pagado:vr_pagado,id_usuario:Func.Ecrypted(idUsuario),id_detalle:id_detalle
+			 }, function(message){	console.log(message);
 			 		if($.isNumeric(message)){
 			 			if(NumArchivos>0){
 			 				console.log("Adjuntos: "+NumArchivos);

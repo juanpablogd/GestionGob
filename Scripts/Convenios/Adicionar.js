@@ -74,6 +74,26 @@ AppConfig.Inicial= function() {
             	AppConfig['cod_meta'] = $('#cod_meta option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['cod_meta']);
 	        }
 	});
+	/* SELECT - CENTRO GESTOR */
+	$('#id_centrog').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {	//	console.log("onChange");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	console.log(AppConfig['id_centrog']);
+            	//AppConfig.EstadoCentroGestor();
+            },
+            onSelectAll: function(checked) {				//	console.log("onSelectAll");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	//AppConfig.EstadoCentroGestor();
+	        },
+            onDeselectAll: function(checked) {				//	console.log("onDeselectAll");
+            	AppConfig['id_centrog'] = $('#id_centrog option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_centrog']);
+            	//AppConfig.EstadoCentroGestor();
+	        }
+	});
 	/* SELECT - CONVENIO DERIVADO */
 	$('#sel_id_con_derivado').multiselect({
             enableClickableOptGroups: true,
@@ -233,6 +253,21 @@ AppConfig.CargaMetas= function() {	//console.log(AppConfig['id_centrog']);
 	});
 };
 
+AppConfig.CargaSecretarias= function() {	
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+	var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());	console.log(Func.GetCentrosG());	//console.log(Func.GetCentrosG().join());
+  	AppConfig.socketDataAdmin.emit('GetListSecretaria', {id_centrog : id_centroges, tipo_usr : Func.Ecrypted(Func.GetTipo()) }, function(message){			//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Secretaria");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["ListadoSecretaria"]=decrypted;										//console.log("geojson Mun:" + AppConfig["cod_mpio"].features.length);
+		$('#id_centrog').multiselect('dataprovider', AppConfig["ListadoSecretaria"]);
+		$('#id_centrog').multiselect('select', Func.GetCentrosG());
+		AppConfig["id_centrog"] = Func.GetCentrosG();
+		
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN"); 
+	});
+};
+
 AppConfig.cargaComarco= function() {	//console.log(AppConfig['id_centrog']);
 	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
 	//var id_centros = Func.Ecrypted(AppConfig["id_centrog"].join());	//console.log(AppConfig["id_centrog"]);
@@ -304,6 +339,7 @@ AppConfig.Inicial();
 AppConfig.cargaEstados();
 AppConfig.CargaFuentes();
 AppConfig.CargaMetas();
+AppConfig.CargaSecretarias();
 AppConfig.cargaComarco();
 
 $("#btn_add").click(function(){
@@ -393,6 +429,11 @@ $('#btn_guardar').click(function(){
 	  			Func.MsjPeligro("Digite la fecha del convenio o contrato");
 	  			setTimeout(function() { $('#fec_suscripcion').nextAll('span').find('.jq-dte-day').focus(); }, 400);
 	  			return;
+			} else if(AppConfig["id_centrog"]===undefined || AppConfig["id_centrog"].length<1){
+		  			Func.MsjPeligro("Debe seleccionar la entidad...");
+		  			$('#id_centrog').nextAll('div').addClass("open");
+		  			setTimeout(function() { $('#id_centrog').nextAll('div').find('.multiselect-search').focus();}, 400);
+		  			return;
 	  		}else if(totalFte=="0" || totalFte==""){
 	  			Func.MsjPeligro("Debe ingresar al menos una fuente de Recurso");
 		  			$('#idFte').nextAll('div').addClass("open");
@@ -439,6 +480,7 @@ $('#btn_guardar').click(function(){
 			plazo_dias = Func.Ecrypted(plazo_dias);
 			fec_proy_finalizacion = Func.Ecrypted(fec_proy_finalizacion);
 			totalFte = Func.Ecrypted(totalFte);
+			var id_centrog = Func.Ecrypted(AppConfig["id_centrog"]);
 			if(AppConfig["fuentes"]===undefined) AppConfig["fuentes"]=""; var id_fuente = Func.Ecrypted(AppConfig["fuentes"]);
 			modificacion_con = Func.Ecrypted(modificacion_con);
 			fec_terminacion = Func.Ecrypted(fec_terminacion);
@@ -452,8 +494,8 @@ $('#btn_guardar').click(function(){
   															nom_interventor:nom_interventor,vr_interventoria:vr_interventoria,
   															fec_suscripcion:fec_suscripcion,fec_inicio:fec_inicio,plazo_dias:plazo_dias,fec_proy_finalizacion:fec_proy_finalizacion,
   															totalFte:totalFte,id_fuente:id_fuente,modificacion_con:modificacion_con,fec_terminacion:fec_terminacion,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
-  															vr_adicion:vr_adicion,vrtotal:vrtotal,observacion:observacion,id_estado:id_estado
-			 }, function(message){	console.log(message);
+  															vr_adicion:vr_adicion,vrtotal:vrtotal,observacion:observacion,id_estado:id_estado,id_centrog:id_centrog
+			 }, function(message){	console.log("message:"+message);
 			 		if($.isNumeric(message)){
 			 			if(numArchivos>0){	console.log("Adjuntos: "+numArchivos);
 							AppConfig["id_convenio"] = message;		console.log(AppConfig["id_convenio"]);

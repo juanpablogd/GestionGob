@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+<!-- http://saga.cundinamarca.gov.co/apps/GestionGob/Resources/phpqrcode/index.php?data=http://35.160.199.153/apps/acueducto/Reportes/servicios/srvValidaImg.php&level=H&size=7  -->
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>SAGA</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- CSS Resources -->
+  <link href="../../Resources/Animate/animate.css" rel="stylesheet">
+  <link href="../../Resources/bootstrap-4/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../Resources/FontAwesome/css/fontawesome-all.min.css" rel="stylesheet">
+  <link href="../../Resources/amcharts/plugins/export/export.css" rel="stylesheet">
+  <link href="../../Resources/lightGallery/dist/css/lightgallery.min.css" type="text/css" rel="stylesheet"/>
+  <!--link href="../../Resources/BootstrapDialog/css/bootstrap-dialog.min.css" rel="stylesheet">
+  < link href="../../Resources/ol3/ol.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="../../Resources/jquery-datetextentry/jquery.datetextentry.css" type="text/css" rel="stylesheet"/>
+  <link href="../../Resources/lightGallery/dist/css/lightgallery.min.css" type="text/css" rel="stylesheet"/ -->
+  
+  <!-- CSS app -->
+  <!--link href="../../Content/Home/NavMap.css" rel="stylesheet">
+  <link href="../../Content/Home/ContentMap.css" rel="stylesheet" -->
+	<link href="../../Content/Home/NavBar.css" rel="stylesheet">
+  
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-gober">
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+	    <img src="../../Images/Home/logos_gobernacion.png" style="max-height: 40px;" alt="">
+	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="../Home/"><i class="fa fa-map-marker" aria-hidden="true">&nbsp;Mapa</i></a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" href="../Gestiones/"><i class="fa fa-list-alt" aria-hidden="true">&nbsp;Gestiones</i></a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" href="../Convenios/"><i class="fa fa-align-justify" aria-hidden="true">&nbsp;Convenios</i></a>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
+<!--  INFORMACIÓN GENERAL -->
+<div class="card">
+  <h3 class="card-header"><i class="fa fa-globe-americas" aria-hidden="true"></i>&nbsp;<span class="badge badge-success" id="codigo_mun"></span></h3>
+  <div class="card-body">
+    <h5 class="card-title"><i class="fa fa-file-alt" aria-hidden="true"></i>&nbsp;<label id="descripcion"></label></h5>
+    <p class="card-text" id="objeto"></p>
+		<div class="row">
+		    <div class="col-sm">
+				<h6><i class="fa fa-calendar-check" aria-hidden="true"></i>&nbsp;Fecha inicio: <span class="badge badge-light" id="fecha"></span></h6>
+		    </div>
+		    <div class="col-sm">
+				<h6><i class="fa fa-atlas" aria-hidden="true"></i>&nbsp;Sector: <span class="badge badge-light" id="nom_sector"></span></h6>
+		    </div>
+		    <div class="col-sm">
+		    	<h6><i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;Tipo: <span class="badge badge-light" id="nom_tipo"></span></h6>
+		    </div>
+		    <div class="col-sm">
+		    	<h6><i class="fa fa-archway" aria-hidden="true"></i>&nbsp;Subtipo: <span class="badge badge-light" id="nom_subtipo"></span></h6>
+		    </div>
+		</div>
+		<div class="row">
+		    <div class="col-sm-7">
+				<div id="chartdiv" style="width: 100%;height: 159px;"></div>
+		    </div>
+		    <div class="col-sm-5" id="imgQR">
+		    </div>
+		</div>
+  </div>
+</div>
+<!-- PANEL DE CONVENIOS -->
+<div class="accordion" id="accordionConvenios">
+	  <div class="card">
+	    <div class="card-header" id="conMarco-panel-header">
+	      <h5 class="mb-0">
+	        <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#conMarco-panel-body" aria-expanded="true" aria-controls="conMarco-panel-body">
+	          Convenio Marco
+	        </button>
+	        <i id="icon-conMarco-panel-body" class="fa fa-sort-down right-icon-pos acordeon-icono" aria-hidden="true"></i>
+	      </h5>
+	    </div>
+
+	    <div id="conMarco-panel-body" class="collapse acordeon-body" aria-labelledby="headingOne" data-parent="#accordionConvenios">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Número del Convenio / Contrato Marco" style="font-weight:500"> Número &nbsp;</label><label id = "mnro_con" class="control-label" data-toggle="tooltip" title="Número del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Tercero del Convenio / Contrato Marco" style="font-weight:500"> Tercero &nbsp;</label><label id = "mtercero" class="control-label" data-toggle="tooltip" title="Tercero del Convenio / Contrato Marco" ></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Enlace SECOP del Convenio / Contrato Marco" style="font-weight:500"> SECOP &nbsp;</label><label id = "msecop_con" class="control-label" data-toggle="tooltip" title="Enlace SECOP del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<label class="control-label" data-toggle="tooltip" title="Objeto del Convenio / Contrato Marco" style="font-weight:500"> Objeto &nbsp;</label><label id = "mobjeto" class="control-label" data-toggle="tooltip" title="Objeto del Convenio / Contrato Marco"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Supervisor del Convenio / Contrato Marco" style="font-weight:500"> Supervisor &nbsp;</label><label id = "mnom_supervisor" class="control-label" data-toggle="tooltip" title="Supervisor del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Marco" style="font-weight:500"> Interventor &nbsp;</label><label id = "mnom_interventor" class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Metas del Convenio / Contrato Marco" style="font-weight:500"> Metas PDD  &nbsp;</label><label id = "mmetas" class="control-label" data-toggle="tooltip" title="Metas del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Marco" style="font-weight:500"> F. suscripción &nbsp;</label><label id = "mfec_suscripcion" class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Marco" style="font-weight:500"> Fecha inicio &nbsp;</label><label id = "mfec_inicio" class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Plazo del Convenio / Contrato Marco en días" style="font-weight:500"> Plazo (Días) &nbsp;</label><label id = "mplazo_dias" class="control-label" data-toggle="tooltip" title="Plazo  del Convenio / Contrato Marco en días"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fecha final estimada del Convenio / Contrato Marco" style="font-weight:500"> F. final proyectada &nbsp;</label><label id = "mfec_proy_finalizacion" class="control-label" data-toggle="tooltip" title="Fecha final del Convenio / Contrato Marco"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Marco" style="font-weight:500"> Modificación &nbsp;</label><label id = "mmodificacion_con" class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fecha final de terminación luego de la Modificación del Convenio / Contrato Marco" style="font-weight:500"> F. Terminación &nbsp;</label><label id = "mfec_terminacion" class="control-label" data-toggle="tooltip" title="Fecha final de terminación luego de la Modificación del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">&nbsp;</div>
+					<div class="col-sm-3">&nbsp;</div>
+				</div>
+				<hr style="width: 100%; color: #337ab7; height: 1px; background-color:#337ab7;" />
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente1" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente2" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente3" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente4" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+				</div>
+				<div class="row" id="mfilaFuente58" style="display: none;">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente5" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente6" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente7" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco" style="font-weight:500"> </label><label id = "mfuente8" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Marco"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Valor total fuentes de recurso del Convenio / Contrato Marco" style="font-weight:500"> Total fuentes &nbsp;</label><label id = "mvr_fuentes" class="control-label" data-toggle="tooltip" title="Valor total fuentes de recurso del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Valor adición del Convenio / Contrato Marco" style="font-weight:500"> Vr. adición &nbsp;</label><label id = "mvr_adicion" class="control-label" data-toggle="tooltip" title="Valor adición del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label" data-toggle="tooltip" title="Valor global Convenio / Contrato Marco" style="font-weight:500"> Valor Global &nbsp;</label><label id = "mvr_total" class="control-label" data-toggle="tooltip" title="Valor global del Convenio / Contrato Marco"></label>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+				<hr style="width: 100%; color: #337ab7; height: 1px; background-color:#337ab7;" />
+				<div class="row">
+					<div class="col-sm-12">
+						<label class="control-label" data-toggle="tooltip" title="Observaciones del Convenio / Contrato Marco" style="font-weight:500"> Observación &nbsp;</label><label id = "mobservacion" class="control-label" data-toggle="tooltip" title="Observaciones del Convenio / Contrato Marco"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12" id="mAdjuntos">
+					</div>
+				</div>
+			</div>
+	    </div>
+
+	  </div>
+	  <div class="card">
+	    <div class="card-header" id="headingTwo">
+	      <h5 class="mb-0">
+	        <button class="btn btn-outline-info collapsed" type="button" data-toggle="collapse" data-target="#conDerivado-panel-body" aria-expanded="false" aria-controls="conDerivado-panel-body">
+	          Convenio Derivado
+	        </button>
+	        <i class="fa fa-sort-down right-icon-pos acordeon-icono" aria-hidden="true"></i>
+	      </h5>
+	    </div>
+	    <div id="conDerivado-panel-body" class="collapse acordeon-body" aria-labelledby="headingTwo" data-parent="#accordionConvenios">
+	      <div class="card-body">
+		    <div class="row">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Número del Convenio / Contrato Derivado" style="font-weight:500"> Número &nbsp;</label><label id = "dnro_con" class="control-label" data-toggle="tooltip" title="Número del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Tercero del Convenio / Contrato Derivado" style="font-weight:500"> Tercero &nbsp;</label><label id = "dtercero" class="control-label" data-toggle="tooltip" title="Tercero del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<!-- label class="control-label" data-toggle="tooltip" title="Enlace SECOP del Convenio / Contrato Derivado"> SECOP &nbsp;</label><label id = "dsecop_con" class="control-label" data-toggle="tooltip" title="Enlace SECOP del Convenio / Contrato Derivado" style="font-weight:500"></label -->
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+		    <div class="row">
+		    	<div class="col-sm-12">
+	    			<label class="control-label" data-toggle="tooltip" title="Objeto del Convenio / Contrato Derivado" style="font-weight:500"> Objeto &nbsp;</label><label id = "dobjeto" class="control-label" data-toggle="tooltip" title="Objeto del Convenio / Contrato Derivado"></label>
+				</div>
+			</div>
+		    <div class="row">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Supervisor del Convenio / Contrato Derivado" style="font-weight:500"> Supervisor &nbsp;</label><label id = "dnom_supervisor" class="control-label" data-toggle="tooltip" title="Supervisor del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Derivado" style="font-weight:500"> Interventor &nbsp;</label><label id = "dnom_interventor" class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Metas del Convenio / Contrato Derivado" style="font-weight:500"> Metas PDD  &nbsp;</label><label id = "dmetas" class="control-label" data-toggle="tooltip" title="Metas del Convenio / Contrato Derivado"></label>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+		    <div class="row">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Derivado" style="font-weight:500"> F. suscripción &nbsp;</label><label id = "dfec_suscripcion" class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Derivado" style="font-weight:500"> Fecha inicio &nbsp;</label><label id = "dfec_inicio" class="control-label" data-toggle="tooltip" title="Interventor del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Plazo del Convenio / Contrato Derivado en días" style="font-weight:500"> Plazo (Días) &nbsp;</label><label id = "dplazo_dias" class="control-label" data-toggle="tooltip" title="Plazo  del Convenio / Contrato Derivado en días"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fecha final estimada del Convenio / Contrato Derivado" style="font-weight:500"> F. final proyectada &nbsp;</label><label id = "dfec_proy_finalizacion" class="control-label" data-toggle="tooltip" title="Fecha final del Convenio / Contrato Derivado"></label>
+				</div>
+			</div>
+		    <div class="row">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Derivado" style="font-weight:500"> Modificación &nbsp;</label><label id = "dmodificacion_con" class="control-label" data-toggle="tooltip" title="Fecha suscripción del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fecha final de terminación luego de la Modificación del Convenio / Contrato Derivado" style="font-weight:500"> F. Terminación &nbsp;</label><label id = "dfec_terminacion" class="control-label" data-toggle="tooltip" title="Fecha final de terminación luego de la Modificación del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">&nbsp;</div>
+		    	<div class="col-sm-3">&nbsp;</div>
+			</div>
+			<hr style="width: 100%; color: #337ab7; height: 1px; background-color:#337ab7;" />
+		    <div class="row">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente1" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente2" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente3" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente4" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+			</div>
+		    <div class="row" id="dfilaFuente58" style="display: none;">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente5" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente6" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente7" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado" style="font-weight:500"> </label><label id = "dfuente8" class="control-label" data-toggle="tooltip" title="Fuente de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+			</div>
+		    <div class="row">
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Valor total fuentes de recurso del Convenio / Contrato Derivado" style="font-weight:500"> Total fuentes &nbsp;</label><label id = "dvr_fuentes" class="control-label" data-toggle="tooltip" title="Valor total fuentes de recurso del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Valor adición del Convenio / Contrato Derivado" style="font-weight:500"> Vr. adición &nbsp;</label><label id = "dvr_adicion" class="control-label" data-toggle="tooltip" title="Valor adición del Convenio / Contrato Derivado"></label>
+				</div>
+		    	<div class="col-sm-3">
+	    			<label class="control-label" data-toggle="tooltip" title="Valor global Convenio / Contrato Derivado" style="font-weight:500"> Valor Global &nbsp;</label><label id = "dvr_total" class="control-label" data-toggle="tooltip" title="Valor global del Convenio / Contrato Derivado"></label>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+			<hr style="width: 100%; color: #337ab7; height: 1px; background-color:#337ab7;" />
+		    <div class="row">
+		    	<div class="col-sm-12">
+	    			<label class="control-label" data-toggle="tooltip" title="Observaciones del Convenio / Contrato Derivado" style="font-weight:500"> Observación &nbsp;</label><label id = "dobservacion" class="control-label" data-toggle="tooltip" title="Observaciones del Convenio / Contrato Derivado"></label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12" id="dAdjuntos"></div>
+			</div>
+	      </div>
+	    </div>
+	  </div>
+</div>
+<!-- FIN -> PANEL DE CONVENIOS -->
+<!-- PANEL GALERÍA -->
+<div id="accordionGaleria">
+  <div class="card">
+    <div class="card-header">
+        <button class="btn btn-outline-info collapsed" type="button" data-toggle="collapse" data-target="#collapseGaleria" aria-expanded="false" aria-controls="conDerivado-panel-body">
+          Galería de Fotos
+        </button>
+        <i class="fa fa-sort-up right-icon-pos acordeon-icono" aria-hidden="true"></i>
+      <!--a class="card-link" data-toggle="collapse" href="#collapseGaleria">
+        <span class="badge badge-info" >Galería de Fotos</span>
+      </a -->
+    </div>
+    <div id="collapseGaleria" class="collapse show  acordeon-body" data-parent="#accordionGaleria">
+      <div class="card-body">
+		<div id="aniimated-thumbnials">&nbsp;</div>
+		<div id="lista_archivos"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN -> PANEL GALERÍA -->
+<!-- PANEL SEGUIMIENTO -->
+<div id="accordionSeguimiento">
+  <div class="card">
+    <div class="card-header">
+        <button class="btn btn-outline-info collapsed" type="button" data-toggle="collapse" data-target="#collapseSeguimiento" aria-expanded="false" aria-controls="conDerivado-panel-body">
+          Seguimiento
+        </button>
+        <i class="fa fa-sort-down right-icon-pos acordeon-icono" aria-hidden="true"></i>
+    </div>
+    <div id="collapseSeguimiento" class="collapse acordeon-body" data-parent="#accordionSeguimiento">
+      <div class="card-body">
+      	<div class="row">
+			<div class="col-sm">
+			    <label for="meta" style="font-weight:500">Sub Programa - Meta:&nbsp;</label><label id="meta">&nbsp;</label>
+			</div>
+			<div class="col-sm">
+    			<label for="pbeneficiadas" class="control-label" style="font-weight:500">Personas Beneficiadas:&nbsp; </label><label id="pbeneficiadas" class="control-label">&nbsp; </label>
+  			</div>
+			<div class="col-sm">
+    			<label for="areaint" class="control-label" style="font-weight:500">Area intervenida:&nbsp; </label><label id="areaint" class="control-label">&nbsp; </label>
+  			</div>
+
+			<div class="col-sm">
+			    <label for="id_producto" style="font-weight:500">Productos Prensa:&nbsp;</label><label id="id_producto">&nbsp;</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<label for="resultado" class="control-label" style="font-weight:500">Resultado:&nbsp;</label><label id="resultado" class="control-label">&nbsp;</label>
+			</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN -> PANEL SEGUIMIENTO -->
+
+<!-- PANEL - VISITAS -->
+<div id="panel-visitas"></div> 
+<!-- FIN -> PANEL VISITAS -->
+
+<!-- PANEL RESPONSABLE -->
+<div id="accordionResponsable">
+  <div class="card">
+    <div class="card-header">
+        <button class="btn btn-outline-info collapsed" type="button" data-toggle="collapse" data-target="#collapseResponsable" aria-expanded="false" aria-controls="conDerivado-panel-body">
+          Responsable Entidad
+        </button>
+        <i class="fa fa-sort-down right-icon-pos acordeon-icono" aria-hidden="true"></i>
+    </div>
+    <div id="collapseResponsable" class="collapse acordeon-body" data-parent="#accordionResponsable">
+      <div class="card-body">
+      	<div class="row">
+			<div class="col-sm">
+			    <label for="centro" style="font-weight:500">Entidad:&nbsp;</label><label id="centro">&nbsp;</label>
+			</div>
+			<div class="col-sm">
+    			<label for="responsable_nom" class="control-label" style="font-weight:500">Nombre contacto:&nbsp; </label><label id="responsable_nom" class="control-label">&nbsp; </label>
+  			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<label for="responsable_tel" class="control-label" style="font-weight:500">Teléfono contacto:&nbsp;</label><label id="responsable_tel" class="control-label">&nbsp;</label>
+			</div>
+			<div class="col-sm">
+			    <label for="responsable_email" style="font-weight:500">Email contacto:&nbsp;</label><label id="responsable_email">&nbsp;</label>
+			</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN -> PANEL RESPONSABLE -->
+</body>
+	<!-- script Resources http://sachinchoolur.github.io/lightGallery/demos/-->
+	<script src="../../Resources/Numeral/numeral.js"></script>
+	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
+	<script src="../../Resources/socket/socket.io.js"></script>
+	<script src="../../Resources/Jquery/jquery-1.12.3.min.js"></script>
+	<script src="../../Resources/bootstrap-4/js/bootstrap.min.js"></script>
+	<script src="../../Resources/ie/js/ie-emulation-modes-warning.js"></script>
+	<!--script src="../../Resources/highcharts/js/highcharts.js"></script>
+	<script src="../../Resources/highcharts/js/highcharts-more.js"></script>
+	<script src="../../Resources/highcharts/js/solid-gauge.js"></script -->
+	<script src="../../Resources/amcharts/amcharts.js"></script>
+	<script src="../../Resources/amcharts/gauge.js"></script>
+	<script src="../../Resources/amcharts/plugins/export/export.min.js"></script>
+	<script src="../../Resources/amcharts/themes/light.js"></script>
+	<script src="../../Resources/ie/js/ie10-viewport-bug-workaround.js"></script>	
+	<script src="../../Resources/socket/socket.io.js"></script>				
+	<script src="../../Resources/bootbox/bootbox.js"></script>
+	<script src="../../Resources/Crypto/core-min.js"></script>
+	<script src="../../Resources/Crypto/aes.js"></script>
+	<script src="../../Resources/BootstrapDialog/js/bootstrap-dialog.min.js"></script>
+	<script src="../../Resources/growl/bootstrap-growl.min.js"></script>
+	<script src="../../Resources/growl/Notificaciones.js"></script>
+	<script src="../../Resources/fastclick/fastclick.min.js"></script>
+	<!-- script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script -->
+	<script src="../../Resources/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<script src="../../Resources/jquery-datetextentry/jquery.datetextentry.js"></script>
+	<script src="../../Resources/cleave-js/cleave.min.js"></script>
+	
+	 <script src="../../Resources/mousewheel/jquery.mousewheel.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lightgallery.min.js"></script>
+	<!--script src="../../Resources/lightGallery/dist/js/lg-thumbnail.min.js"></script>
+	<script src="../../Resources/lightGallery/dist/js/lg-fullscreen.min.js"></script -->
+	
+	<!-- app Resources -->
+	<script src="../../Scripts/AppConfig.js"></script>
+	<script src="../../Scripts/Func.js"></script>
+	<!--script src="../../Scripts/Home/Navbar.js"></script -->
+	<script src="../../Scripts/Gestiones/DetalleNew.js"></script>
+
+	
+</html>

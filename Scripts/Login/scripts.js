@@ -2,7 +2,8 @@
 var socket = io.connect(AppConfig.UrlSocket+'/web'); //console.log(AppConfig.UrlSocket);
 $(document).ready(function () {	//console.log(Func.UsuarioLogueado());
 	 if(Func.UsuarioLogueado()){
-		window.location.href = '../Gestiones/index.html'; 	
+		//window.location.href = '../Gestiones/index.html'; 	
+        window.location.assign(AppConfig.NextLogin);
 	 }else{
         var vid_usr = localStorage.id_usr; //console.log(vid_usr);
         var modulo = $("#modulo").val();
@@ -35,7 +36,7 @@ $(document).ready(function () {	//console.log(Func.UsuarioLogueado());
             var modulo = $("#modulo").val();
             var data= {'usr': usuario,'mod': modulo,'pas': login};
             var DataAES = Func.Ecrypted(data);
-            socket.emit('LoginUsuario',DataAES,function(data){
+            socket.emit('LoginUsuario',DataAES,function(data){  //console.log(data);
             	var dat=Func.Decrypted(data); console.log(dat);
             	if (dat.length>0){
             		localStorage.dt=data;

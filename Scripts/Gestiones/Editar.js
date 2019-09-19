@@ -230,6 +230,22 @@ AppConfig.Inicial= function() {
             	AppConfig['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
 	        }
 	});
+	/* SELECT - DETALLE */
+	$('#sel_id_detalle').multiselect({
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            onChange: function(option, checked, select) {
+            	AppConfig['id_detalle'] = $('#sel_id_detalle option:selected').map(function(a, item){return item.value;}).get();	//console.log('onChange: '+AppConfig['id_convenio']);
+            },
+            onSelectAll: function(checked) {
+            	AppConfig['id_detalle'] = $('#sel_id_detalle option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        },
+            onDeselectAll: function(checked) {
+            	AppConfig['id_detalle'] = $('#sel_id_detalle option:selected').map(function(a, item){return item.value;}).get();	//console.log(AppConfig['id_convenio']);
+	        }
+	});
 	/* SELECT -  Productos de Prensa*/
 	$('#id_producto').multiselect({
             enableClickableOptGroups: true,
@@ -283,7 +299,7 @@ AppConfig.Inicial= function() {
 	});
 	$('#input-1').on("filepredelete", function(jqXHR) { 
 		var abort = true; 
-		if (confirm("Desea Eliminar la Imágen?")) { abort = false; } 
+		if (confirm("Si elimina la imágen no la podrá recuperar! Seguro desea Eliminar la Imágen?")) { abort = false; } 
 		return abort; 
 	});
 	
@@ -329,11 +345,10 @@ AppConfig.Inicial= function() {
     	overwriteInitial: false,
     	deleteUrl: "http://saga.cundinamarca.gov.co/SIG/servicios/GestionGob/sa_imagen_eliminar.php",
 	    uploadExtraData: function (previewId, index) {
-			    var data = {
-				        id_gestion: AppConfig["id_gestion"]
-				   };
-				console.log(data);
-			    return data;
+			    var data = '{"id_gestion":"'+AppConfig["id_gestion"]+'"}';
+			    var miAr = JSON.parse(data);
+				console.log(miAr);
+			    return miAr;
 		}
 	});
 
@@ -520,9 +535,24 @@ AppConfig.cargaSubtipos= function(id_tipoc) {	//console.log(AppConfig['id_centro
 		var decrypted = FuncDecrypted(message);										//console.log(message);									
 		AppConfig["listadoSubtipos"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
 		$('#sel_id_subtipoc').multiselect('dataprovider', AppConfig["listadoSubtipos"]);
-		//SELECCIONA TIPO
+		//SELECCIONA SUBTIPO
 		console.log(AppConfig["id_subtipoc"]);
 		$('#sel_id_subtipoc').multiselect('select', AppConfig["id_subtipoc"]);
+		AppConfig.cargaDetalle(AppConfig["id_subtipoc"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+	});
+};
+AppConfig.cargaDetalle= function(id_subtipo) {	//console.log(AppConfig['id_centrog']);
+	AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin'); AppConfig.socketDataAdmin.on('error', function (err, client) {console.error('idle client error', err.message, err.stack);});
+  	AppConfig.socketDataAdmin.emit('getlistaDetalleParam', {id_subtipo : id_subtipo}, function(message){
+		console.log(moment().format('h:mm:ss:SSSS')+" Listado Detalle");				//console.log("message:" + message);
+		var decrypted = FuncDecrypted(message);										//console.log(message);									
+		AppConfig["listadoDetalle"]=decrypted;											//console.log("geojson Metas:" + AppConfig["ListadoMeta"].length);	console.log(AppConfig["ListadoMeta"]);
+		$('#sel_id_detalle').multiselect('dataprovider', AppConfig["listadoDetalle"]);
+	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+		//SELECCIONA DETALLE
+		console.log(AppConfig["id_detalle"]);
+		$('#sel_id_detalle').multiselect('select', AppConfig["id_detalle"]);
 	  	console.log(moment().format('h:mm:ss:SSSS')+" FIN");
 	});
 };
@@ -604,13 +634,18 @@ $('#btn_guardar').click(function(){
 			var numArchivos = $('#input-1').fileinput('getFilesCount');		console.log(numArchivos + " + " + initialPreview.length);
 			var totalArchivos = numArchivos + initialPreview.length;		
 	  		
-	  		if($("#sel_id_convenio").is(":visible")){
-	  			if(AppConfig["id_convenio"]===undefined || AppConfig["id_convenio"].length<1){
+	  		if($("#sel_id_convenio").is(":visible")){ 
+	  			var valido = true; 
+	  			if(AppConfig["id_convenio"]===undefined || AppConfig["id_convenio"]==null){
+	  				valido = false;
+	  			}else if (AppConfig["id_convenio"].length<1 || (AppConfig["id_convenio"].length==1 && AppConfig["id_convenio"][0]=="")) valido = false;
+	  			console.log(valido);
+	  			if(!valido){
 		  			Func.MsjPeligro("Debe seleccionar un Convenio");
 		  			$('#sel_id_convenio').nextAll('div').addClass("open");
 		  			setTimeout(function() { $('#sel_id_convenio').nextAll('div').find('.multiselect-search').focus();}, 500);
-		  			return;
-	  			}	
+		  			return;	  				
+	  			}
 	  		}
 	  		if(id_categoria == ""){
 	  			Func.MsjPeligro("Debe seleccionar una Estrategia");
@@ -638,7 +673,7 @@ $('#btn_guardar').click(function(){
 	  			return;	  			
 	  		}
 	  		if($("#sel_id_tipoc").is(":visible")){
-				if(AppConfig["id_tipoc"]===undefined || AppConfig["id_tipoc"].length<1){
+				if(AppConfig["id_tipoc"]===undefined || AppConfig["id_tipoc"]==null){	//AppConfig["id_tipoc"].length<1
 		  			Func.MsjPeligro("Debe seleccionar el Tipo");
 		  			$('#sel_id_tipoc').nextAll('div').addClass("open");
 		  			setTimeout(function() { $('#sel_id_tipoc').nextAll('div').find('.multiselect-search').focus();}, 500);
@@ -739,7 +774,8 @@ $('#btn_guardar').click(function(){
   			if(AppConfig["id_convenio"]===undefined)AppConfig["id_convenio"]=""; var id_convenio = Func.Ecrypted(AppConfig["id_convenio"]);	//console.log(AppConfig["id_convenio"]);
   			if(AppConfig["id_estado"]===undefined)AppConfig["id_estado"]=""; var id_estado = Func.Ecrypted(AppConfig["id_estado"]);	console.log(AppConfig["id_estado"]);
   			if(AppConfig["id_tipoc"]===undefined)AppConfig["id_tipoc"]=""; var id_tipoc = Func.Ecrypted(AppConfig["id_tipoc"]);	console.log(AppConfig["id_tipoc"]);
-  			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	console.log(AppConfig["id_subtipoc"]);
+  			if(AppConfig["id_subtipoc"]===undefined)AppConfig["id_subtipoc"]=""; var id_subtipoc = Func.Ecrypted(AppConfig["id_subtipoc"]);	//console.log(AppConfig["id_subtipoc"]);
+  			if(AppConfig["id_detalle"]===undefined)AppConfig["id_detalle"]=""; var id_detalle = Func.Ecrypted(AppConfig["id_detalle"]);	//console.log(AppConfig["id_subtipoc"]);
   			sem = Func.Ecrypted(sem);				
   			vr_pagado = Func.Ecrypted(numeral().unformat(vr_pagado));
 	  		
@@ -755,7 +791,7 @@ $('#btn_guardar').click(function(){
 	  		responsable_tel = Func.Ecrypted(responsable_tel);
 	  		responsable_email = Func.Ecrypted($("#responsable_email").val().trim()); //OPCIONAL
 	  		var areaint = $("#areaint").val();	if(areaint != undefined) areaint = areaint.trim();
-	  		console.log(und);
+	  		//console.log(und);
 	  		und = Func.Ecrypted(und); //OPCIONAL
 	  		valor = Func.Ecrypted(numeral().unformat(valor)); //OPCIONAL
 	  		
@@ -788,8 +824,8 @@ $('#btn_guardar').click(function(){
   															fte_regalias:fte_regalias,descripcion_fte_otros:descripcion_fte_otros,fte_otros:fte_otros,//fecha_ini:fecha_ini,fecha_fin:fecha_fin,
   															enlace_secop:enlace_secop,cod_meta:cod_meta,pbeneficiadas:pbeneficiadas,areaint:areaint,//empleos_gen_indirecto:empleos_gen_indirecto,
   															und:und,valor:valor,id_producto:id_producto,resultado:resultado,
-  															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado
-			 }, function(message){	//console.log(message);
+  															id_convenio:id_convenio,id_estado:id_estado,id_tipoc:id_tipoc,id_subtipoc:id_subtipoc,sem:sem,vr_pagado:vr_pagado,id_detalle:id_detalle
+			 }, function(message){	console.log(message);
 			 		if($.isNumeric(message)){
 			 			if(numArchivos>0){
 			 				console.log("Adjuntos: "+numArchivos);

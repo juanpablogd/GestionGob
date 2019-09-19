@@ -1,4 +1,4 @@
- Func.IntevaloLogin(); 
+ //Func.IntevaloLogin(); 
  var socket = io.connect(AppConfig.UrlSocket+'/web');
  $("#Perfil").click(function() {
  	var TextAdmin;
@@ -118,6 +118,24 @@ $("#CambiarClave").click(function() {
     });
  });
 
+$("#IniciarSession").click(function() {
+    window.location.assign("../../Login/");
+});
 $("#CerrarSession").click(function() {
 	Func.CerrarAPP();
 });
+//muestra el menú según si esta logueado
+if(Func.UsuarioLogueado()){
+    $("#IniciarSession").hide();
+    $("#CerrarSession").show();
+    $("#Perfil").show();
+    $("#urlConvenio").show();
+    $("#urlGestion").show();
+}else {
+    $("#IniciarSession").show();
+    $("#CerrarSession").hide();
+    $("#Perfil").hide();
+    $("#urlConvenio").hide();
+    $("#urlGestion").hide();
+}
+console.log(Func.UsuarioLogueado());

@@ -5,13 +5,13 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 	txtCol = '<a href="#" class="btn_detalle" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a>';
 
 	var columnDefs = [ 
-		{
+/*		{
           "targets": -1,
           "data": null,
           "defaultContent": txtCol
-        },
+        }, */
         {
-          	"targets": [ 8 ],
+          	"targets": [ 8 ],	//IDGESTION REEMPLAZAR TODOOS LOS NUEVES
             "visible": false,
             "searchable": false
         }
@@ -54,21 +54,45 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 		param.usrTipo = usrTipo;
 		param.id_centrog = centroGestor;
 		AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
-	  	AppConfig.socketDataAdmin.emit('GetListadoGesMapa', param, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
-			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini");			//console.log(message);
-			var decrypted = FuncDecrypted(message);		console.log(decrypted);
+	  	AppConfig.socketDataAdmin.emit('GetListadoGesMapaOE', param, function(message){				//console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+			console.log(moment().format('h:mm:ss:SSSS')+" Listado Gestiones Ini mapa ");			//console.log(message);
+			var decrypted = FuncDecrypted(message);		//console.log(decrypted);
 			$.each(decrypted, function () {
 				$.each(this, function (name1, value1) {		//console.log(value1);	//console.log(name1 + '=' + value1); 
-					$("#TBody").append('<tr id="f'+name1+'"></tr>');
-					$.each(value1, function (name, value) {		//console.log(name + '=' + value);
-						if(name=="avance_porcentaje"){
-							if(value<100) $('#f'+name1).css('color', 'red'); 
+					var numConvenio = "NA";
+					var numContrato = "NA";
+					var objeto,fechaIni,plazo,vrCto,porcenAvance,semaforo,idGestion,urlEnlace;
+					$.each(value1, function (name, value) {		console.log(name + '=' + value);
+						if (name == "nro_con" && value != null) numConvenio = value;
+						if (name == "nro_cont"){ var arNC = value.split("|");		console.log(arNC[0]);
+							if((numConvenio == null || numConvenio == "NA") && arNC[0] != null && arNC[0] != "") numConvenio = arNC[0];
+							if((numContrato == null || numContrato == "NA") && arNC[1] != null && arNC[1] != "") numContrato = arNC[1];
+							if(arNC.length == 1) numContrato = value
 						}
-						if(name=="id_gestion"){
-							$('#f'+name1).append("<td>"+value+"</td><td></td>");
-						}else $('#f'+name1).append("<td>"+value+"</td>");
-						
+						if (name == "objeto" && value != null) objeto = value;
+						if (name == "fec_inicio" && value != null) fechaIni = value;
+						if (name == "plazo_dias" && value != null) plazo = value;
+						if (name == "vr_total" && value != null) vrCto = value;
+						if(name=="avance_porcentaje"){
+							if(value > 1) value = value / 100;
+							if(value < 1) $('#f'+name1).css('color', 'red');
+							value = numeral(value).format('0.0%'); //'0.000%'
+							porcenAvance = value;
+						}
+						if (name=="semaforo") semaforo = '<img src="../../Images/'+value+'.png" alt="semaforo" height="16" width="16">';
+						if (name == "id_gestion" && value != null) idGestion = value;
+
+						if(name=="enlace_externo"){
+							if(value != "" && value != null){
+								urlEnlace = '<a href="'+value+'" target="_blank" data-toggle="tooltip" title="Ver Detalle"><i class="fa fa-outdent" aria-hidden="true"></i></a>';
+							}else urlEnlace = ''+txtCol+'';
+						}
 			      	});
+			      	$("#TBody").append('<tr id="f'+name1+'">'+
+			      			'<td>'+numConvenio+'</td>'+'<td>'+numContrato+'</td>'+'<td>'+objeto+'</td>'+'<td>'+fechaIni+'</td>'+'<td>'+plazo+'</td>'+
+			      			'<td>'+vrCto+'</td>'+'<td>'+porcenAvance+'</td>'+'<td>'+semaforo+'</td>'+'<td>'+idGestion+'</td>'+
+			      			'<td>'+urlEnlace+'</td>'+
+			      		'</tr>');
 				}); //console.log("Cargaaaaaa");
 			});
 			oTable = $('#TBList').DataTable(configTBL);
@@ -84,10 +108,10 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 		        } );
 		    } );
 		    $('#TBList tbody').on( 'click', 'a', function () {	//console.log($(this).attr("class"));
-		        var data = oTable.row( $(this).parents('tr') ).data(); //console.log(data);
+		        var data = oTable.row( $(this).parents('tr') ).data();	//console.log(data);
 		        var tipo = $(this).attr("class");
 		        if(tipo=="btn_detalle"){
-			  		Func.SetNomGestion(data[2]);
+			  		Func.SetNomGestion(data[3]);
 			  		Func.SetIdGestion(data[8]);
 			  		setTimeout(function(){
 			  			window.open(
@@ -96,13 +120,13 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 						);
 					}, 50);
 		        }else if(tipo=="btn_add_visita"){
-			  		Func.SetNomGestion(data[2]);
+			  		Func.SetNomGestion(data[3]);
 			  		Func.SetIdGestion(data[8]);
 			  		setTimeout(function(){
 				    	window.location.href = 'AdicionarVisita.html';
 					}, 50);
 		        }else if(tipo=="btn_editar"){
-			  		Func.SetNomGestion(data[2]);
+			  		Func.SetNomGestion(data[3]);
 			  		Func.SetIdGestion(data[8]);
 			  		setTimeout(function(){
 			  			window.open(
@@ -115,7 +139,7 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					bootbox.confirm('<i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red"></i> Seguro que desea <B>Eliminar</B> la gestión: '+data[2], function(result) {
 					  	if(result){
 				  			AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');	 //console.log("Cliente:"+AppConfig.socketDataAdmin.io.engine.id);		
-						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[8] }, function(message){			
+						  	AppConfig.socketDataAdmin.emit('DeleteGestion', {io_id : AppConfig.socketDataAdmin.io.engine.id, id_gestion : data[9] }, function(message){			
 						  		console.log(message);
 						  		if(message=="Ok"){	
 						  			oTable.row('#'+fila).remove().draw( false );	console.log('Removido');

@@ -92,13 +92,13 @@
 	        <li class="active"><a href="../Home/">
 	        	<i class="fa fa-map-marker" aria-hidden="true">&nbsp;</i> Mapa </a></li>
 	      </ul>
-	      <ul class="nav navbar-nav" id="opcion_listado">
-	        <li class="active"><a href="../Gestiones/">
-	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Listado </a></li>
-	      </ul>
 	      <ul class="nav navbar-nav" id="opcion_convenios">
-	        <li class="active"><a href="../Convenios">
+	        <li class="active"><a href="../Convenios" target="_top">
 	        	<i class="fa fa-align-justify" aria-hidden="true">&nbsp;</i> Convenio/Contrato </a></li>
+	      </ul>
+	      <ul class="nav navbar-nav" id="opcion_listado">
+	        <li class="active"><a href="../Gestiones" target="_top">
+	        	<i class="fa fa-list-alt" aria-hidden="true">&nbsp;</i> Gestiones </a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
@@ -217,6 +217,12 @@
 						<div class="col-sm-3">
 			    			<label for="enlace_secop" data-toggle="tooltip" title="Es el resultado de la fecha inicial más los días de plazo de ejecución">Fecha finalización <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
 			    			<label id="fec_proy_finalizacion"></label>
+						</div>
+				    </div>
+				    <div class="row">
+						<div class="form-group">
+						    <label for="id_centrog" class="control-label required" data-toggle="tooltip" title="Entidad(es) que intervienen, pueden ser del sector central (secretarías) o desentralizadas">Entidad <i class="fa fa-info-circle fa-fw">&nbsp;</i></label>
+							<select id="id_centrog" multiple="multiple">&nbsp;</select>
 						</div>
 				    </div>
 			</div>

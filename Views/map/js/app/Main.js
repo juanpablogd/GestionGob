@@ -28,7 +28,7 @@ $(document).ready(function() {
             cod_mpio:'',
             cod_prov:''
         },
-        parametros:null,
+        parametros:{cod_mpio},
         chart:null,
         socket:io.connect(AppConfig.UrlSocketApp+'/DataAdmin'),
         colors:{
@@ -228,22 +228,16 @@ $(document).ready(function() {
             var pixel = e.pixel;
               AppMap.cod_mpio.forEachFeatureAtPixel(pixel, function(feature, layer) { console.log(feature.values_);
                 var data = appMain.getParametros(); //console.log(data);
+                appMain.parametros.cod_mpio = feature.values_.id;
                 data.cod_mpio = feature.values_.id;
                 data.nom_mpio = feature.values_.n;
                 //localStorage.setItem(ps, Func.Ecrypted(data));    //localStorage.ps = Func.Ecrypted(data);
                 localStorage["ps"] = Func.Ecrypted(data);   console.log(data);  //console.log(localStorage.ps);
-                appMain.getDatagrafica(data);
-                /*setTimeout(function(){  //console.log('Valido');
-                      $.fancybox.open({
-                          src  : 'grafica_consulta.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
-                          type : 'iframe',
-                          opts : {
-                              afterShow : function( instance, current ) {
-                                console.info( 'done!' );
-                              }
-                          }
-                      });
-                }, 99);*/
+                if(feature.values_.cuenta == 0){
+                  Func.MsjAvisoTop("No se encontraron datos en "+data.nom_mpio);
+                }else{
+                  appMain.getDatagrafica(data,feature.values_.n,feature.values_.cuenta);  
+                }
               }); 
           //appMain.displayFeatureInfo(evt.pixel,'cod_mpio');
         });
@@ -300,6 +294,7 @@ $(document).ready(function() {
       	return data;
       },
       getData:function(){
+        appMain.parametros.cod_mpio = "";
         var data=appMain.getParametros();
         data.cod_mun = "";
         localStorage.ps = Func.Ecrypted(data);  //console.log("Ingresa a getDash"); //console.log(data);
@@ -332,7 +327,7 @@ $(document).ready(function() {
           }
         });
       },
-      setGrafica:function(datos){ //console.log(datos);
+      setGrafica:function(datos,mpio,total){  //console.log(datos);
           this.chart.data = datos;    //console.log(this.chart.data);
 
           this.chart.colors.step = 2;
@@ -344,7 +339,7 @@ $(document).ready(function() {
           this.chart.dataFields.name = "name";
           this.chart.dataFields.category = "name";
           this.chart.dataFields.children = "children";
-
+          this.chart.dataFields.color = "color";
 
           var level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries();
           level0SeriesTemplate.hiddenInLegend = false;
@@ -357,7 +352,12 @@ $(document).ready(function() {
           level0SeriesTemplate.calculatePercent = true;
           level0SeriesTemplate.dataFields.name = "name";
           level0SeriesTemplate.dataFields.category = "name";
+          level0SeriesTemplate.dataFields.color = "color";
+          level0SeriesTemplate.slices.template.propertyFields.fill = "color";
+          level0SeriesTemplate.slices.template.propertyFields.stroke = "color";
           level0SeriesTemplate.slices.template.tooltipText  = "{category}: {value.value} ({porcentaje}%)";
+          level0SeriesTemplate.labels.template.fill = am4core.color("black");
+          level0SeriesTemplate.labels.template.relativeRotation  = 90;
 
           level0SeriesTemplate.labels.template.adapter.add("rotation", function(rotation, target) {
             target.maxWidth = target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
@@ -369,21 +369,16 @@ $(document).ready(function() {
 
           var level1SeriesTemplate = level0SeriesTemplate.clone();
           this.chart.seriesTemplates.setKey("1", level1SeriesTemplate)
-          level1SeriesTemplate.fillOpacity = 0.70;
+          level1SeriesTemplate.fillOpacity = 0.75;
           level1SeriesTemplate.hiddenInLegend = true;
           level1SeriesTemplate.calculatePercent = true;
           level1SeriesTemplate.dataFields.name = "name";
           level1SeriesTemplate.dataFields.category = "name";
           level1SeriesTemplate.slices.template.tooltipText  = "{category}: {value.value} ({porcentaje}%)";
-          //level1SeriesTemplate.dataFields.value = "children";
-          //level1SeriesTemplate.tooltipText  = "{name[1]}: {value.percent.formatNumber('#.#')}% ($ {value.value})";
-          //level1SeriesTemplate.tooltipText = "{name}:\n[bold][/]";
-          //level1SeriesTemplate.tooltipText = "[bold]{name}[/]\n {category}";
-          //level1SeriesTemplate.labels.template.tooltipText = "[bold]{name}[/]\n[font-size:14px]{categoryX}: [bold]{valueY.percent}%[/] ({valueY}M)";
 
           var level2SeriesTemplate = level0SeriesTemplate.clone();
           this.chart.seriesTemplates.setKey("2", level2SeriesTemplate)
-          level2SeriesTemplate.fillOpacity = 0.40;
+          level2SeriesTemplate.fillOpacity = 0.60;
           level2SeriesTemplate.hiddenInLegend = true;
           level2SeriesTemplate.calculatePercent = true;
           level2SeriesTemplate.dataFields.name = "name";
@@ -395,9 +390,15 @@ $(document).ready(function() {
             "hit",
             ev => {   //console.log("hit");   //Trae las propiedades
               var dp = ev.target;    console.log(dp.dataItem.dataContext.dataContext);
+              var data = appMain.getParametros(); //console.log(data);
+              data.cod_mpio = appMain.parametros.cod_mpio;
+              data.id_tipo = dp.dataItem.dataContext.dataContext.id_tipoc;
+              data.id_subtipo = "";
+              data.id_detalle = "";
+              localStorage["ps"] = Func.Ecrypted(data);   console.log(data);  //console.log(localStorage.ps);
               setTimeout(function(){  //console.log('Valido');
                     $.fancybox.open({
-                        src  : '../Gestiones/ListaFiltroMap.html',
+                        src  : '../Gestiones/indexMapa.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
                         type : 'iframe',
                         opts : {
                             afterShow : function( instance, current ) {
@@ -406,7 +407,6 @@ $(document).ready(function() {
                         }
                     });
               }, 99);
-
             },
             this
           );
@@ -416,9 +416,15 @@ $(document).ready(function() {
             "hit",
             ev => {   //console.log("hit");   //Trae las propiedades
               var dp = ev.target;    console.log(dp.dataItem.dataContext.dataContext);
+              var data = appMain.getParametros(); //console.log(data);
+              data.cod_mpio = appMain.parametros.cod_mpio;
+              data.id_tipo = "";
+              data.id_subtipo = dp.dataItem.dataContext.dataContext.id_subtipoc;
+              data.id_detalle = "";
+              localStorage["ps"] = Func.Ecrypted(data);   console.log(data);  //console.log(localStorage.ps);
               setTimeout(function(){  //console.log('Valido');
                     $.fancybox.open({
-                        src  : '../Gestiones/ListaFiltroMap.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
+                        src  : '../Gestiones/indexMapa.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
                         type : 'iframe',
                         opts : {
                             afterShow : function( instance, current ) {
@@ -436,9 +442,15 @@ $(document).ready(function() {
             "hit",
             ev => {   //console.log("hit");   //Trae las propiedades
               var dp = ev.target;    console.log(dp.dataItem.dataContext.dataContext);
+              var data = appMain.getParametros(); //console.log(data);
+              data.cod_mpio = appMain.parametros.cod_mpio;
+              data.id_tipo = "";
+              data.id_subtipo = "";
+              data.id_detalle = dp.dataItem.dataContext.dataContext.id_detalle;
+              localStorage["ps"] = Func.Ecrypted(data);   console.log(data);  //console.log(localStorage.ps);
               setTimeout(function(){  //console.log('Valido');
                     $.fancybox.open({
-                        src  : '../Gestiones/ListaFiltroMap.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
+                        src  : '../Gestiones/indexMapa.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
                         type : 'iframe',
                         opts : {
                             afterShow : function( instance, current ) {
@@ -459,15 +471,21 @@ $(document).ready(function() {
           this.chart.legend.labels.template.wrap = true;
           this.chart.legend.itemContainers.template.paddingTop = 4;
           this.chart.legend.itemContainers.template.paddingBottom = 4;
+          // Add chart title
+          if (mpio != undefined){
+            this.chart.titles.values[0].text = " "+mpio+" ("+total+")";
+          }else{
+            this.chart.titles.values[0].text = "Cundinamarca";  
+          }
           /*this.chart.legend.itemContainers.template.width = am4core.percent(100);
           this.chart.legend.valueLabels.template.width = am4core.percent(100);*/
       },
-      getDatagrafica:function(parametros){
+      getDatagrafica:function(parametros,mpio,total){
         //AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
         appMain.socket.emit('GetTiposGrafica',  {data : parametros}, function(message){       //console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
           console.log(moment().format('h:mm:ss:SSSS')+" Visitas Ini");      //console.log("message:" + message);
           var decrypted = FuncDecrypted(message);   //console.log(decrypted);   //console.log(decrypted.datos.length);
-          appMain.setGrafica(decrypted);
+          appMain.setGrafica(decrypted,mpio,total);
           console.log(moment().format('h:mm:ss:SSSS')+" Unica Gestión FIN");  //console.log($.fn.dataTable.isDataTable( '#TBList' ));
         });
       },
@@ -807,7 +825,13 @@ $(document).ready(function() {
         // create this.chart
           appMain.chart = am4core.create("chartdiv", am4plugins_sunburst.Sunburst);
           appMain.chart.padding(0,0,0,0);
-          appMain.chart.radius = am4core.percent(105);
+          appMain.chart.radius = am4core.percent(100);
+          //Titulo
+          var title = this.chart.titles.create();
+          title.fontSize = 22;
+          title.marginBottom = 10;
+          title.text = "Cundinamarca";
+
 
           appMain.getDatagrafica();
 

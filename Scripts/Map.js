@@ -7,8 +7,8 @@ var AppMap = {
     map: '',
     DefineMap: function() {
         $(window).resize(function() {
-            $('.map').css("height", $(window).height() - 50);
-            $('.PanelStreetView').css("height", $(window).height() - 50);
+            /*$('.map').css("height", $(window).height() - 50);
+            $('.PanelStreetView').css("height", $(window).height() - 50);*/
             AppMap.map.updateSize();
             google.maps.event.trigger(gmaps.gmap, 'resize');
             var center = ol.proj.transform(AppMap.view.getCenter(), 'EPSG:3857', 'EPSG:4326');
@@ -27,7 +27,7 @@ var AppMap = {
     },
     InitMap: function() {
         this_ = this;
-        $('.map,.PanelStreetView').css("height", $(window).height() - 50);
+        //$('.map,.PanelStreetView').css("height", $(window).height() - 50);
 
         if (gmaps.LoadGmap) {
             var map = gmaps.initGmaps(this_.view);

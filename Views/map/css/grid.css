@@ -7,9 +7,9 @@
     -moz-border-radius: 0px;
     border-radius: 15px;
 }
-.item{
+/*.item{
     height: 100%;
-}
+}*/
 .item.list-group-item
 {
     float: none;

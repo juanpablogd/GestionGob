@@ -119,7 +119,16 @@ $("#CambiarClave").click(function() {
  });
 
 $("#IniciarSession").click(function() {
-    window.location.assign("../../Login/");
+    window.location.assign("../Login/");
+});
+$("#opcion_convenios").click(function() {
+    window.location.assign("../Convenios/");
+});
+$("#opcion_listado").click(function() {
+    window.location.assign("../Gestiones/");
+});
+$("#opcion_mapa").click(function() {
+    window.location.assign("../map/");
 });
 $("#CerrarSession").click(function() {
 	Func.CerrarAPP();

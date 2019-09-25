@@ -5,6 +5,7 @@
 	<meta charset="utf-8" />
 	<link href="../../Resources/Animate/animate.css" rel="stylesheet">
 	<link href="../../Resources/bootstrap-4/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../Resources/fancybox/jquery.fancybox.min.css" type="text/css" rel="stylesheet"/>
 <!--link rel="stylesheet" href="estilos.css" />
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="alternate" title="Pozolería RSS" type="application/rss+xml" href="/feed.rss" /-->
@@ -20,25 +21,29 @@
 	<div class="container">
 	  <div class="row">
 	    <div class="col">
-	    	1
+	    	Tipos de Obras en el Municipio de: <span id="nom_mpio"></span></br>
+	    	<span class="badge badge-light">Haz click en el sector que quieres consultar</span>
 	    </div>
 	  </div>
 	  <div class="row">
 	    <div class="col">
 	    	<div id="chartdiv"></div>
 	    </div>
-	    <div class="col">
-	      2 of 3
-	    </div>
 	  </div>
 	</div>
 
 	<script src="../../Resources/Jquery/jquery-3.3.1.js"></script>
+	<script src="../../Resources/moment/moment-with-locales.min.js"></script>
+	<script src="../../Resources/socket/socket.io.js"></script>	
 	<script src="../../Resources/bootstrap-4/js/bootstrap.min.js"></script>
 	<script src="../../Resources/popper/popper.min.js"></script>
 	<script src="../../Resources/amcharts-4/core.js"></script>
 	<script src="../../Resources/amcharts-4/charts.js"></script>
 	<script src="../../Resources/amcharts-4/themes/animated.js"></script>
+	<script src="../../Resources/amcharts-4/plugins/sunburst.js"></script>
+	<script src="../../Resources/fancybox/jquery.fancybox.min.js"></script> 
+    <script src="libs/Crypto/core-min.js"></script>
+    <script src="libs/Crypto/aes.js"></script>
 
    <script src="../../Scripts/AppConfig.js"></script>
    <script src="../../Scripts/Func.js"></script>

@@ -1,4 +1,4 @@
-$(document).ready(function() {	console.log(Func.GetIdPerfil());
+$(document).ready(function() {	//console.log(Func.GetIdPerfil());
 	var oTable;
 	var txtCol;
 	
@@ -62,9 +62,9 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 					var numConvenio = "NA";
 					var numContrato = "NA";
 					var objeto,fechaIni,plazo,vrCto,porcenAvance,semaforo,idGestion,urlEnlace;
-					$.each(value1, function (name, value) {		console.log(name + '=' + value);
+					$.each(value1, function (name, value) {		//console.log(name + '=' + value);
 						if (name == "nro_con" && value != null) numConvenio = value;
-						if (name == "nro_cont"){ var arNC = value.split("|");		console.log(arNC[0]);
+						if (name == "nro_cont"){ var arNC = value.split("|");		//console.log(arNC[0]);
 							if((numConvenio == null || numConvenio == "NA") && arNC[0] != null && arNC[0] != "") numConvenio = arNC[0];
 							if((numContrato == null || numContrato == "NA") && arNC[1] != null && arNC[1] != "") numContrato = arNC[1];
 							if(arNC.length == 1) numContrato = value
@@ -153,9 +153,17 @@ $(document).ready(function() {	console.log(Func.GetIdPerfil());
 		  	$('[data-toggle="tooltip"]').tooltip(); 
 		});
 	};
-	console.log("Carga Inicial de Gestiones!");
-	CargarGestiones(Func.GetTipo(),Func.GetCentrosG().join());
-	if(Func.GetTipo()=="C"){
+/*	console.log("Carga Inicial de Gestiones!");
+	var param = FuncDecrypted(localStorage.ps);	console.log(param);	*/
+	CargarGestiones("C","");
+/*	if(Func.UsuarioLogueado()){
+		CargarGestiones(Func.GetTipo(),Func.GetCentrosG().join());
+		if(Func.GetTipo()=="C"){
+			$("#div_add").hide();
+		}		
+	}else{
 		$("#div_add").hide();
-	}
+	} */
+
+
 });

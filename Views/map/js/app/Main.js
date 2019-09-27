@@ -294,10 +294,15 @@ $(document).ready(function() {
       	return data;
       },
       getData:function(){
+
         appMain.parametros.cod_mpio = "";
         var data=appMain.getParametros();
-        data.cod_mun = "";
+        data.cod_mun = "";  //console.log(data);
+        appMain.parametros.cod_mpio = "";
         localStorage.ps = Func.Ecrypted(data);  //console.log("Ingresa a getDash"); //console.log(data);
+        //Consulta datos de Gráfica
+        appMain.getDatagrafica(data,"Cundinamarca",""); 
+        //Consulta datos de Mapa
         appMain.socket.emit('getDash',data,function(dataEnc){
           console.log("devuelve a getDash");  //console.log(dataEnc);
 
@@ -315,7 +320,6 @@ $(document).ready(function() {
             $("#PanelLeyendacod_mpio").show();
             var data=Func.Decrypted(dataEnc);   //console.log(data);
             appMain.asigData('cod_mpio',data['cod_mpio']);
-            //appMain.graficaTipo(data['g_subtipo']); console.log(data["total"][0].cuenta);        
             $("#CantTotal").empty().append(data["total"][0].cuenta);
           }else{
             $("#col_cod_mpio").hide();
@@ -473,7 +477,10 @@ $(document).ready(function() {
           this.chart.legend.itemContainers.template.paddingBottom = 4;
           // Add chart title
           if (mpio != undefined){
-            this.chart.titles.values[0].text = " "+mpio+" ("+total+")";
+            if (total != undefined && total != ""){
+              this.chart.titles.values[0].text = " "+mpio+" ("+total+")";
+            }else this.chart.titles.values[0].text = " "+mpio+" ";
+            
           }else{
             this.chart.titles.values[0].text = "Cundinamarca";  
           }
@@ -485,7 +492,13 @@ $(document).ready(function() {
         appMain.socket.emit('GetTiposGrafica',  {data : parametros}, function(message){       //console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
           console.log(moment().format('h:mm:ss:SSSS')+" Visitas Ini");      //console.log("message:" + message);
           var decrypted = FuncDecrypted(message);   //console.log(decrypted);   //console.log(decrypted.datos.length);
-          appMain.setGrafica(decrypted,mpio,total);
+          if (decrypted.length > 0){
+            appMain.setGrafica(decrypted,mpio,total);
+            $("#chartdiv").show();
+          }else{
+            $("#chartdiv").hide();
+          }
+          
           console.log(moment().format('h:mm:ss:SSSS')+" Unica Gestión FIN");  //console.log($.fn.dataTable.isDataTable( '#TBList' ));
         });
       },
@@ -533,7 +546,7 @@ $(document).ready(function() {
       },
       crearGeo:function(key,tipoGroup,l){   //console.log(l); //console.log(key);
         //console.log(tipoGroup);
-        var numberOfBreaks = l-1; console.log(appMain.glo.geoAdmin[key]); console.log(tipoGroup); console.log(numberOfBreaks); console.log(appMain.colors[key]);
+        var numberOfBreaks = l-1; //console.log(appMain.glo.geoAdmin[key]); console.log(tipoGroup); console.log(numberOfBreaks); console.log(appMain.colors[key]);
         var geoJenks = [];
           var arr = l;
             function sortNumber(a,b) {
@@ -593,25 +606,7 @@ $(document).ready(function() {
             }
           });
           console.log("paso1");
-    /*      var altura=$( window ).height();
-          var ancho=$( window ).width();
-          altura=altura-450;
-          var GrafAltura=0;
-          if(ancho<1025){
-          	GrafAltura=400;
-          }else{
-          	GrafAltura= altura-200;
-          } */
-    	  /*appMain.column[key].update({
-            //art: {  height: GrafAltura  },  
-            xAxis: {
-              categories:appMain.categories[key]
-            },
-            series:{
-              data:appMain.series[key]
-            }
-          }); */
-          
+         
           appMain.lyr[key]= new ol.layer.Vector({
               source: appMain.source[key],
               style: appMain.styleFunction[key]
@@ -640,55 +635,6 @@ $(document).ready(function() {
             format: 'DD/MM/YYYY',
           locale: 'es'
         });
-      },
-      graficaTipo:function(g_subtipo){  //console.log(g_subtipo);
-/*          Highcharts.chart('container', {
-              chart: {
-                  plotBackgroundColor: null,
-                  plotBorderWidth: null,
-                  plotShadow: false,
-                  type: 'pie'
-              },
-              title: {
-                  text: 'Sub tipos'
-              },
-              credits: {
-                text: 'SAGA-SECTIC',
-                href: '#'
-              },
-              tooltip: {
-                  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-              },
-              legend: {
-                  align: 'center',
-                  verticalAlign: 'center',
-                  floating: true,
-                  x: 220,
-                  y: 25,
-                  itemWidth : 200,
-                  alignColumns: false
-              },
-              plotOptions: {
-                  pie: {
-                      allowPointSelect: true,
-                      cursor: 'pointer',
-                      dataLabels: {
-                          enabled: false,
-                          format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                          style: {
-                              color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                          }
-                      },
-                      showInLegend: true,
-                      center: [200,40]
-                  }
-              },
-              series: [{
-                  name: 'Obras',
-                  colorByPoint: true,
-                  data: g_subtipo
-              }]
-          }); */
       },
       CargaFuentes:function() {  
           appMain.socket.emit('GetListFuentes', null, function(message){     //console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
@@ -833,11 +779,12 @@ $(document).ready(function() {
           title.text = "Cundinamarca";
 
 
-          appMain.getDatagrafica();
+          //appMain.getDatagrafica();
 
       },
       IniMain:function(){
           waitingDialog.show();
+          appMain.iniControles();
           //this.column_cod_mpio();
           appMain.eventJquery();
           AppMap.cod_mpio=AppMap.Initcod_mpio();  console.log(AppMap.cod_mpio);
@@ -847,7 +794,7 @@ $(document).ready(function() {
           appMain.GetGeo();
           appMain.geoTooltip();
           //appMain.graficaTipo();
-          appMain.iniControles();
+          
       }
     };
 

@@ -317,18 +317,18 @@ $(document).ready(function() {
           if(dataEnc!=undefined){
             $("#col_cod_mpio").show();
             $("#container").show();
-            $("#PanelLeyendacod_mpio").show();
+            //$("#PanelLeyendacod_mpio").show();
             var data=Func.Decrypted(dataEnc);   //console.log(data);
             appMain.asigData('cod_mpio',data['cod_mpio']);
             $("#CantTotal").empty().append(data["total"][0].cuenta);
           }else{
             $("#col_cod_mpio").hide();
             $("#container").hide();
-            $("#PanelLeyendacod_mpio").hide();
+            //$("#PanelLeyendacod_mpio").hide();
             Func.MsjAvisoTop("No se encontraron datos!");
             $("#CantTotal").empty().append("0");
-
           }
+          $("#PanelLeyendacod_mpio").hide();
         });
       },
       setGrafica:function(datos,mpio,total){  //console.log(datos);

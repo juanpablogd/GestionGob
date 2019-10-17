@@ -136,6 +136,8 @@ $(document).ready(function() {
 		});
 	};
 	console.log("Carga Inicial de Gestiones!");
+	console.log(Func.GetTipo());
+	console.log(Func.GetCentrosG().join());
 	CargarGestiones(Func.GetTipo(),Func.GetCentrosG().join());
 	if(Func.GetTipo()=="C"){
 		$("#div_add").hide();

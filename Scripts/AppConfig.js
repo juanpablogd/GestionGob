@@ -2,7 +2,7 @@ var AppConfig={
  	UrlSocket: 'http://saga.cundinamarca.gov.co:4171', 			//Socket Login			app.js
  	UrlSocketApp: 'http://saga.cundinamarca.gov.co:3322',		//Socket Aplicación		AppSeguimientoActividades.js
  	cl:'1erf2a5f1e87g1',
- 	NextLogin:'../map/view/',
+ 	NextLogin:'../map/',
 	// TABLA public.p_perfil
 		//ADMIN           (18)			// tipo 'C'
 		//CONSULTA        (2)				// tipo 'C'

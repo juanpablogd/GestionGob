@@ -1,9 +1,9 @@
 var Func={
 	Decrypted : function (message) { 
 		try {
-			var text=CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8);
+			var text=CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8);	//console.log(text);
 		}
-		catch(err) {
+		catch(err) {	//console.log(err);
 		    this.CerrarAPP();
 			return false;
 		}
@@ -11,7 +11,7 @@ var Func={
 			this.CerrarAPP();
 			return false;
 		}else{
-			var decrypted =JSON.parse(CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));
+			var decrypted =JSON.parse(CryptoJS.AES.decrypt(message,AppConfig.cl).toString(CryptoJS.enc.Utf8));	//console.log(decrypted);
 			return decrypted;	
 		}
 	},
@@ -23,6 +23,25 @@ var Func={
 		var DatosUsuario=this.Decrypted(localStorage.dt); //console.log(DatosUsuario);
 		return	DatosUsuario;
 	},
+	degToRad:function(deg) {
+       return deg * Math.PI * 2 / 360;
+   	},
+   	sorting:function(json_object, key_to_sort_by) {
+	    function sortByKey(a, b) {
+	        var x = a[key_to_sort_by];
+	        var y = b[key_to_sort_by];
+	        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+	    }
+
+	    json_object.sort(sortByKey);
+	},
+	uniques(arr) {
+	    var a = [];
+	    for (var i=0, l=arr.length; i<l; i++)
+	        if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
+	            a.push(arr[i]);
+	    return a;
+	}, 
 	GetIdusuario: function (){
 		var data=this.DataLogin();	console.log(data);
 		return data[0].id;
@@ -45,8 +64,9 @@ var Func={
 	    }
 	},
 	GetTipo: function (){ //jp 24
-		var data=this.DataLogin();		//console.log(data);//console.log("CORREGIR: id_perfil_admin");
-		//24)SUPERADMIN 69)ADMINISTRADOR 70)CONSULTA 79)CARGAR 87)CARGAR 96)EDICION
+		var data=this.DataLogin();		//console.log(data[0]);	//console.log(data[0].id_perfil_admin);
+		if (data[0] === undefined) return "C";
+
 		var id_perfil_admin = data[0].id_perfil_admin;	//var id_perfil_admin = data[0].id_perfil_admin; //JP
 		if(id_perfil_admin==24||id_perfil_admin==69){
 	        return "A";	//ADMINISTRADOR
@@ -56,23 +76,21 @@ var Func={
 	    	return "C";	//CONSULTA
 	    }
 	},
-	GetTipoapp: function (IdPerfil){ //jp 24 -- 19)ICCU  93)Salud  121)EPC  122)IDACO
-		if(IdPerfil==19 || IdPerfil==93 || IdPerfil == 121 || IdPerfil == 122){
+	GetTipoapp: function (IdPerfil){ //jp 24
+		if(IdPerfil==93 || IdPerfil == 121 || IdPerfil == 122){
 	        return "obra";	
 	    }else{
 	    	return "gestion";	
 	    }
 	},
 	GetCentrosG: function (){ //jp 24
+		var data=this.DataLogin();	//console.log(data);	//console.log("CORREGIR: centrog");
+		if (data[0] === undefined) return [];
+		data = data[0].centrog;		//console.log(data.length);	//JP
+		//data = 1119;		//console.log(data.length);
 		var cg = [];
-		var data=this.DataLogin();	//console.log(data);
-			//console.log("CORREGIR: centrog");
-		if(data[0].centrog != undefined){
-			data = data[0].centrog;		//console.log(data.length);	//JP
-			//data = 1119;		//console.log(data.length);
-			for (s=0;s<data.length;s++) {
-				cg.push(data[s].id); console.log(data[s]);
-			}
+		for (s=0;s<data.length;s++) {
+			cg.push(data[s].id); console.log(data[s]);
 		}
 		return cg; 
 	},
@@ -91,7 +109,7 @@ var Func={
 	CerrarAPP: function(){
 		//console.log("CORREGIR: CERRAR APP");
 		localStorage.clear();								//JP
-	   	//window.location.assign("../Login/index.html");		//JP
+	   	window.location.assign("../Login/index.html");		//JP
 	},
 	ValidaUsuario: function(){
 		if(!localStorage.dt){
@@ -112,11 +130,11 @@ var Func={
 	    }
 	},
 	IntevaloLogin:function(){
-/*		var app=this;
+		var app=this;
 		app.ValidaUsuario();
 		setInterval(function(){	//console.log('Valido');
 			app.ValidaUsuario();
-		}, 1000*5);*/
+		}, 1000*5);	
 	},
 	degToRad:function(deg) {
        return deg * Math.PI * 2 / 360;
@@ -189,6 +207,26 @@ var Func={
 			}
 		});
 	},
+	MsjAvisoTop:function(msj){
+		$.notify({
+			// options
+			icon: 'fa fa-exclamation-circle',
+			message: msj 
+		},{
+			// settings
+			type: 'danger',
+			timer : 100,
+			delay: 3000,
+			animate: {
+				enter: 'animated bounceInRight',
+				exit: 'animated bounceOutRight'
+			},
+			placement: {
+				from: "top",
+				align: "right"
+			}
+		});
+	},
 	ComparaFechas:function(dateTimeA, dateTimeB){
 	    var momentA = moment(dateTimeA,"YYYY-MM-DD");
 	    var momentB = moment(dateTimeB,"YYYY-MM-DD");
@@ -216,121 +254,7 @@ var Func={
 		    if (arr[i] == obj) vr = true;
 		}
 		return vr;
-	},
-	   	sorting:function(json_object, key_to_sort_by) {
-	    function sortByKey(a, b) {
-	        var x = a[key_to_sort_by];
-	        var y = b[key_to_sort_by];
-	        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-	    }
-
-	    json_object.sort(sortByKey);
-	},
-	uniques(arr) {
-	    var a = [];
-	    for (var i=0, l=arr.length; i<l; i++)
-	        if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
-	            a.push(arr[i]);
-	    return a;
-	}, 
-	flyTo(location, done) {
-        var duration = 2000;
-        var zoom = AppMap.view.getZoom();
-        var parts = 2;
-        var called = false;
-        function callback(complete) {
-          --parts;
-          if (called) {
-            return;
-          }
-          if (parts === 0 || !complete) {
-            called = true;
-            done(complete);
-          }
-        }
-        AppMap.view.animate({
-          center: location,
-          duration: duration
-        }, callback);
-        AppMap.view.animate({
-          zoom: 8,
-          duration: duration / 2
-        }, {
-          zoom: 11,
-          duration: duration / 2
-        }, callback);
-      },	
-/*      GetCentrosG: function (){ //jp 24
-		var data=this.DataLogin();	//console.log(data);
-		//console.log("CORREGIR: centrog");
-		data = data[0].centrog;		//console.log(data.length);	//JP
-		//data = 1119;		//console.log(data.length);
-		var cg = [];
-		for (s=0;s<data.length;s++) {
-			cg.push(data[s].id); //console.log(data[s]);
-		}
-		return cg; 
-	},	*/
-	MsjPeligro:function(msj){
-		$.notify({
-			// options
-			icon: 'fa fa-exclamation-circle',
-			message: msj 
-		},{
-			// settings
-			type: 'danger',
-			timer : 100,
-			delay: 3000,
-			animate: {
-				enter: 'animated bounceInRight',
-				exit: 'animated bounceOutRight'
-			},
-			placement: {
-				from: "bottom",
-				align: "right"
-			}
-		});
-	},
-	MsjAviso:function(msj){
-		$.notify({
-			// options
-			icon: 'fa fa-exclamation-circle',
-			message: msj 
-		},{
-			// settings
-			type: 'info',
-			timer : 100,
-			delay: 3000,
-			animate: {
-				enter: 'animated bounceInRight',
-				exit: 'animated bounceOutRight'
-			},
-			placement: {
-				from: "bottom",
-				align: "right"
-			}
-		});
-	},
-	MsjAvisoTop:function(msj){
-		$.notify({
-			// options
-			icon: 'fa fa-exclamation-circle',
-			message: msj 
-		},{
-			// settings
-			type: 'danger',
-			timer : 100,
-			delay: 3000,
-			animate: {
-				enter: 'animated bounceInRight',
-				exit: 'animated bounceOutRight'
-			},
-			placement: {
-				from: "top",
-				align: "right"
-			}
-		});
-	},
+	}
 };
 
 var FuncDecrypted=function(message){	//console.log("FuncDecrypted INI: "+AppConfig.cl);
@@ -344,8 +268,8 @@ $( ".valor" ).each(function( index ) {	//console.log( index + ": " + $( this ).t
 	    numeralThousandsGroupStyle: 'thousand'
 	});
 });
-if(Func.UsuarioLogueado()){ console.log(Func.GetTipoapp(Func.GetIdPerfil()));	console.log(Func.GetAdmin());
-	if(Func.GetTipoapp(Func.GetIdPerfil()) == "gestion" && !Func.GetAdmin()){
-		$("#opcion_convenios").hide();	
-	} 
+if(Func.UsuarioLogueado()){
+	console.log(Func.GetTipoapp(Func.GetIdPerfil()));
+	console.log(Func.GetAdmin());
+	if(Func.GetTipoapp(Func.GetIdPerfil()) == "gestion" && !Func.GetAdmin()) $("#opcion_convenios").hide();
 }

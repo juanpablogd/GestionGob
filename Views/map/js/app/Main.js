@@ -509,7 +509,8 @@ $(document).ready(function() {
             var sum=[],cont=[];
            $.each(appMain.glo.geoAdmin[key].features, function( index, value ) {  //console.log(index); console.log(value);
               appMain.glo.geoAdmin[key].features[index].properties.cuenta=0;
-              var as=$(data).filter(function (i,n){return n[key]===value.properties.id}); //console.log(as);
+              var as=$(data).filter(function (i,n){return n[key]===value.properties.id}); 
+              //if (as[0].cod_mpio == "25862") console.log(as[0]);
               if(as.length==1)  {
                 appMain.glo.geoAdmin[key].features[index].properties.cuenta=as[0].cuenta;
                 cont.push(as[0].cuenta);
@@ -544,6 +545,35 @@ $(document).ready(function() {
                    d > global_valores[0]  ? appMain.colors['cod_mpio'][1] :
                                appMain.colors['cod_mpio'][0];
       },
+      getColorNeutro:function(cod_prov){  //console.log(cod_prov);
+        // GRIS //
+/*        if (cod_prov == "251800" || cod_prov == "250200" || cod_prov == "250300"){
+          return "#f0f0f0CC";
+        }else if(cod_prov == "250100" || cod_prov == "250500" || cod_prov == "250600"){
+          return "#d9d9d9CC";
+        }else if(cod_prov == "250700" || cod_prov == "250800" || cod_prov == "251100"){
+          return "#525252CC";
+        }else if(cod_prov == "251200" || cod_prov == "251300" || cod_prov == "251500"){
+          return "#969696CC";
+        }else if(cod_prov == "251600" || cod_prov == "251700" || cod_prov == "250400"){
+          return "#969696CC";
+        }else{
+          return "#bdbdbdCC";
+        } */
+        if (cod_prov == "251800" || cod_prov == "250200" || cod_prov == "250300"){
+          return "#deebf7CC";
+        }else if(cod_prov == "250100" || cod_prov == "250500" || cod_prov == "250600"){
+          return "#c6dbefCC";
+        }else if(cod_prov == "250700" || cod_prov == "250800" || cod_prov == "251100"){
+          return "#9ecae1CC";
+        }else if(cod_prov == "251200" || cod_prov == "251300" || cod_prov == "251500"){
+          return "#6baed6CC";
+        }else if(cod_prov == "251600" || cod_prov == "251700" || cod_prov == "250400"){
+          return "#4292c6CC";
+        }else{
+          return "#2171b5CC";
+        }
+      },
       crearGeo:function(key,tipoGroup,l){   //console.log(l); //console.log(key);
         //console.log(tipoGroup);
         var numberOfBreaks = l-1; //console.log(appMain.glo.geoAdmin[key]); console.log(tipoGroup); console.log(numberOfBreaks); console.log(appMain.colors[key]);
@@ -570,8 +600,12 @@ $(document).ready(function() {
           });
           var temp_json=[]
           appMain.source[key].forEachFeature(function(feature){
-              var prop=feature.getProperties(); //console.log(appMain.getColor(geoJenks,prop.n));
-              var colorFeature = appMain.getColor(geoJenks,prop[tipoGroup]);  //console.log(colorFeature);
+              var prop=feature.getProperties(); //console.log(prop);  //console.log(appMain.getColor(geoJenks,prop.n));
+              if (prop.id == "25862") console.log(prop);
+              // CALCULAR VALOR SEGÚN VALOR
+              //var colorFeature = appMain.getColor(geoJenks,prop[tipoGroup]);  //console.log(colorFeature);
+              // VALOR NEUTRO
+              var colorFeature = appMain.getColorNeutro(prop.codigo_pro);  //console.log(colorFeature);
               
               style = new ol.style.Style({
                           //I don't know how to get the color of your kml to fill each room

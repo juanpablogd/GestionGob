@@ -1,166 +1,140 @@
- var parametros = Func.Decrypted(localStorage.ps);	console.log(parametros);
+$(document).ready(function() {
 
-
- am4core.ready(function() {
-
-			// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-		// create chart
-		var chart = am4core.create("chartdiv", am4charts.TreeMap);
-		chart.hiddenState.properties.opacity = 0; // this makes initial fade in effect
-
-		chart.data = [{
-		  name: "First",
-		  children: [
-		    {
-		      name: "A1",
-		      value: 100
-		    },
-		    {
-		      name: "A2",
-		      value: 60
-		    },
-		    {
-		      name: "A3",
-		      value: 30
-		    }
-		  ]
-		},
-		{
-		  name: "Second",
-		  children: [
-		    {
-		      name: "B1",
-		      value: 135
-		    },
-		    {
-		      name: "B2",
-		      value: 98
-		    },
-		    {
-		      name: "B3",
-		      value: 56
-		    }
-		  ]
-		},
-		{
-		  name: "Third",
-		  children: [
-		    {
-		      name: "C1",
-		      value: 335
-		    },
-		    {
-		      name: "C2",
-		      value: 148
-		    },
-		    {
-		      name: "C3",
-		      value: 126
-		    },
-		    {
-		      name: "C4",
-		      value: 26
-		    }
-		  ]
-		},
-		{
-		  name: "Fourth",
-		  children: [
-		    {
-		      name: "D1",
-		      value: 415
-		    },
-		    {
-		      name: "D2",
-		      value: 148
-		    },
-		    {
-		      name: "D3",
-		      value: 89
-		    },
-		    {
-		      name: "D4",
-		      value: 64
-		    },
-		    {
-		      name: "D5",
-		      value: 16
-		    }
-		  ]
-		},
-		{
-		  name: "Fifth",
-		  children: [
-		    {
-		      name: "E1",
-		      value: 687
-		    },
-		    {
-		      name: "E2",
-		      value: 148
-		    }
-		  ]
-		}];
-
-		chart.colors.step = 2;
-
-		// define data fields
-		chart.dataFields.value = "value";
-		chart.dataFields.name = "name";
-		chart.dataFields.children = "children";
-
-		chart.zoomable = false;
-		var bgColor = new am4core.InterfaceColorSet().getFor("background");
-
-		// level 0 series template
-		var level0SeriesTemplate = chart.seriesTemplates.create("0");
-		var level0ColumnTemplate = level0SeriesTemplate.columns.template;
-
-		level0ColumnTemplate.column.cornerRadius(10, 10, 10, 10);
-		level0ColumnTemplate.fillOpacity = 0;
-		level0ColumnTemplate.strokeWidth = 4;
-		level0ColumnTemplate.strokeOpacity = 0;
-
-		// level 1 series template
-		var level1SeriesTemplate = chart.seriesTemplates.create("1");
-		var level1ColumnTemplate = level1SeriesTemplate.columns.template;
-
-		level1SeriesTemplate.tooltip.animationDuration = 0;
-		level1SeriesTemplate.strokeOpacity = 1;
-
-		level1ColumnTemplate.column.cornerRadius(10, 10, 10, 10)
-		level1ColumnTemplate.fillOpacity = 1;
-		level1ColumnTemplate.strokeWidth = 4;
-		level1ColumnTemplate.stroke = bgColor;
-
-		var bullet1 = level1SeriesTemplate.bullets.push(new am4charts.LabelBullet());
-		bullet1.locationY = 0.5;
-		bullet1.locationX = 0.5;
-		bullet1.label.text = "{name}";
-		bullet1.label.fill = am4core.color("#ffffff");
-
-		chart.maxLevels = 2;
-
-
-
-
-	level1SeriesTemplate.interactionsEnabled = true;
-    level1SeriesTemplate.events.on(
-      "hit",
-      ev => {   console.log("hit");   //Trae las propiedades
-        var dp = ev.target;    console.log(dp.dataItem.dataContext);
-      },
-      this
-    );
+var appGrafica={
+  parametros:null,
+  chart:null,
+  Inicial:function(){ //console.log(localStorage.ps);
+    let valParametros = localStorage.ps;  //console.log(valParametros);
+    //Set parametros
+    this.parametros = Func.Decrypted(valParametros);  console.log(this.parametros);
+    $("#nom_mpio").html(this.parametros.nom_mpio);
+    //Ini grafica
+  // create this.chart
+    this.chart = am4core.create("chartdiv", am4plugins_sunburst.Sunburst);
+    this.chart.padding(0,0,0,0);
+    this.chart.radius = am4core.percent(110);
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+    this.getData();
+  },
+  getData:function(){   console.log("getData");
+      AppConfig.socketDataAdmin = io.connect(AppConfig.UrlSocketApp+'/DataAdmin');
+      AppConfig.socketDataAdmin.emit('GetTiposGrafica',  {data : this.parametros}, function(message){       //console.log("message Mun DATA: " + message.length); //console.log("message Mun:" + message);
+        console.log(moment().format('h:mm:ss:SSSS')+" Visitas Ini");      //console.log("message:" + message);
+        var decrypted = FuncDecrypted(message);   //console.log(decrypted);   //console.log(decrypted.datos.length);
+        appGrafica.setGrafica(decrypted);
+        console.log(moment().format('h:mm:ss:SSSS')+" Unica Gestión FIN");  //console.log($.fn.dataTable.isDataTable( '#TBList' ));
+      });
     
-    level1SeriesTemplate.events.on(
-      "transitionended",
-      ev => {   console.log("Click - Ocultar Sector");
-      },
-      this
-    );
+  },
+  setGrafica:function(datos){
+      this.chart.data = datos;    //console.log(this.chart.data);
 
-}); // end am4core.ready()
+      this.chart.colors.step = 2;
+      this.chart.fontSize = 11;
+      this.chart.innerRadius = am4core.percent(5);
+
+      // define data fields
+      this.chart.dataFields.value = "value";
+      this.chart.dataFields.name = "name";
+      this.chart.dataFields.children = "children";
+
+
+      var level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries();
+      level0SeriesTemplate.hiddenInLegend = false;
+      this.chart.seriesTemplates.setKey("0", level0SeriesTemplate)
+
+      // this makes labels to be hidden if they don't fit
+      level0SeriesTemplate.labels.template.truncate = true;
+      level0SeriesTemplate.labels.template.hideOversized = true;
+
+      level0SeriesTemplate.labels.template.adapter.add("rotation", function(rotation, target) {
+        target.maxWidth = target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
+        target.maxHeight = Math.abs(target.dataItem.slice.arc * (target.dataItem.slice.innerRadius + target.dataItem.slice.radius) / 2 * am4core.math.RADIANS);
+
+        return rotation;
+      })
+
+
+      var level1SeriesTemplate = level0SeriesTemplate.clone();
+      this.chart.seriesTemplates.setKey("1", level1SeriesTemplate)
+      level1SeriesTemplate.fillOpacity = 0.75;
+      level1SeriesTemplate.hiddenInLegend = true;
+
+      var level2SeriesTemplate = level0SeriesTemplate.clone();
+      this.chart.seriesTemplates.setKey("2", level2SeriesTemplate)
+      level2SeriesTemplate.fillOpacity = 0.5;
+      level2SeriesTemplate.hiddenInLegend = true;
+
+      level0SeriesTemplate.slices.template.interactionsEnabled = true;
+      level0SeriesTemplate.slices.template.events.on(
+        "hit",
+        ev => {   //console.log("hit");   //Trae las propiedades
+          var dp = ev.target;    console.log(dp.dataItem.dataContext.dataContext);
+          setTimeout(function(){  //console.log('Valido');
+                $.fancybox.open({
+                    src  : '../Gestiones/ListaFiltroMap.html',
+                    type : 'iframe',
+                    opts : {
+                        afterShow : function( instance, current ) {
+                          console.info( 'done!' );
+                        }
+                    }
+                });
+          }, 99);
+
+        },
+        this
+      );
+
+      level1SeriesTemplate.slices.template.interactionsEnabled = true;
+      level1SeriesTemplate.slices.template.events.on( 
+        "hit",
+        ev => {   //console.log("hit");   //Trae las propiedades
+          var dp = ev.target;    console.log(dp.dataItem.dataContext.dataContext);
+          setTimeout(function(){  //console.log('Valido');
+                $.fancybox.open({
+                    src  : '../Gestiones/ListaFiltroMap.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
+                    type : 'iframe',
+                    opts : {
+                        afterShow : function( instance, current ) {
+                          console.info( 'done!' );
+                        }
+                    }
+                });
+          }, 99);
+        },
+        this
+      );
+
+      level2SeriesTemplate.slices.template.interactionsEnabled = true;
+      level2SeriesTemplate.slices.template.events.on(
+        "hit",
+        ev => {   //console.log("hit");   //Trae las propiedades
+          var dp = ev.target;    console.log(dp.dataItem.dataContext.dataContext);
+          setTimeout(function(){  //console.log('Valido');
+                $.fancybox.open({
+                    src  : '../Gestiones/ListaFiltroMap.html',   //src  : 'grafica_consulta.html',  //../Gestiones/ListaFiltroMap.html
+                    type : 'iframe',
+                    opts : {
+                        afterShow : function( instance, current ) {
+                          console.info( 'done!' );
+                        }
+                    }
+                });
+          }, 99);
+        },
+        this
+      );
+          
+          
+
+      this.chart.legend = new am4charts.Legend();
+  },
+}
+
+appGrafica.Inicial();  
+
+//   var parametros = Func.Decrypted(localStorage.ps);	console.log(parametros);
+});

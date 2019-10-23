@@ -5,6 +5,193 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 Please note, that this project, while following numbering syntax, it DOES NOT
 adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
+## [4.7.4] - 2019-10-22
+
+## Added
+- New global option: `am4core.options.viewportTarget`. If you are placing charts into a scrollable container and using `onlyShowOnViewport`, set this option to a reference to the container. The system will monitor both window and individual scroll of the container to know where to reveal the lazy-loaded chart.
+- New `MapChart` property: `geodataNames`. It can now be used to automatically translate country names into multiple languages. Check out [usage instructions](https://www.amcharts.com/docs/v4/tutorials/using-map-country-name-translations/).
+- `hideParentColumns` property added to `TreeMap`. If set to `true` columns of the parent series will be hidden when user drills-down into deeper levels.
+
+### Fixed
+- `ColorSet` was starting to generate grayscale colors at some point.
+- Accessibility: Series that has items with roles "menuitem" will now have its role set to "menu" automatically.
+- Series bullets were dislocated on `XYChart` with `DateAxis` and `dateFormatter.utc = true`.
+- In some specific cases 3D columns used incorrect `zIndex`.
+- Index of dataItem of `PercentSeries` could be `-`1 after first render.
+- `yRange` of `XYCursor` was inversed.
+
+
+## [4.7.3] - 2019-10-18
+
+### Fixed
+- `ColumnSeries` with `simplifiedProcessing = true` setting was sometimes producing visual glitches.
+
+
+## [4.7.2] - 2019-10-18
+
+### Added
+- `RadarColumn` now supports `width` adapter (the adapter should return `Percent` object).
+
+### Changed
+- `minWidth`/`minHeight` set on Axis to 0.0001 to avoid ready event to be not called on super small divs.
+
+### Fixed
+- A link between two fixed `ForcedDirectedTree` nodes was not visible.
+- If `maxZoomCount` was set on a series which was used for `XYChartScrollbar`, scrollbar series was zoomed-in.
+- `PercentChart`'s legend, if placed to an external div could loose text formatting after data update.
+- `gridType = "polygons"` of `RadialAxis` was not working.
+- Label of `PinBullet` was not being cloned.
+- `rangeChangeEasing` function was not being passed to `ValueAxis` min/max animation which resulted in some unwanted animation effects when min/max of the axis changed.
+
+
+## [4.7.1] - 2019-10-16
+
+### Added
+- Two additional auto-calculated values (used in `valueXShow` and `valueYShow` data fields) added: `startChange` and `startChangePercent`. Shows change from starting value of the first data item in series.
+
+### Changed
+- Animated theme: Default values for `rangeChangeDuration` and `interpolationDuration` changed to `500` (was `700`). Makes zooming animations more snappy.
+
+### Fixed
+- Data item grouping was sometimes producing visual anomalies when multiple data sets were being loaded /set to chart/series asynchronously.
+
+
+## [4.7.0] - 2019-10-14
+
+### Added
+- Dynamic data item grouping capabilities added to `XYSeries` in `DateAxis` + `ValueAxis` setups. [More details](https://www.amcharts.com/docs/v4/concepts/axes/date-axis/#Dynamic_data_item_grouping).
+- Export: Two new data export options "HTML" and "PDF" (exports data as a table in PDF).
+- Export: Ability to include data table into PDF export (`addData` option in PDF options).
+
+### Fixed
+- Regression plugin: Plugin was not generating proper regression lines if data was loaded via `dataSource`.
+- Fixed number formatting for data exports on non-default-locale charts.
+- `min`/`max` of `ValueAxis` was not always correct when series showed not actual but calculated values using `valueYShow`/`valueXShow` data fields like `"sum"`, `"change"`, or `"changePercent"`.
+
+
+## [4.6.9] - 2019-10-08
+
+### Fixed
+- Accessibility: `itemReaderText` on `XYSeries` (and all inheriting series types) now respects value set from user code.
+- Accessibility: Default `role` for chart changed to `widget`.
+- Accessibility: `Axis` has now `readerHidden = true` set by default, to prevent screen readers from reading out useless numbers.
+- Accessibility: `readerTitle` was not being populated by data item data via curly bracket data placeholders.
+- Accessibility: Bullets were ignoring Series' `skipFocusThreshold` setting.
+
+
+## [4.6.8] - 2019-10-07
+
+### Added
+- New `Export` property: [`validateSprites`](https://www.amcharts.com/docs/v4/reference/export/#validateSprites_property). It's an array you can push any `Sprite` to it. When export starts, it will check if those elements are not invalid and will await for them to be ready. This is useful if you need to do any modifications to your chart for export.
+- New option for CSV and XSLX export options: `pivot`. If set to `true`, will "pivot" the data so that firsst column is field names with values lined up horizontally in rows.
+- New property on `NumberFormatter`: `smallNumberThreshold` (default `1`). You can now set what is considered a "small number" when applying small number prefixes if `"a"` format modifier is used.
+
+### Fixed
+- If `ForceDirectedTree` was used with `am4core.options.onlyShowOnViewport = true`, the forces on links were not being calculated properly, resulting in incorrect layout.
+- JSON: String dates will now be correctly parsed using `DateFormatter` in axis ranges' `date` and `endDate` properties.
+- `WordCloud` was not properly parsing Korean text.
+- If `MapChart` was zoomed in while still playing pan inertia animation, it produced a jerky effect.
+
+
+## [4.6.7] - 2019-10-05
+
+### Added
+- `paddingRadius` added to `ForceDirectedNode`. Allows having some extra free space around bubbles.
+- New event on all `Sprite` elements: `parentset`. Triggers whenever element's `parent` is set.
+
+### Fixed
+- `MapChart` background was not being updated if map projection was changed after init.
+- Axis' tooltip was not changed if user rolled over the axis, rolled out and then rolled over it again on the same axis item.
+
+
+## [4.6.6] - 2019-10-04
+
+### Fixed
+- Language setting was being ignored in `DateAxis` after previous release.
+
+
+## [4.6.5] - 2019-10-02
+
+### Fixed
+- Position of the bullets of a series with date-based axis could be incorrect in some sepecific cases.
+- Some minor performance improvements.
+- Map polygon was not updated if `mapPolygon.multiGeoPolygon` was changed after the series was already inited.
+- Some minor issue with `XYCursor` panning fixed.
+
+
+## [4.6.4] - 2019-09-29
+
+### Added
+- Ukrainian translation (uk_UA).
+- `DataSource` now supports binary loading using `responseType = "blob"`.
+
+### Fixed
+- Setting `exporting.dateFormat` resulted in "Invalid date" as a column name for date/time columns when exporting to XLSX.
+- Performance improved, especially data-parsing.
+- When panning `XYChart`, the chart will round selections respecting `startLocation` and `endLocation` values of the Axis.
+- First bullet of a series with `CategoryAxis` could be positioned incorrectly.
+- Conflict between Annotation plugin and amCharts 3 Export plugin fixed.
+
+
+## [4.6.3] - 2019-09-26
+
+### Fixed
+- `ColorSet` was now skipping the first (base) color if no theme or list of colors was specified.
+- Setting axis `title` to a new `Label` object will now remove the previous title label.
+
+
+## [4.6.2] - 2019-09-25
+
+### Added
+- New plugin: [OverlapBuster](https://www.amcharts.com/docs/v4/tutorials/plugin-overlap-buster/). Allows automatically "exploding" overlapping items such as bullets or markers for easier access to them.
+- New property: `maxZoomCount` on `Component`. Use it to limit how many items such as categories or base intervals on axes can be shown at the same time.
+- Added `riseFromOpenState`, `riseFromPreviousState`, `dropFromOpenState`, and `dropFromPreviousState` setters to `ColumnSeries`. You can use them to set states to `undefined` if you don't want them to be used.
+- A possibility to make "fixed" `ForceDirectedTree` nodes added (via `dataFields.fixed`). Also it is possible to set `x` and `y` of such nodes using `series.nodes.template.propertyField.x` and `y`. [More info](https://www.amcharts.com/docs/v4/chart-types/force-directed/#Fixed_nodes).
+
+### Changed
+- Removed "GIF" option from the Export menu. Browsers don't know how to convert canvas to GIF, so it was falling back to exporting as PNG, making GIF option redundant.
+
+### Fixed
+- If chart's data source was initialized (which would happen by only accessing chart's `dataSource` property) and its `url` was not set, it was still trying to load and resulting in error.
+- Formatting number with "b" modifier, was causing all numbers up to 1024 become zero.
+- `ColorSet` with default (no) theme was generating colors from second in the list from `4.6.1`.
+- Bullet positions were incorrect on `ValueAxis` with `baseValue` set to other than zero.
+- Bullet positions with `DateAxis` could be incorrect in some cases.
+- Title position of a cloned Axis was nor being positioned properly.
+- Cursor was flickering if axis of a cursor had some padding set.
+- Tooltip position of `MapImage` elements with `nonScaling = true` could be incorrect in some specific cases.
+- Vertical axis break's fill might get out of sync with break lines if the width of a break was small.
+- `RadarCursor` could show incorrect label if the chart had `CategoryAxis` with only 3 categories.
+- Series was not redrawing properly if its axis range value changed.
+- `PieChart` could show some labels out of chart area in some specific cases.
+
+
+## [4.6.1] - 2019-09-18
+
+### Added
+- New property `unselectedOverlay` added to `XYChartScrollbar`. It contains a reference to `Sprite` element used as a "curtain" on unselected areas of the scrollbar. Use it to control dimming effect by using its `fill` and `fillOpacity` properties.
+- Export: New option `crop` (default: `false`) added to `extraSprices` interface `IExportCanvas`. If set to `true`, it will crop extra elements to match height/width of the main chart being exported.
+- Wherever "date format" can be set it now accepts in [Intl.DateTimeFormatOptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) format. E.g. `chart.dateFormatter.dateFormat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }`.
+- New property `intlLocales` on `DateFormatter`. Specifies list of locales to use if date formates are specified as `IntlDateTimeFormatOptions`.
+- JSON: You can now set `parent` property of the elements by their `id` in JSON configs. E.g.: `scrollbarX: { parent: "aa1" }`.
+- JSON: You can now set easing functions as strings in JSON config, e.g. `transitionEasing: "ease.cubicInOut"`.
+
+### Fixed
+- `TreeMapSeries` and `SunburstSeries` were not inheriting `numberFormatter` propertly from the chart.
+- Removed a leftover `console.log()` call.
+- Exporting no longer temporarily modifies the site's styles.
+
+
+## [4.6.0] - 2019-09-12
+
+### Added
+- New plugin: [Timeline](https://www.amcharts.com/docs/v4/chart-types/timeline/). Please note it's a commercial plugin, which will need a separate license purchase if you want to remove the branding link on it, even if you have amCharts 4 license.
+
+### Fixed
+- `chart.svgContainer.autoResize = false` was being ignored.
+- If data of chart with `CategoryAxis` had data items without a category value, the chart used to create one extra empty "category".
+
+
 ## [4.5.16] - 2019-09-04
 
 ### Fixed

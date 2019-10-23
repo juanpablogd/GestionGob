@@ -43,44 +43,6 @@ $(document).ready(function() {
           cod_mpio: ['white','#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026','rgba(107,6,1,1)'],
         },
       
-        column_cod_mpio:function(){ console.log("column_cod_mpio");
-            appMain.column.cod_mpio=Highcharts.chart('col_cod_mpio', {
-                chart: {
-                    type: 'bar',
-                    height: 400,
-                    marginTop:5,
-                    spacingTop: 5
-
-                },
-                title: {
-                    text: ''
-                },
-                xAxis: {
-                    categories: ['-'],
-                    labels:{
-                      style: {
-                          fontSize: "9px",
-                          fontWeight: 'bold'
-                      }
-                    }
-                },
-                credits: {
-                  text: 'SAGA-SECTIC',
-                  href: '#'
-                },
-                yAxis: {
-                  title:'Cantidad Obras',
-                },
-                series: [{
-                    name:'Cantidad Obras',
-                    showInLegend: false,
-                     data: [ {
-                        y: 0,
-                        color: '#BF0B23'
-                    }]
-                }]
-            });
-        },
       hexToRgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
@@ -331,7 +293,7 @@ $(document).ready(function() {
           $("#PanelLeyendacod_mpio").hide();
         });
       },
-      setGrafica:function(datos,mpio,total){  //console.log(datos);
+      setGrafica:function(datos,mpio,total){  console.log(datos);
           this.chart.data = datos;    //console.log(this.chart.data);
 
           this.chart.colors.step = 2;
@@ -793,12 +755,20 @@ $(document).ready(function() {
                     appMain['id_subtipoc'] = $('#sel_id_subtipoc option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
                 }
         });
+        /* DEFINE ALTURA DE VENTANA*/
+        var alto = $(window).height() - 90; console.log(alto); console.log($("#colFiltro").height());
+        $('#colFiltro').css("height", alto );
+        $('#cod_mpio').css("height", alto - 50 );
+        $('#colGrafica').css("height", alto );
+        $('#chartdiv').css("height", alto - 10 );
+
         /* INI GRAFICA */ 
           //let valParametros = localStorage.ps;  //console.log(valParametros);
           //Set parametros
           //this.parametros = Func.Decrypted(valParametros);  console.log(this.parametros);
           //$("#nom_mpio").html(this.parametros.nom_mpio);
           // Themes begin
+
           am4core.useTheme(am4themes_kelly);
           am4core.useTheme(am4themes_animated);
 

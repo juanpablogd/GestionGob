@@ -45,14 +45,20 @@
     <style type="text/css">
       .fondoMenu
       {
-          background-image: url("images/objetos obra ejemplar-01.jpg");
-          background-repeat: no-repeat;
-          background-size: cover;
-          background-repeat: round;
+          background: rgba(202,25,13,1);
+          background: -moz-linear-gradient(top, rgba(202,25,13,1) 0%, rgba(255,165,0,1) 100%);
+          background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(202,25,13,1)), color-stop(100%, rgba(255,165,0,1)));
+          background: -webkit-linear-gradient(top, rgba(202,25,13,1) 0%, rgba(255,165,0,1) 100%);
+          background: -o-linear-gradient(top, rgba(202,25,13,1) 0%, rgba(255,165,0,1) 100%);
+          background: -ms-linear-gradient(top, rgba(202,25,13,1) 0%, rgba(255,165,0,1) 100%);
+          background: linear-gradient(to bottom, rgba(202,25,13,1) 0%, rgba(255,165,0,1) 100%);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ca190d', endColorstr='#ffa500', GradientType=0 );
+          height: inherit;
+
       }
       #chartdiv {
         width: 100%;
-        height: 620px;
+        
       }
       .row {
           height: 100%;
@@ -124,9 +130,8 @@
       </div>
     </nav>
 
-    <div class="row">
          <!-- COLUMNA 1/3 FILTROS, TOTAL Y GRÁFICA -->
-         <div class="item no-float col-xs-12 col-md-6 col-lg-2 fondoMenu" style="min-height: 630px;"><br>
+         <div id="colFiltro" class="item no-float col-xs-12 col-md-6 col-lg-2 fondoMenu" style="min-height: 630px;border-radius: 0px 0px 20px 0px;"><br>
               <!-- LOGOS GOBER -->
               <center>
                  <a href="#">
@@ -206,14 +211,14 @@
             
          </div>
          <!-- COLUMNA 2/3 MAPAS Y GRAFICA -->
-         <div class="item no-float col-xs-12 col-md-6 col-lg-4" style="min-height: 73px;">
+         <div id="colMapa" class="col-xs-12 col-md-6 col-lg-4" >
             <!-- MAPA MUNICIPIO -->
-            <div class="item  col-xs-12 col-lg-12 col-md-12">
-               <div class="panel panel-orange ">
+            
+               <div class="panel panel-orange" >
                   <div class="panel-heading">
                      <h3>Municipio Obras: <b><span id="CantTotal">0</span></b></h3>
                   </div>
-                  <div class="panel-body">
+                  <div id="panelMapa" class="panel-body">
                      <div id="PanelLeyendacod_mpio"  class="PanelLeyendacod_mpio" >
                         <div class="panel panel-primary">
                            <div class="panel-body" style="max-width: 300px;">
@@ -223,19 +228,18 @@
                            </div>
                         </div>
                      </div>
-                     <div id="cod_mpio">
+                     <div id="cod_mpio" style="height: inherit;">
                      </div>
                      <div id="info2"></div>
                      <img src="./images/logo.png" class="LogoSaga"  >
                   </div>
                </div>
-            </div>
+            
          </div>
          <!-- COLUMNA 2/2 MAPAS Y GRAFICA -->
-         <div class="item no-float col-xs-12 col-md-12 col-lg-6" style="min-height: 73px;">
+         <div id="colGrafica" class="col-xs-12 col-md-12 col-lg-6" >
             <div id="chartdiv" class="centrar"></div>
          </div>
-      </div>
 </div>
 
    

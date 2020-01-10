@@ -3,8 +3,8 @@ $(document).ready(function() {
          glo:{
           geom:['cod_mpio','cod_prov'],
           geoAdmin:[],
-    	  motivo:'',
-    	  fecha:''      
+        motivo:'',
+        fecha:''      
         },
         info:'',
         info2:'',
@@ -51,27 +51,27 @@ $(document).ready(function() {
       },
       getFuente:function(resolution,n,key){
         if(key=='cod_mpio'){
-        	if(resolution <= 160) {
-    	      fuente = (10+n)+'px Calibri,sans-serif';
-    	    }else if(resolution > 160 && resolution <= 300){
-    	      fuente = (9+n)+'px Calibri,sans-serif';
-    	    }else if(resolution > 300 && resolution <= 320){
-    	      fuente = (8+n)+'px Calibri,sans-serif';
-    	    }else {
-    	      fuente = '0px Calibri,sans-serif';
-    	    }
+          if(resolution <= 160) {
+            fuente = (10+n)+'px Calibri,sans-serif';
+          }else if(resolution > 160 && resolution <= 300){
+            fuente = (9+n)+'px Calibri,sans-serif';
+          }else if(resolution > 300 && resolution <= 320){
+            fuente = (8+n)+'px Calibri,sans-serif';
+          }else {
+            fuente = '0px Calibri,sans-serif';
+          }
         }else{
-        	if(resolution <= 160) {
-    	      fuente = (12+n)+'px Calibri,sans-serif';
-    	    }else if(resolution > 160 && resolution <= 300){
-    	      fuente = (11+n)+'px Calibri,sans-serif';
-    	    }else if(resolution > 300 && resolution <= 320){
-    	      fuente = (10+n)+'px Calibri,sans-serif';
-    	    }else {
-    	      fuente = (8+n)+'px Calibri,sans-serif';
-    	    }
+          if(resolution <= 160) {
+            fuente = (12+n)+'px Calibri,sans-serif';
+          }else if(resolution > 160 && resolution <= 300){
+            fuente = (11+n)+'px Calibri,sans-serif';
+          }else if(resolution > 300 && resolution <= 320){
+            fuente = (10+n)+'px Calibri,sans-serif';
+          }else {
+            fuente = (8+n)+'px Calibri,sans-serif';
+          }
         }
-    	    
+          
         return fuente;
 
       },
@@ -85,44 +85,44 @@ $(document).ready(function() {
           return sty;
         },
         main:function(feature,resolution,key,dat) {
-    	    var prop=feature.getProperties();
-    	    var texto = feature.get('n')+'\n'+ ((feature.get(dat)> 0) ? feature.get(dat):"");
-    	    var fuente=appMain.getFuente(resolution,0,key);
-    	    var stroke='#319FD3',width=1;
-    	   
-    	    var rgb=appMain.hexToRgb(prop.fill);
-    	  
-    	    if(prop.cuenta==0){
-    	      rgb={
-    	          r:250,
-    	          g:250,
-    	          b:250
-    	      }
-    	    }
-    	       
-    	    return new ol.style.Style({
-    	          stroke: new ol.style.Stroke({
-    	            color: stroke,
-    	            width: width
-    	          }),
-    	          fill: new ol.style.Fill({
-    	            color: "rgba("+rgb.r+","+rgb.g+","+rgb.b+",1)"            
-    	          }),
-    	          text: new ol.style.Text({
-    	            font: fuente,
-    	            text: texto,
-    	            fill: new ol.style.Fill({
-    	              color: '#000'
-    	            })
+          var prop=feature.getProperties();
+          var texto = feature.get('n')+'\n'+ ((feature.get(dat)> 0) ? feature.get(dat):"");
+          var fuente=appMain.getFuente(resolution,0,key);
+          var stroke='#319FD3',width=1;
+         
+          var rgb=appMain.hexToRgb(prop.fill);
+        
+          if(prop.cuenta==0){
+            rgb={
+                r:250,
+                g:250,
+                b:250
+            }
+          }
+             
+          return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                  color: stroke,
+                  width: width
+                }),
+                fill: new ol.style.Fill({
+                  color: "rgba("+rgb.r+","+rgb.g+","+rgb.b+",1)"            
+                }),
+                text: new ol.style.Text({
+                  font: fuente,
+                  text: texto,
+                  fill: new ol.style.Fill({
+                    color: '#000'
+                  })
                   /*,
-    	            stroke: new ol.style.Stroke({
-    	              color: 'white',
-    	              width: 4
-    	            })*/
-    	          })
-    	
-    	
-    	     });
+                  stroke: new ol.style.Stroke({
+                    color: 'white',
+                    width: 4
+                  })*/
+                })
+      
+      
+           });
         }
       },
       AutoDisplayLeyend:function(c,key){
@@ -147,9 +147,9 @@ $(document).ready(function() {
       displayFeatureInfo:function(pixel,key) { //console.log(pixel);
             var info='',pesos='';
             if(key=='cod_mpio'){
-            	info='info2';	
+              info='info2'; 
             }else{
-            	info='info';
+              info='info';
             }
             
             
@@ -175,7 +175,7 @@ $(document).ready(function() {
         appMain.info.tooltip({animation: false, trigger: 'manual',html:true});
         appMain.info2.tooltip({animation: false, trigger: 'manual',html:true});
         /* AppMap.cod_prov.on('pointermove', function(evt) {
-        	appMain.displayFeatureInfo(AppMap.cod_mpio.getEventPixel(evt.originalEvent),'cod_mpio');
+          appMain.displayFeatureInfo(AppMap.cod_mpio.getEventPixel(evt.originalEvent),'cod_mpio');
             appMain.displayFeatureInfo(AppMap.cod_prov.getEventPixel(evt.originalEvent),'cod_prov');
         }); */
         AppMap.cod_mpio.on('pointermove', function(evt) {
@@ -198,6 +198,7 @@ $(document).ready(function() {
                 if(feature.values_.cuenta == 0){
                   Func.MsjAvisoTop("No se encontraron datos en "+data.nom_mpio);
                 }else{
+                  $("#CantTotal").empty().append(feature.values_.cuenta);
                   appMain.getDatagrafica(data,feature.values_.n,feature.values_.cuenta);  
                 }
               }); 
@@ -220,46 +221,48 @@ $(document).ready(function() {
       },
      
       updateFecha:function(fecha){
-      	if(appMain.glo.fecha==''){
-    	  	$('#fechaDatosMin').data('DateTimePicker').minDate(moment(fecha.min,'YYYY-MM-DD'));
-    	    $('#fechaDatosMin').data('DateTimePicker').maxDate(moment(fecha.max,'YYYY-MM-DD'));
-    		
-    		$('#fechaDatosMax').data('DateTimePicker').minDate(moment(fecha.min,'YYYY-MM-DD'));
-    	    $('#fechaDatosMax').data('DateTimePicker').maxDate(moment(fecha.max,'YYYY-MM-DD'));
-    	        
-    	    $('#fechaDatosMin').data('DateTimePicker').date(moment(fecha.min,'YYYY-MM-DD'));
-    	    $('#fechaDatosMax').data('DateTimePicker').date(moment(fecha.max,'YYYY-MM-DD'));
-    	    
-    	    appMain.glo.fecha=fecha;
+        if(appMain.glo.fecha==''){
+          $('#fechaDatosMin').data('DateTimePicker').minDate(moment(fecha.min,'YYYY-MM-DD'));
+          $('#fechaDatosMin').data('DateTimePicker').maxDate(moment(fecha.max,'YYYY-MM-DD'));
+        
+        $('#fechaDatosMax').data('DateTimePicker').minDate(moment(fecha.min,'YYYY-MM-DD'));
+          $('#fechaDatosMax').data('DateTimePicker').maxDate(moment(fecha.max,'YYYY-MM-DD'));
+              
+          $('#fechaDatosMin').data('DateTimePicker').date(moment(fecha.min,'YYYY-MM-DD'));
+          $('#fechaDatosMax').data('DateTimePicker').date(moment(fecha.max,'YYYY-MM-DD'));
+          
+          appMain.glo.fecha=fecha;
         }
       },
       updateMotivo:function(motivo){
-      	if(appMain.glo.motivo==''){
-    		$("#selMotivo").empty().append('<option value="all">--Todos--</option>');
-    	    $.each(motivo, function( index, value ) {
-    		  $("#selMotivo").append('<option value="'+value.motivo_final+'">'+value.descripcion+'</option>');
-    		});
-    		appMain.glo.motivo=motivo;
-    	}
+        if(appMain.glo.motivo==''){
+        $("#selMotivo").empty().append('<option value="all">--Todos--</option>');
+          $.each(motivo, function( index, value ) {
+          $("#selMotivo").append('<option value="'+value.motivo_final+'">'+value.descripcion+'</option>');
+        });
+        appMain.glo.motivo=motivo;
+      }
       },
       getParametros:function(){ 
-      	var data={};
+        var data={};
+        var codObra = numeral($("#cod_obra").val());  //console.log(codObra.value());
+        data.cod_obra=codObra.value();
         data.qid_centro=appMain['qid_centro'];
         data.idFuentes=appMain['idFuente'];
+        data.id_clasificacion=appMain['id_clasificacion'];
         data.id_tipo=appMain['id_tipoc'];
         data.id_subtipo=appMain['id_subtipoc'];
-      	data.semaforo=$("#semaforo").val();  //console.log($('#fechaDatosMin').data('DateTimePicker'));
+        data.semaforo=$("#semaforo").val();  //console.log($('#fechaDatosMin').data('DateTimePicker'));
         if($('#fechaDatosMin').data('DateTimePicker') != undefined){
           data.fechaDatosMin=$('#fechaDatosMin').data('DateTimePicker').date();
           data.fechaDatosMax=$('#fechaDatosMax').data('DateTimePicker').date();      
         }
-      	return data;
+        return data;
       },
       getData:function(){
-
         appMain.parametros.cod_mpio = "";
         var data=appMain.getParametros();
-        data.cod_mun = "";  //console.log(data);
+        data.cod_mun = "";  console.log(data);
         appMain.parametros.cod_mpio = "";
         localStorage.ps = Func.Ecrypted(data);  //console.log("Ingresa a getDash"); //console.log(data);
         //Consulta datos de Gráfica
@@ -269,10 +272,10 @@ $(document).ready(function() {
           console.log("devuelve a getDash");  //console.log(dataEnc);
 
           if(appMain.lyr['cod_prov']){
-          	AppMap['cod_prov'].removeLayer(appMain.lyr['cod_prov']);	
+            AppMap['cod_prov'].removeLayer(appMain.lyr['cod_prov']);  
           }
           if(appMain.lyr['cod_mpio']){
-          	AppMap['cod_mpio'].removeLayer(appMain.lyr['cod_mpio']);	
+            AppMap['cod_mpio'].removeLayer(appMain.lyr['cod_mpio']);  
           }
           waitingDialog.hide();
 
@@ -293,6 +296,331 @@ $(document).ready(function() {
           $("#PanelLeyendacod_mpio").hide();
         });
       },
+      listaContratos:function(){ console.log("listaContratos");
+        $.fancybox.open({
+          type: "html",
+          src: '<table id="example" class="display" style="width:100%">'+
+                        '<thead>'+
+                            '<tr>'+
+                                '<th>Cod obra</th>'+
+                                '<th>Contrato</th>'+
+                                '<th>Clasificación</th>'+
+                                '<th>Municipio</th>'+
+                                '<th>Fecha</th>'+
+                                '<th>Descripcion</th>'+
+                                '<th>Valor</th>'+
+                                '<th>Avance</th>'+
+                                '<th>Centro</th>'+
+                                '<th>Ver más</th>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tfoot>'+
+                            '<tr>'+
+                                '<th>Cod obra</th>'+
+                                '<th>Contrato</th>'+
+                                '<th>Clasificación</th>'+
+                                '<th>Municipio</th>'+
+                                '<th>Fecha</th>'+
+                                '<th>Descripcion</th>'+
+                                '<th>Valor</th>'+
+                                '<th>Avance</th>'+
+                                '<th>Centro</th>'+
+                                '<th>Ver más</th>'+
+                            '</tr>'+
+                        '</tfoot>'+
+                '</table>',
+          opts: {
+            animationDuration: 110,
+            touch:false,
+            animationEffect: "material",
+            afterLoad: function(instance, current, e) {
+ console.log("afterLoad");   //console.log(JSON.stringify(AppMap.param));
+                    $("#example").parent().css( "width", "98%" ).css( "height", "98%" ).css( "max-width", "98%" ).css( "max-height", "98%" ).css( "margin", "0" );
+                    var total;
+                    var data = appMain.getParametros();
+                    var table = $('#example').DataTable( {
+                        "processing": true,
+                        "serverSide": true,
+                        "fixedHeader": true,
+                        "lengthMenu": [[5, 10], [5, 10]],
+                        "order": [[ 8, "desc" ]],
+                        "pageLength": 10,
+                        "scrollX": true,
+                        //"order": [[ 9, 'desc' ]],
+                        "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+                        "ajax": {
+                            url: "../../Services/server_processing.php?f="+JSON.stringify(data),
+                            dataSrc: function ( data ) { //console.log(data);
+                               total = data.total;
+                               return data.data;
+                             } 
+                        },
+                        "columns": [
+                            { "data": "id" },
+                            { "data": "nro_con" },
+                            { "data": "nom_clasificacion" },
+                            { "data": "municipio" },
+                            { "data": "fecha" },
+                            { "data": "descripcion",
+                                "render": function ( data, type, row ) {
+                                    var conCat = data;    //console.log(data);
+                                    if (data=='80') conCat = data+'...';
+                                    return conCat;
+                            } },
+                            { "data": "vr_total","className": "dt-body-right" },
+                            { "data": "avance_porcentaje","className": "dt-body-right" },
+                            { "data": "centro" },
+                            { "data": null,"defaultContent": '<i class="fa fa-list-alt" aria-hidden="true"></i>',"className": "dt-body-center",
+                            },
+                        ],
+                        "language": {   //<i class="fas fa-cog fa-spin"></i>
+                            processing: '<i class="fa fa-cog fa-spin fa-3x fa-fw"></i>  Procesando',
+                                "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                        "footerCallback": function ( row, data, start, end, display ) {
+                                    var api = this.api(), data;
+                         
+                                    // Remove the formatting to get integer data for summation
+                                    var intVal = function ( i ) {
+                                        return typeof i === 'string' ?
+                                            i.replace(/[\$,]/g, '')*1 :
+                                            typeof i === 'number' ?
+                                                i : 0;
+                                    };
+                         
+                                    // Total over this page
+                                    pageTotal = api
+                                        .column( 6, { page: 'current'} )
+                                        .data()
+                                        .reduce( function (a, b) {
+                                            return intVal(a) + intVal(b);
+                                        }, 0 );
+                         
+                                    // Update footer
+                                    $( api.column( 6 ).footer() ).html(
+                                        'Subtotal Pág: $'+numeral(pageTotal).format('0,0') +' <hr> Total Listado: $'+ numeral(total).format('0,0') +''
+                                    );
+                                },
+                        "fnInitComplete": function(oSettings, json) {
+                            var tHead = $("div.dataTables_scrollHeadInner").children().children();  //console.log(tHead);
+                            tHead.prepend('<tr id="tblFiltro"></tr>');
+                                this.api().columns().every( function () {
+                                    var column = this; //console.log(column);
+                                    var miHtml;
+                                    var ordenCol = column[0][0];
+//0=>Vigencia  1=>Mpio  2=>Sector  3=>Meta  4=>Entidad  5=>Contrato  6=>Objeto  7=>InvMpio  8=>InvDepto
+//0=>CodObra  1=>Cto  2=>Clasifica  3=>Mpio  4=>Fecha  5=>Desc  6=>Vr  7=>Avance  8=>Centro  9=>Ver Más
+                                    if(ordenCol==0){    //0=>CodObra
+                                        miHtml = $('<td><input id="filID" class="form-control form-control-sm" type="text" placeholder="Año"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filID").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(0).search() !== valDigitado && valDigitado.length > 1 )table.column(0).search( valDigitado ).draw();
+                                        })
+                                    }
+                                    if(ordenCol==1){    //1=>Contrato
+                                        miHtml = $('<td><input id="filCto" class="form-control form-control-sm" type="text" placeholder="Año"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filCto").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(1).search() !== valDigitado && valDigitado.length > 1 )table.column(1).search( valDigitado ).draw();
+                                        })
+                                    } //appMain["listadoClasificacion"]
+                                    if(ordenCol==2){    //console.log(appMain["listadoClasificacion"]);
+                                        var todos = true;
+                                        if(appMain['listadoClasificacion'].length != 0) todos = false;
+                                        miHtml = $('<td><select  id="filClasifica" class="form-control"><option value=""></option></select></td>');
+                                        $("#tblFiltro").append(miHtml); //console.log(AppMap.glo.dataGrafica['mpio']);
+                                        for (var i = 0, len = appMain["listadoClasificacion"].length; i < len; i++) {
+                                            //if(todos || jQuery.inArray(appMain["listadoClasificacion"][i].cod, AppMap.param.sector) > -1){
+                                                $("#filClasifica").append('<option value="'+appMain["listadoClasificacion"][i].label+'">'+appMain["listadoClasificacion"][i].label+' </option>');
+                                            //}
+                                        } 
+                                        $( "#filClasifica" ).change(function() {
+                                            if ( table.column(2).search() !== $( this ).val() ) table.column(2).search( $( this ).val() ).draw();
+                                        });
+                                    }
+                                    console.log(data['cod_mpio']);
+                                    if(ordenCol==3){    //3=>Mpio
+                                        var todos = true;
+                                        miHtml = $('<td><select  id="filMpio" class="form-control"><option value=""></option></select></td>');
+                                        $("#tblFiltro").append(miHtml); //console.log(AppMap.varMultiselect['vMunicipio']);
+                                        //console.log(JSON.stringify(AppMap.param));
+                                        /*if(AppMap.param.municipio.length != 0) todos = false;
+                                        for (var i = 0, len = AppMap.varMultiselect['vMunicipio'].length; i < len; i++) {   //console.log(AppMap.varMultiselect['vMunicipio'][i]);
+                                            if(AppMap.varMultiselect['vMunicipio'][i].hasOwnProperty("children")){
+                                                //console.log(AppMap.varMultiselect['vMunicipio'][i]);
+                                                for (var j = 0, lon = AppMap.varMultiselect['vMunicipio'][i]['children'].length; j < lon; j++){
+                                                    if(todos || jQuery.inArray(AppMap.varMultiselect['vMunicipio'][i]['children'][j].value, AppMap.param.municipio) > -1){
+                                                        $("#filMpio").append('<option value="'+AppMap.varMultiselect['vMunicipio'][i]['children'][j].label+'">'+AppMap.varMultiselect['vMunicipio'][i].label+" - "+AppMap.varMultiselect['vMunicipio'][i]['children'][j].label+'</option>');
+                                                    }
+                                                }
+                                            }else{
+                                                if(todos || jQuery.inArray(AppMap.varMultiselect['vMunicipio'][i].value, AppMap.param.municipio) > -1){
+                                                    $("#filMpio").append('<option value="'+AppMap.varMultiselect['vMunicipio'][i].label+'">'+AppMap.varMultiselect['vMunicipio'][i].label+'</option>');
+                                                }
+                                            }
+                                        }*/
+                                        $( "#filMpio" ).change(function() {
+                                            if ( table.column(3).search() !== $( this ).val() ) table.column(3).search( $( this ).val() ).draw();
+                                        });
+                                    }
+//0=>CodObra  1=>Cto  2=>Clasifica  3=>Mpio  4=>Fecha  5=>Desc  6=>Vr  7=>Avance  8=>Centro  9=>Ver Más
+                                    if(ordenCol==4){  //4=>Fecha
+                                        var todos = true;   //console.log(AppMap.param.meta.length);
+                                        miHtml = $('<td><input id="filFecha" class="form-control form-control-sm" type="text" placeholder="Fecha"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filFecha").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(4).search() !== valDigitado && valDigitado.length > 1 )table.column(4).search( valDigitado ).draw();
+                                        })
+                                    }
+                                    if(ordenCol==5){    //5=>Descripción
+                                        var todos = true;   //console.log(AppMap.param.meta.length);
+                                        miHtml = $('<td><input id="filDescripcion" class="form-control form-control-sm" type="text" placeholder="Fecha"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filDescripcion").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(5).search() !== valDigitado && valDigitado.length > 1 )table.column(5).search( valDigitado ).draw();
+                                        })
+                                    }
+                                    if(ordenCol==6){    //6=>Valor
+                                        miHtml = $('<td><input id="filValor" class="form-control form-control-sm" type="text" placeholder="Inversión Departamento"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filValor").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(6).search() !== this.value && (valDigitado.length > 3 || valDigitado.length ==0))table.column(6).search( valDigitado ).draw();
+                                        })
+                                    }
+                                    if(ordenCol==7){    //7=>Avance
+                                        miHtml = $('<td><input id="filAvance" class="form-control form-control-sm" type="text" placeholder="Inversión Departamento"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filAvance").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(7).search() !== this.value && (valDigitado.length > 3 || valDigitado.length ==0))table.column(7).search( valDigitado ).draw();
+                                        })
+                                    }
+                                    if(ordenCol==8){    //7=>Avance
+                                        miHtml = $('<td><input id="filCentro" class="form-control form-control-sm" type="text" placeholder="Inversión Departamento"></td>');
+                                        $("#tblFiltro").append(miHtml);
+                                        $("#filCentro").on( 'keyup change', function () { console.log("keyup change:"+this.value);
+                                            var valDigitado = this.value;
+                                            if ( table.column(8).search() !== this.value && (valDigitado.length > 3 || valDigitado.length ==0))table.column(8).search( valDigitado ).draw();
+                                        })
+                                    }
+                                    
+                                } ); 
+                            $('#example tbody').on( 'click', 'tr', function () { console.log(this);
+                                var idRow = $(this).attr('id');
+                                var arRow = idRow.split("_");
+                                var idRegistro = arRow[1];  console.log(idRegistro);
+                                var tblVigencia=$(this).find("td:eq(0)").text();
+                                var tblMunicipio=$(this).find("td:eq(1)").text(); 
+                                var txtInvMpio = 'Inversión del Departamento en el Municipio';
+                                var txtFacturacion = 'Facturado Contrato, asociado a la meta para ('+tblMunicipio+')';
+                                if (tblMunicipio == "CUNDINAMARCA"){
+                                    tblMunicipio  = "Inversión global para Cundinamarca";    
+                                    txtInvMpio = 'Inversión global en Cundinamarca';
+                                }else if(tblMunicipio == "CENTRO ADMINISTRATIVO"){
+                                    tblMunicipio  = "Fortalecimiento Institucional (Centro Administrativo)";
+                                    txtInvMpio = 'Inversión Fortalecimiento Institucional (Centro Administrativo)';
+                                }
+                                
+                                var tblSector=$(this).find("td:eq(2)").text();
+                                var tblMeta=$(this).find("td:eq(3)").text();
+                                var tblEntidad=$(this).find("td:eq(4)").text();
+                                var tblContato=$(this).find("td:eq(5)").text();
+                                var tblInvdepto=$(this).find("td:eq(7)").text();
+                                var tblInvmpio=$(this).find("td:eq(8)").text();
+
+                                //LLama detalle de contrato
+                                $.ajax({url: "../../Services/getContrato.php?id="+idRegistro, 
+                                    success : function(result){ /*     //console.log(result);
+                                        var dataCto = JSON.parse(result);      //console.log(vEntidad);
+                                        var facturacion = numeral(dataCto[0].fact_meta).format('0,0');
+                                        var fechaRegistro = moment(dataCto[0].fecha_registro, "YYYYMMDD").format('DD/MM/YYYY');
+                                        var nomMeta = dataCto[0].nombre.split('-');
+                                        var tiProyecto = dataCto[0].tipo_proy;
+                                        if(tiProyecto==null) tiProyecto = "No disponible";
+                                        if (dataCto != null && dataCto != ""){  console.log(tblContato);
+                                            var ctoTransferencia = '<tr><td><b>Contrato</b></td><td> '+tblContato+' </td></tr>';
+                                            var txtEspacio =  '<tr><td><b>Ubicación</b></td><td> '+tblMunicipio+' </td></tr>';
+                                            var txtObjeto = '<tr><td><b>Objeto</b></td><td>'+dataCto[0].obj_contrato_todo+'</td></tr>';
+                                            var txtFecharegistro = '<tr><td><b>Fecha de Registro (dd/mm/aaaa)</b></td><td>'+fechaRegistro+'</td></tr>';
+                                            var txtPlazoejecucion = '<tr><td><b>Plazo de ejecución</b></td><td>'+dataCto[0].plazo_ejecucion+'</td></tr>';
+                                            var txtInvDptoCto = '<tr><td><b>Inversión del depto. en el contrato</b></td><td> '+tblInvdepto+'</td></tr>';
+                                            var txtGeneralFac = '<tr><td><b>'+txtFacturacion+'</b></td><td>$ '+facturacion+'</td></tr>';
+                                            if (tblContato == "80" || tblContato == "80..."){
+                                                ctoTransferencia = '<tr><td><b>Transferencia</b></td><td>'+dataCto[0].obj_contrato_todo+'</td></tr>';  
+                                                txtObjeto = '';
+                                                txtFecharegistro = '';
+                                                txtPlazoejecucion = '';
+                                                txtInvDptoCto = '';
+                                                txtGeneralFac = '';
+                                            } 
+                                            var lista = 
+                                                '<table class="table table-bordered table-striped table-responsive">'+
+                                                    '<col width="190px"><col>'+
+                                                    ctoTransferencia+
+                                                    txtObjeto+
+                                                  '<tr><td><b>Vigencia:</b></td><td> '+tblVigencia+' </td> </tr>'+
+                                                  txtFecharegistro+
+                                                  txtPlazoejecucion+
+                                                  txtInvDptoCto+
+                                                  txtEspacio+
+                                                  '<tr><td><b>'+txtInvMpio+'</b></td><td> '+tblInvmpio+'</td></tr>'+
+                                                  '<tr><td><b>Entidad</b></td><td>'+tblEntidad+'</td></tr>'+
+                                                  '<tr><td><b>Sector</b></td><td> '+tblSector+' </td></tr>'+
+                                                  '<tr><td><b>Tipo de proyecto</b></td><td> '+tiProyecto+'</td></tr>'+
+                                                  '<tr><td><b>Meta</b></td><td>'+tblMeta+' '+nomMeta[1]+'</td></tr>'+
+                                                  txtGeneralFac+
+                                                '</table>';
+
+                                            //lista = '<table class="table"><thead><tr><th>Firstname</th><th>Lastname</th><th>Email</th></tr></thead><tbody><tr><td>John</td><td>Doe</td><td>john@example.com</td></tr><tr><td>Mary</td><td>Moe</td><td>mary@example.com</td></tr><tr><td>July</td><td>Dooley</td><td>july@example.com</td></tr></tbody></table>';
+                                            // ABRE VENTANA DE DETALLE
+                                            $.fancybox.open({
+                                              type: "html",
+                                              autoSize : false,
+                                              src:
+                                                '<div style="display: none;" id="animatedModal" class="animated-modal" >'+
+                                                    lista+
+                                                "</div>",
+                                            });
+                                        } */
+                                    }
+                                });
+
+                            } );
+                            //SI es del mapa
+                            //if(mapa) AppMap.param.municipio = AppMap.tmp['municipio'];
+                            //console.log(AppMap.param.municipio);
+                        }
+                    } );
+
+            }  
+          }
+        });
+      },
       setGrafica:function(datos,mpio,total){  console.log(datos);
           this.chart.data = datos;    //console.log(this.chart.data);
 
@@ -308,27 +636,32 @@ $(document).ready(function() {
           this.chart.dataFields.color = "color";
 
           var level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries();
-          level0SeriesTemplate.hiddenInLegend = false;
-          this.chart.seriesTemplates.setKey("0", level0SeriesTemplate)
+          //level0SeriesTemplate.hiddenInLegend = false;
+          this.chart.seriesTemplates.setKey("0", level0SeriesTemplate);
 
           // this makes labels to be hidden if they don't fit
           level0SeriesTemplate.labels.template.truncate = true;
           level0SeriesTemplate.labels.template.wrap = true;
           level0SeriesTemplate.labels.template.hideOversized = true;
+          level0SeriesTemplate.labels.template.radius = am4core.percent(3);
+          level0SeriesTemplate.labels.template.fill = am4core.color("black");
+          level0SeriesTemplate.labels.template.text = "{name}";
+          level0SeriesTemplate.labels.template.relativeRotation  = 90;
           level0SeriesTemplate.calculatePercent = true;
           level0SeriesTemplate.dataFields.name = "name";
+          level0SeriesTemplate.fontSize = 12;
+          //this.chart.legend.fontSize = 10;
+
           level0SeriesTemplate.dataFields.category = "name";
           level0SeriesTemplate.dataFields.color = "color";
           level0SeriesTemplate.slices.template.propertyFields.fill = "color";
           level0SeriesTemplate.slices.template.propertyFields.stroke = "color";
           level0SeriesTemplate.slices.template.tooltipText  = "{category}: {value.value} ({porcentaje}%)";
-          level0SeriesTemplate.labels.template.fill = am4core.color("black");
-          level0SeriesTemplate.labels.template.relativeRotation  = 90;
 
-          level0SeriesTemplate.labels.template.adapter.add("rotation", function(rotation, target) {
-            target.maxWidth = target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
+
+          level0SeriesTemplate.labels.template.adapter.add("rotation", function(rotation, target) { //console.log(target.dataItem.slice.innerRadius);
+            target.maxWidth = target.dataItem.slice.radius - (target.dataItem.slice.innerRadius * 0.9);
             target.maxHeight = Math.abs(target.dataItem.slice.arc * (target.dataItem.slice.innerRadius + target.dataItem.slice.radius) / 2 * am4core.math.RADIANS);
-
             return rotation;
           })
 
@@ -433,19 +766,24 @@ $(document).ready(function() {
           //this.chart.legend.position = "right";
           this.chart.legend.fontSize = 10;
           this.chart.legend.labels.template.text = "[bold]{name}[/]";
-          this.chart.legend.labels.template.truncate = false;
-          this.chart.legend.labels.template.wrap = true;
+          this.chart.legend.labels.template.truncate = true;
+          this.chart.legend.labels.template.wrap = false;
           this.chart.legend.itemContainers.template.paddingTop = 4;
           this.chart.legend.itemContainers.template.paddingBottom = 4;
+          this.chart.legend.itemContainers.template.width = am4core.percent(30);
+          this.chart.legend.valueLabels.template.width = am4core.percent(30);
+
           // Add chart title
           if (mpio != undefined){
             if (total != undefined && total != ""){
-              this.chart.titles.values[0].text = " "+mpio+" ("+total+")";
+              this.chart.titles.values[0].text = " "+mpio; //" "+mpio+" ("+total+")";
             }else this.chart.titles.values[0].text = " "+mpio+" ";
             
           }else{
             this.chart.titles.values[0].text = "Cundinamarca";  
-          }
+          } //console.log(this.chart.titles.values[0].dom.id);
+          //$("#"+this.chart.titles.values[0].dom.id).attr("fill","red");
+          this.chart.titles.values[0].fill = am4core.color("#62A2CA");
           /*this.chart.legend.itemContainers.template.width = am4core.percent(100);
           this.chart.legend.valueLabels.template.width = am4core.percent(100);*/
       },
@@ -554,8 +892,8 @@ $(document).ready(function() {
             geoJenks[5] = arr[Math.floor(len*.95) - 1]; if(geoJenks[5] == undefined) geoJenks[5] = 90;
             //console.log(AppMap.rango.percentil['10'] + " -> " + AppMap.rango.percentil['50'] + " -> " + AppMap.rango.percentil['90']);
         console.log(geoJenks);  console.log(key);
-    	  
-    	  appMain.AutoDisplayLeyend(geoJenks,key);   //console.log(geoJenks);
+        
+        appMain.AutoDisplayLeyend(geoJenks,key);   //console.log(geoJenks);
           
           appMain.source[key]=new ol.source.Vector({
               features: (new ol.format.GeoJSON()).readFeatures(appMain.glo.geoAdmin[key])
@@ -613,10 +951,13 @@ $(document).ready(function() {
        
       },
       eventJquery:function(){
-      	$("#btonBuscar").click(function() {
-        		waitingDialog.show();
-        		appMain.getData();
-      	});
+        $("#btonBuscar").click(function() {
+            waitingDialog.show();
+            appMain.getData();
+        });
+        $("#btonListado").click(function() {
+            appMain.listaContratos();
+        });
         $('#fechaDatosMin,#fechaDatosMax').datetimepicker({
           format: 'DD/MM/YYYY',
             locale: 'es'
@@ -644,6 +985,18 @@ $(document).ready(function() {
             console.log(moment().format('h:mm:ss:SSSS')+" FIN");
         });
       },
+      cargaClasificacion:function() { console.log("cargaClasificacion"); //var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());  console.log(Func.GetCentrosG().join());
+          appMain.socket.emit('getlistaClasificacionConsulta', {}, function(message){ //id_centrog : id_centroges
+          console.log(moment().format('h:mm:ss:SSSS')+" Listado Tipos");        //console.log("message:" + message);
+          var decrypted = Func.Decrypted(message);                   //console.log(message);                 
+/*          if(decrypted[0].label == " -- Seleccione --"){
+            decrypted[0].label = " Todos ";
+          }   //console.log(decrypted);*/
+          appMain["listadoClasificacion"]=decrypted;                      
+          $('#sel_id_clasificacion').multiselect('dataprovider', appMain["listadoClasificacion"]);
+            console.log(moment().format('h:mm:ss:SSSS')+" FIN");
+        });
+      },
       cargaTipos:function() {
         //var id_centroges = Func.Ecrypted(Func.GetCentrosG().join());  console.log(Func.GetCentrosG().join());
           appMain.socket.emit('getlistaTiposConsulta', {}, function(message){ //id_centrog : id_centroges
@@ -652,7 +1005,7 @@ $(document).ready(function() {
           if(decrypted[0].label == " -- Seleccione --"){
             decrypted[0].label = " Todos ";
           }   //console.log(decrypted);
-          appMain["listadoTipos"]=decrypted;                      
+          appMain["listadoTipos"]=decrypted;  //console.log(appMain["listadoTipos"]);
           $('#sel_id_tipoc').multiselect('dataprovider', appMain["listadoTipos"]);
             console.log(moment().format('h:mm:ss:SSSS')+" FIN");
         });
@@ -676,7 +1029,7 @@ $(document).ready(function() {
             if(decrypted[0].label == " -- Seleccione --"){
               decrypted[0].label = " Todos ";
             }   console.log(decrypted);
-            appMain["listadoSubtipos"]=decrypted;                     
+            appMain["listadoSubtipos"]=decrypted;   console.log(appMain["listadoSubtipos"]);
             $('#sel_id_subtipoc').multiselect('dataprovider', appMain["listadoSubtipos"]);
             console.log(moment().format('h:mm:ss:SSSS')+" FIN");
           });
@@ -717,7 +1070,23 @@ $(document).ready(function() {
                     appMain['idFuente'] = $('#idFte option:selected').map(function(a, item){return item.value;}).get(); //console.log(AppConfig['id_centrog']);
                 }
         });
-        /* SELECT - TIPO */
+        /* SELECT - CLASIFICACION */
+        $('#sel_id_clasificacion').multiselect({
+                  enableClickableOptGroups: true,
+                  enableCollapsibleOptGroups: true,
+                  enableFiltering: true,
+                  enableCaseInsensitiveFiltering: true,
+                  buttonWidth: '100%',
+                  onChange: function(option, checked, select) {
+                    appMain['id_clasificacion'] = $('#sel_id_clasificacion option:selected').map(function(a, item){return item.value;}).get();  //console.log('onChange: '+AppConfig['id_convenio']); //console.log(AppConfig['id_tipoc'][0]);
+                  },
+                  onSelectAll: function(checked) {
+                    appMain['id_clasificacion'] = $('#sel_id_clasificacion option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
+                },
+                  onDeselectAll: function(checked) {
+                    appMain['id_clasificacion'] = $('#sel_id_clasificacion option:selected').map(function(a, item){return item.value;}).get();  //console.log(AppConfig['id_convenio']);
+                }
+        });        /* SELECT - TIPO */
         $('#sel_id_tipoc').multiselect({
                   enableClickableOptGroups: true,
                   enableCollapsibleOptGroups: true,
@@ -794,6 +1163,7 @@ $(document).ready(function() {
           AppMap.cod_mpio=AppMap.Initcod_mpio();  console.log(AppMap.cod_mpio);
           appMain.cargaEntidades();
           appMain.CargaFuentes();
+          appMain.cargaClasificacion();
           appMain.cargaTipos();
           appMain.GetGeo();
           appMain.geoTooltip();
